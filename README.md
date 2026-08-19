@@ -1,5 +1,5 @@
 # Perfil Medico+
-Proyecto para Capstone (Grupo 7)
+Propuesta de Proyecto APT · Capstone_005D (Grupo 7)
 
 # Objetivo de negocio
 Muchas personas deben gestionar sus horas médicas, tratamientos y medicamentos de forma manual o a través de múltiples plataformas no integradas, lo que genera desorganización, pérdida de información y errores en el seguimiento de indicaciones médicas. Esta problemática afecta especialmente a pacientes frecuentes del sistema de salud, adultos mayores y personas con enfermedades crónicas que requieren un seguimiento constante.
