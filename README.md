@@ -72,7 +72,7 @@ LLM_API_KEY=
 | Integrante | Rol |
 |---|---|
 | Benjamín Leiva | *(completar rol)* |
-| Sergio Ocarez | *(completar rol)* |
+| Sergio Ocares | *(completar rol)* |
 | Matías Pizarro | *(completar rol)* |
 
 ## Metodología de trabajo
