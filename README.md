@@ -1,4 +1,4 @@
-# Perfil-Medico-
+# Perfil Medico+
 Proyecto para Capstone 
 
 Objetivo de negocio
