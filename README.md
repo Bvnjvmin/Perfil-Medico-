@@ -69,11 +69,11 @@ LLM_API_KEY=
 
 ## Integrantes del equipo
 
-| Integrante | Rol |
-|---|---|
-| Benjamín Leiva | *(completar rol)* |
-| Sergio Ocares | *(completar rol)* |
-| Matías Pizarro | *(completar rol)* |
+| Integrante | Rol | Contacto |
+|---|---|---|
+| Benjamín Leiva | *Backend Developer* | b.leiva@duocuc.cl |
+| Sergio Ocares | *Product Owner* | se.ocares@duouc.cl |
+| Matías Pizarro | *Frontend Developer* | mr.pizarro@duocuc.cl |
 
 ## Metodología de trabajo
 
