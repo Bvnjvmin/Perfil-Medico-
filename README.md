@@ -2,6 +2,26 @@
 
 Propuesta de Proyecto APT · Capstone_005D (Grupo 7) · Ingeniería Informática · Sede Plaza Oeste
 
+## Estado del proyecto
+
+**Fase actual: Fase 1 — Definición del Proyecto APT** (Asignatura CAPSTONE, PTY4614)
+
+- [x] Definición del proyecto y alcance del MVP
+- [x] Documento de Inicio de Proyecto / Guía Sumativa Fase 1
+- [x] Product Backlog y cronograma de actividades del equipo
+- [ ] Exposición grupal sumativa (Semana 4)
+- [ ] Fase 2 — Desarrollo (Sprints 1-6, Semanas 5-15)
+- [ ] Fase 3 — Presentación y defensa final (Semanas 16-18)
+
+## Documentación
+
+Toda la documentación formal del proyecto está en [`/docs`](./docs):
+
+- [Guía Sumativa Fase 1 — Benjamín](./docs/1.5_APT122_SumativaFase1_Benjamin.docx)
+- [Guía Sumativa Fase 1 — Sergio](./docs/1.5_APT122_SumativaFase1_Sergio.docx)
+- [Guía Sumativa Fase 1 — Matías](./docs/1.5_APT122_SumativaFase1_Matias.docx)
+- [Cronograma de actividades y Product Backlog](./docs/Cronograma_Actividades_Equipo_PerfilMedico.xlsx)
+
 ## Descripción
 
 **Perfil Médico+** es una plataforma (app móvil + web) pensada para centralizar la gestión de la salud personal y familiar: horas médicas, medicamentos, tratamientos, controles, alimentación e hidratación.
@@ -29,7 +49,7 @@ Cuando una actividad de cuidado (medicamento, comida, hidratación, etc.) no se 
 
 ## Instrucciones para ejecutar el proyecto localmente
 
-> Instrucciones base; ajustar cuando el repo tenga la estructura final de carpetas (`/backend`, `/app`, etc.) y su `docker-compose.yml`.
+> Instrucciones base; la estructura de carpetas (`/backend`, `/app`) ya está creada. El código funcional y el `docker-compose.yml` se irán agregando durante la Fase 2.
 
 ### Backend (FastAPI)
 
