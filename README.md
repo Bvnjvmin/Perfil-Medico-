@@ -15,12 +15,12 @@ Propuesta de Proyecto APT · Capstone_005D (Grupo 7) · Ingeniería Informática
 
 ## Documentación
 
-Toda la documentación formal del proyecto está en [`/docs`](./docs):
+Toda la documentación formal del proyecto está en [`Fase 1`](./Fase%201):
 
-- [Guía Sumativa Fase 1 — Benjamín](./docs/1.5_APT122_SumativaFase1_Benjamin.docx)
-- [Guía Sumativa Fase 1 — Sergio](./docs/1.5_APT122_SumativaFase1_Sergio.docx)
-- [Guía Sumativa Fase 1 — Matías](./docs/1.5_APT122_SumativaFase1_Matias.docx)
-- [Cronograma de actividades y Product Backlog](./docs/Cronograma_Actividades_Equipo_PerfilMedico.xlsx)
+- [Guía Sumativa Fase 1 (grupal)](<./Fase 1/Evidencias Grupales/1.5_GuiaEstudiante_Fase1_DefinicionProyectoAPT_PerfilMedico.docx>)
+- [Formativa Fase 1 — Informe Técnico (grupal)](<./Fase 1/Evidencias Grupales/1.4_APT122_FormativaFase1.docx>)
+- [Cronograma de actividades y Product Backlog](<./Fase 1/Evidencias Grupales/Cronograma_Actividades_Equipo_PerfilMedico.xlsx>)
+- [Autoevaluaciones y Diario de Reflexión (individuales)](<./Fase 1/Evidencias Individuales>)
 
 ## Descripción
 
@@ -46,6 +46,7 @@ Cuando una actividad de cuidado (medicamento, comida, hidratación, etc.) no se 
 | Autenticación | **JWT** | Distingue entre usuario titular y perfiles dependientes, y controla accesos sobre datos médicos sensibles. |
 | Módulo de IA | API de modelo de lenguaje (LLM) | Consultas básicas de síntomas, sin entrenar un modelo propio, para enfocar el esfuerzo del semestre en la gestión médica/familiar. |
 | Diseño UI/UX | **Figma** | Definir pantallas y flujos antes de programar, evitando rehacer trabajo. |
+| Contenedores | **Docker** | Empaquetar backend y base de datos para un despliegue reproducible, sin costos de licencia. |
 
 ## Instrucciones para ejecutar el proyecto localmente
 
