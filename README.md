@@ -24,7 +24,7 @@ Toda la documentación formal del proyecto está en [`Fase 1`](./Fase%201):
 
 ## Descripción
 
-**Perfil Médico+** es una plataforma (app móvil + web) pensada para centralizar la gestión de la salud personal y familiar: horas médicas, medicamentos, tratamientos, controles, alimentación e hidratación.
+**Perfil Médico+** es una aplicación móvil pensada para centralizar la gestión de la salud personal y familiar: horas médicas, medicamentos, tratamientos, controles, alimentación e hidratación.
 
 Está dirigida principalmente a adultos mayores, personas con enfermedades crónicas, niños y personas que requieren apoyo permanente, además de los familiares y cuidadores que los acompañan. Su diferenciador es el modelo de **cuenta titular con perfiles dependientes**: un usuario puede vincular y hacer seguimiento de personas a su cargo (por ejemplo, un padre adulto mayor o un hijo) desde una sola cuenta, con permisos configurables sobre qué información puede ver cada cuidador.
 
