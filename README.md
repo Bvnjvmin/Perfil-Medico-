@@ -36,6 +36,14 @@ Planificar → Recordar → Confirmar → Monitorear → Alertar → Acompañar
 
 Cuando una actividad de cuidado (medicamento, comida, hidratación, etc.) no se confirma dentro del plazo esperado, el sistema escala el aviso hasta notificar al cuidador autorizado, sin asumir automáticamente una emergencia.
 
+## Diferenciadores (roadmap Fase 2)
+
+Para distinguirse de otras apps de recordatorio de medicamentos, Perfil Médico+ suma tres funcionalidades adicionales, priorizadas como incrementos sobre el MVP base y usando siempre tecnología de bajo costo ya existente (sin fabricar hardware propio):
+
+- **Pantalla en casa:** la misma app en modo simplificado sobre una tablet fija, para el adulto mayor que no maneja un smartphone (vía [Fully Kiosk Browser](https://www.fully-kiosk.com/)).
+- **Pulsera inteligente:** lectura de signos vitales (frecuencia cardíaca) desde una pulsera ya existente en el mercado, vía [Health Connect](https://developer.android.com/health-and-fitness/guides/health-connect), la API gratuita y oficial de Android.
+- **Detección de ruido fuerte:** alerta ante un posible incidente en el hogar, usando el micrófono nativo del dispositivo (sin sensores adicionales).
+
 ## Tecnologías utilizadas
 
 | Capa | Tecnología | Motivo |
@@ -47,6 +55,9 @@ Cuando una actividad de cuidado (medicamento, comida, hidratación, etc.) no se 
 | Módulo de IA | API de modelo de lenguaje (LLM) | Consultas básicas de síntomas, sin entrenar un modelo propio, para enfocar el esfuerzo del semestre en la gestión médica/familiar. |
 | Diseño UI/UX | **Figma** | Definir pantallas y flujos antes de programar, evitando rehacer trabajo. |
 | Contenedores | **Docker** | Empaquetar backend y base de datos para un despliegue reproducible, sin costos de licencia. |
+| Pantalla en casa | **Fully Kiosk Browser** | Deja la app en modo pantalla completa sobre una tablet fija, gratuito. |
+| Wearables | **Health Connect** | API gratuita y oficial de Android para leer datos de pulseras inteligentes ya existentes. |
+| Detección de ruido | **noise_meter** (Flutter) | Lee el micrófono nativo del dispositivo, sin sensores adicionales. |
 
 ## Instrucciones para ejecutar el proyecto localmente
 
