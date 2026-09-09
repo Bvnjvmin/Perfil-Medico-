@@ -38,11 +38,25 @@ Cuando una actividad de cuidado (medicamento, comida, hidratación, etc.) no se 
 
 ## Diferenciadores (roadmap Fase 2)
 
-Para distinguirse de otras apps de recordatorio de medicamentos, Perfil Médico+ suma tres funcionalidades adicionales, priorizadas como incrementos sobre el MVP base y usando siempre tecnología de bajo costo ya existente (sin fabricar hardware propio):
+Para distinguirse de otras apps de recordatorio de medicamentos, Perfil Médico+ se integra con una **pulsera inteligente ya disponible en el mercado** (sin fabricar hardware propio), pensada para los dos tipos de perfiles dependientes que atiende el proyecto — adultos mayores no valentes y niños — bajo la supervisión de un adulto responsable:
 
-- **Pantalla en casa:** la misma app en modo simplificado sobre una tablet fija, para el adulto mayor que no maneja un smartphone (vía [Fully Kiosk Browser](https://www.fully-kiosk.com/)).
-- **Pulsera inteligente:** lectura de signos vitales (frecuencia cardíaca) desde una pulsera ya existente en el mercado, vía [Health Connect](https://developer.android.com/health-and-fitness/guides/health-connect), la API gratuita y oficial de Android.
-- **Detección de ruido fuerte:** alerta ante un posible incidente en el hogar, usando el micrófono nativo del dispositivo (sin sensores adicionales).
+- **Ubicación y salud:** GPS con geocercas (alerta si el niño no llega al colegio o el adulto mayor sale de una zona segura), frecuencia cardíaca vía [Health Connect](https://developer.android.com/health-and-fitness/guides/health-connect) (API gratuita y oficial de Android), y presión arterial referencial (no reemplaza un tensiómetro médico).
+- **Seguridad:** detección automática de caídas, botón SOS físico, alerta de batería baja del dispositivo, y detección de inactividad inusual.
+
+Además, se suman tres funcionalidades 100% de software:
+
+- **Registro manual de glucosa:** el cuidador ingresa la lectura de un glucómetro certificado. No se mide de forma automática por seguridad — la [FDA advirtió en 2024](https://www.fda.gov/medical-devices/safety-communications/no-utilice-relojes-inteligentes-ni-anillos-inteligentes-para-medir-los-niveles-de-glucosa-en-sangre) que ningún smartwatch o anillo inteligente está aprobado para medir glucosa sin pinchazo.
+- **Recordatorios extendidos:** indicaciones posteriores a una consulta médica y citas médicas pendientes, con recordatorio diario.
+- **Farmacias cercanas vía IA:** consulta sobre disponibilidad y precio de un medicamento, comparando por cercanía y precio — inspirado en herramientas públicas reales como [TuFarmacia.gob.cl](https://tufarmacia.minsal.cl/) (MINSAL) y comparadores como [BuscaFarma](https://buscafarma.cl/).
+
+## Modelo de negocio (proyección a futuro)
+
+| Plan | Precio | Incluye |
+|---|---|---|
+| **Gratis** | $0 | 1 perfil, recordatorios básicos, confirmación manual, historial de 7 días |
+| **Perfil Médico+ Premium** | $2.990-$3.990 CLP/mes ($24.990-$29.990 CLP/año) | Perfiles dependientes ilimitados, pulsera inteligente conectada, alertas escalonadas al cuidador, historial completo + reportes para el médico, módulo de IA (orientación + farmacias) |
+
+El plan pagado se activa naturalmente en el momento de mayor necesidad percibida: cuando el usuario quiere agregar a un familiar a su cargo. Ver el [Instructivo de la Pulsera](<./Fase 1/Evidencias Grupales/Instructivo_Pulsera_PerfilMedico.docx>) para el detalle de emparejamiento y funciones.
 
 ## Tecnologías utilizadas
 
@@ -50,14 +64,13 @@ Para distinguirse de otras apps de recordatorio de medicamentos, Perfil Médico+
 |---|---|---|
 | App móvil | **Flutter** (Dart) | Un solo código para iOS y Android, clave con un equipo chico; ecosistema maduro para formularios, notificaciones y navegación. |
 | Backend | **FastAPI** (Python) | Levantar endpoints rápido, validación automática de datos y documentación Swagger generada sola. |
-| Base de datos | **PostgreSQL** | Relacional; se ajusta a los datos interrelacionados del paciente (horas, medicamentos, exámenes) y al modelo de cuenta titular + perfiles dependientes. |
+| Base de datos | **PostgreSQL** | Relacional; se ajusta a los datos interrelacionados del perfil dependiente (horas, medicamentos, exámenes) y al modelo de cuenta titular + perfiles dependientes. |
 | Autenticación | **JWT** | Distingue entre usuario titular y perfiles dependientes, y controla accesos sobre datos médicos sensibles. |
 | Módulo de IA | API de modelo de lenguaje (LLM) | Consultas básicas de síntomas, sin entrenar un modelo propio, para enfocar el esfuerzo del semestre en la gestión médica/familiar. |
 | Diseño UI/UX | **Figma** | Definir pantallas y flujos antes de programar, evitando rehacer trabajo. |
 | Contenedores | **Docker** | Empaquetar backend y base de datos para un despliegue reproducible, sin costos de licencia. |
-| Pantalla en casa | **Fully Kiosk Browser** | Deja la app en modo pantalla completa sobre una tablet fija, gratuito. |
-| Wearables | **Health Connect** | API gratuita y oficial de Android para leer datos de pulseras inteligentes ya existentes. |
-| Detección de ruido | **noise_meter** (Flutter) | Lee el micrófono nativo del dispositivo, sin sensores adicionales. |
+| Wearables | **Health Connect** | API gratuita y oficial de Android para leer datos de la pulsera inteligente (GPS, salud, seguridad). |
+| Generación de reportes | **PDF (backend)** | Exporta el historial de cumplimiento y signos vitales para llevar a la consulta médica. |
 
 ## Instrucciones para ejecutar el proyecto localmente
 
@@ -115,7 +128,7 @@ El equipo trabaja con **Scrum**: sprints cortos, Product Backlog priorizado con 
 
 Arquitectura de alto nivel orientada a servicios:
 
-- **App móvil (Flutter):** interfaz para paciente, adulto mayor (modo simplificado) y cuidador. Consume la API vía HTTPS.
+- **App móvil (Flutter):** interfaz para el titular, el perfil dependiente (modo simplificado) y el cuidador. Consume la API vía HTTPS.
 - **API (FastAPI):** expone endpoints REST para perfiles, rutinas, actividades, confirmaciones, alertas y el módulo de IA. Maneja autenticación/autorización con JWT y control de acceso basado en roles (titular / dependiente / cuidador).
 - **Base de datos (PostgreSQL):** modelo relacional que conecta cuentas, perfiles dependientes, actividades de cuidado y su estado de cumplimiento.
 - **Servicio de IA:** integración externa vía API de LLM para consultas básicas de síntomas, desacoplada del núcleo del sistema.
