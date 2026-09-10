@@ -4,14 +4,20 @@ Propuesta de Proyecto APT · Capstone_005D (Grupo 7) · Ingeniería Informática
 
 ## Estado del proyecto
 
-**Fase actual: Fase 1 — Definición del Proyecto APT** (Asignatura CAPSTONE, PTY4614)
+**Fase actual: Fase 2 — Desarrollo del Proyecto APT** (Asignatura CAPSTONE, PTY4614)
 
+**Fase 1 — Definición (completa):**
 - [x] Definición del proyecto y alcance del MVP
 - [x] Documento de Inicio de Proyecto / Guía Sumativa Fase 1
 - [x] Product Backlog y cronograma de actividades del equipo
-- [ ] Exposición grupal sumativa (Semana 4)
-- [ ] Fase 2 — Desarrollo (Sprints 1-6, Semanas 5-15)
-- [ ] Fase 3 — Presentación y defensa final (Semanas 16-18)
+- [x] Exposición grupal sumativa (Semana 4)
+
+**Fase 2 — Desarrollo:**
+- [ ] Sprint 1-6 (Semanas 5-15)
+- [ ] Informe de Avance (Semana 10)
+- [ ] Informe Final (Semana 15)
+
+**Fase 3 — Presentación y defensa final (Semanas 16-18)**
 
 ## Documentación
 
