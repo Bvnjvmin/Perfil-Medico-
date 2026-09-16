@@ -2,7 +2,7 @@
 
 Un archivo por sprint: `Sprint_1_S5-S6.md` (o .xlsx), `Sprint_2_S7-S8.md`, etc.
 
-Plantilla (de la Guía de Scrum):
+Plantilla de historia de usuario:
 
 ```
 Como [rol] quiero [funcionalidad] para [beneficio].
