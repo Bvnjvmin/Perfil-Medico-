@@ -19,7 +19,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final _tokenStorage = TokenStorage();
 
   Usuario? _usuario;
-  String? _error;
 
   @override
   void initState() {
