@@ -34,7 +34,7 @@ class Usuario(Base):
     email: Mapped[str] = mapped_column(String(255), unique=True, index=True, nullable=False)
     hashed_password: Mapped[str] = mapped_column(String(255), nullable=False)
     rol: Mapped[RolUsuario] = mapped_column(
-        Enum(RolUsuario), default=RolUsuario.TITULAR, nullable=False
+        Enum(RolUsuario, values_callable=lambda enum_cls: [e.value for e in enum_cls]), default=RolUsuario.TITULAR, nullable=False
     )
     creado_en: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=lambda: datetime.now(timezone.utc)
