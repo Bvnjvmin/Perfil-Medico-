@@ -41,7 +41,7 @@ Propuesta de Proyecto APT · Capstone_005D (Grupo 7) · Ingeniería Informática
 
 **Perfil Médico+** es una aplicación móvil pensada para centralizar la gestión de la salud personal y familiar: horas médicas, medicamentos, tratamientos, controles, alimentación e hidratación.
 
-Está dirigida principalmente a **adultos mayores no valentes** y **niños** — los dos perfiles dependientes que atiende el proyecto —, además de los adultos responsables que los cuidan. Su diferenciador es el modelo de **cuenta titular con perfiles dependientes**: un usuario puede vincular y hacer seguimiento de personas a su cargo desde una sola cuenta, con permisos configurables sobre qué información puede ver cada cuidador.
+Está dirigida principalmente a **adultos mayores no autovalentes** y **niños** — los dos perfiles dependientes que atiende el proyecto —, además de los adultos responsables que los cuidan. Su diferenciador es el modelo de **cuenta titular con perfiles dependientes**: un usuario puede vincular y hacer seguimiento de personas a su cargo desde una sola cuenta, con permisos configurables sobre qué información puede ver cada cuidador.
 
 El sistema funciona bajo un flujo de seguimiento continuo:
 
