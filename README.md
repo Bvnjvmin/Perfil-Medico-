@@ -13,10 +13,11 @@ Propuesta de Proyecto APT · Capstone_005D (Grupo 7) · Ingeniería Informática
 - [x] Exposición grupal sumativa (Semana 4)
 
 **Fase 2 — Desarrollo (por sprint):**
-- [ ] Sprint 1 (S5-S6) — Autenticación, modelo de datos, estructura base de la app
+- [x] Sprint 1 (S5-S6) — Autenticación, modelo de datos, estructura base de la app
   - Backend (FastAPI + PostgreSQL) con registro, login (JWT) y endpoint protegido
   - Migraciones con Alembic, Docker + docker-compose, 7 pruebas automatizadas
-- [ ] Sprint 2 (S7-S8) — Medicamentos y rutinas: API + UI conectadas
+  - Cierre con arrastre menor a Sprint 2 (parte de datos básicos de salud y validación de la app) — ver [`Metodologia_Scrum/Sprint_1`](<./Metodologia_Scrum/Sprint_1>)
+- [ ] Sprint 2 (S7-S8) — Medicamentos y rutinas: API + UI conectadas *(en curso, desde el 21-09)*
 - [ ] Sprint 3 (S9-S10) — Perfiles dependientes y permisos · Informe de Avance (Semana 10)
 - [ ] Sprint 4 (S11-S12) — Recordatorios y alertas escalonadas
 - [ ] Sprint 5 (S13-S14) — Indicadores de salud, módulo de IA, pulsera inteligente (Traccar + Health Connect)
@@ -35,7 +36,12 @@ Propuesta de Proyecto APT · Capstone_005D (Grupo 7) · Ingeniería Informática
 
 **Fase 2** — en [`Fase 2`](<./Fase 2>):
 
+- [Documentos de evaluación grupales (2.3, 2.4, 2.6)](<./Fase 2/Evidencias Grupales>)
+- [Diario de Reflexión y Autoevaluación individuales (2.1, 2.2)](<./Fase 2/Evidencias Individuales>)
+- [Metodología Scrum — Sprint Backlog, actas y retrospectivas](<./Metodologia_Scrum>)
 - [Código del backend](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/backend>) (Sprint 1: autenticación)
+- [Código de la app móvil](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/app_movil>) (Sprint 1: pantallas de registro/login)
+- [Modelo de datos (diagrama ER)](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Base de datos/modelo_datos.md>)
 
 ## Descripción
 
@@ -150,7 +156,7 @@ flutter run
 
 ## Metodología de trabajo
 
-El equipo trabaja con **Scrum**: sprints quincenales, Product Backlog priorizado con historias de usuario, Sprint Backlog por sprint, revisión y retrospectiva al cierre de cada sprint. La evidencia de avance (Product Backlog, Sprint Backlog, Definition of Done y retrospectivas) queda documentada en [`Fase 2/Evidencias Proyecto/Evidencias de documentacion`](<./Fase 2/Evidencias Proyecto/Evidencias de documentacion>), conforme a lo exigido por el Instructivo CAPSTONE.
+El equipo trabaja con **Scrum**: sprints quincenales, Product Backlog priorizado con historias de usuario, Sprint Backlog por sprint, revisión y retrospectiva al cierre de cada sprint. La evidencia de avance (Sprint Backlog, actas de seguimiento y retrospectivas) queda documentada en [`Metodologia_Scrum`](<./Metodologia_Scrum>), conforme a lo exigido por el Instructivo CAPSTONE. El Product Backlog completo y el Cronograma del equipo viven en [`Cronograma_Actividades_Equipo_PerfilMedico.xlsx`](<./Fase 1/Evidencias Grupales/Cronograma_Actividades_Equipo_PerfilMedico.xlsx>).
 
 ## Arquitectura de la solución
 
@@ -171,4 +177,4 @@ Arquitectura de alto nivel orientada a servicios:
                               └──> [Servicio de notificaciones/alertas]
 ```
 
-*(Diagrama de arquitectura detallado y diagramas UML se agregan en [`Fase 2/Evidencias Proyecto/Evidencias de documentacion`](<./Fase 2/Evidencias Proyecto/Evidencias de documentacion>), conforme al Instructivo CAPSTONE.)*
+*(Diagrama de arquitectura detallado y diagramas UML se agregan en [`Metodologia_Scrum`](<./Metodologia_Scrum>), conforme al Instructivo CAPSTONE.)*
