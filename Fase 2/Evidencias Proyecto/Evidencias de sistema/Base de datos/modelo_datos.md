@@ -4,7 +4,7 @@
 
 ## Diagrama entidad-relación
 
-Las tablas marcadas como "Sprint 1" son las que se implementan en este sprint (ver `Aplicación/backend/app/models/`). Las demás se muestran para dar contexto de hacia dónde va el modelo completo — se implementan en los sprints indicados, no en este.
+Las tablas marcadas como "Sprint 1" son las que se implementan en este sprint (ver `Aplicacion/backend/app/models/`). Las demás se muestran para dar contexto de hacia dónde va el modelo completo — se implementan en los sprints indicados, no en este.
 
 ```mermaid
 erDiagram
