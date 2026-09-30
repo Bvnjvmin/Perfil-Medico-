@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.env
+
+# Flutter, Dart y Android
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+build/
+.gradle/
+local.properties
+*.iml
+GeneratedPluginRegistrant.java
+gradle-wrapper.jar
+
+# Editores y sistema
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
