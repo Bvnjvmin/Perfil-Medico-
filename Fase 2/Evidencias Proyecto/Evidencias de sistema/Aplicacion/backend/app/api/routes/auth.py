@@ -1,7 +1,7 @@
 """
 Endpoints de autenticación.
 
-POST /auth/register  -> crea un usuario nuevo (titular o cuidador)
+POST /auth/register  -> crea un usuario nuevo
 POST /auth/login      -> recibe email + contraseña, devuelve un token JWT
 GET  /auth/me         -> devuelve los datos del usuario dueño del token actual
 """
@@ -20,7 +20,7 @@ router = APIRouter(prefix="/auth", tags=["Autenticación"])
 
 @router.post("/register", response_model=UsuarioOut, status_code=status.HTTP_201_CREATED)
 def register(datos: UsuarioCreate, db: Session = Depends(get_db)):
-    """Registra un nuevo usuario (titular o cuidador)."""
+    """Registra un nuevo usuario."""
     ya_existe = db.query(Usuario).filter(Usuario.email == datos.email).first()
     if ya_existe:
         raise HTTPException(
@@ -32,7 +32,6 @@ def register(datos: UsuarioCreate, db: Session = Depends(get_db)):
         nombre=datos.nombre,
         email=datos.email,
         hashed_password=hash_password(datos.password),
-        rol=datos.rol,
     )
     db.add(nuevo_usuario)
     db.commit()
