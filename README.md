@@ -13,7 +13,7 @@ Propuesta de Proyecto APT · Capstone_005D (Grupo 7) · Ingeniería Informática
 - [x] Exposición grupal sumativa (Semana 4)
 
 **Fase 2 — Desarrollo (por sprint):**
-- [x] Sprint 1 (S5-S6) — Autenticación, modelo de datos, estructura base de la app
+- [ ] Sprint 1 (S5-S6) — Autenticación, modelo de datos, estructura base de la app
   - Backend (FastAPI + PostgreSQL) con registro, login (JWT) y endpoint protegido
   - Migraciones con Alembic, Docker + docker-compose, 7 pruebas automatizadas
 - [ ] Sprint 2 (S7-S8) — Medicamentos y rutinas: API + UI conectadas
@@ -35,8 +35,7 @@ Propuesta de Proyecto APT · Capstone_005D (Grupo 7) · Ingeniería Informática
 
 **Fase 2** — en [`Fase 2`](<./Fase 2>):
 
-- [Estructura de la fase (Evidencias Grupales / Individuales / Proyecto)](<./Fase 2/README.md>)
-- [Código del backend](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicación/backend>) (Sprint 1: autenticación)
+- [Código del backend](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/backend>) (Sprint 1: autenticación)
 
 ## Descripción
 
@@ -104,12 +103,12 @@ Cada perfil dependiente adicional que la misma cuenta agregue (manteniendo el pr
 
 ### Backend (FastAPI) — Sprint 1 completo (autenticación)
 
-Código en [`Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicación/backend`](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicación/backend>).
+Código en [`Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/backend`](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/backend>).
 
 **Con Docker (recomendado):**
 
 ```bash
-cd "Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicación/backend"
+cd "Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/backend"
 cp .env.example .env
 docker compose up --build
 ```
@@ -119,7 +118,7 @@ La API queda en `http://localhost:8000` y la documentación interactiva en `http
 **Sin Docker:**
 
 ```bash
-cd "Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicación/backend"
+cd "Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/backend"
 python3 -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 cp .env.example .env
@@ -133,10 +132,10 @@ uvicorn app.main:app --reload
 pytest app/tests/ -v
 ```
 
-### App móvil (Flutter) — pendiente (Sprint 1-2)
+### App móvil (Flutter) — Sprint 1: autenticación
 
 ```bash
-cd "Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicación/app_movil"
+cd "Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/app_movil"
 flutter pub get
 flutter run
 ```
@@ -151,7 +150,7 @@ flutter run
 
 ## Metodología de trabajo
 
-El equipo trabaja con **Scrum**: sprints quincenales, Product Backlog priorizado con historias de usuario, Sprint Backlog por sprint, revisión y retrospectiva al cierre de cada sprint. La evidencia de avance (Product Backlog, Sprint Backlog, Definition of Done y retrospectivas) queda documentada en [`Fase 2/Evidencias Proyecto/Evidencias de documentación`](<./Fase 2/Evidencias Proyecto/Evidencias de documentación>), conforme a lo exigido por el Instructivo CAPSTONE.
+El equipo trabaja con **Scrum**: sprints quincenales, Product Backlog priorizado con historias de usuario, Sprint Backlog por sprint, revisión y retrospectiva al cierre de cada sprint. La evidencia de avance (Product Backlog, Sprint Backlog, Definition of Done y retrospectivas) queda documentada en [`Fase 2/Evidencias Proyecto/Evidencias de documentacion`](<./Fase 2/Evidencias Proyecto/Evidencias de documentacion>), conforme a lo exigido por el Instructivo CAPSTONE.
 
 ## Arquitectura de la solución
 
@@ -172,4 +171,4 @@ Arquitectura de alto nivel orientada a servicios:
                               └──> [Servicio de notificaciones/alertas]
 ```
 
-*(Diagrama de arquitectura detallado y diagramas UML se agregan en [`Fase 2/Evidencias Proyecto/Evidencias de documentación/Diagramas`](<./Fase 2/Evidencias Proyecto/Evidencias de documentación/Diagramas>), conforme al Instructivo CAPSTONE.)*
+*(Diagrama de arquitectura detallado y diagramas UML se agregan en [`Fase 2/Evidencias Proyecto/Evidencias de documentacion`](<./Fase 2/Evidencias Proyecto/Evidencias de documentacion>), conforme al Instructivo CAPSTONE.)*
