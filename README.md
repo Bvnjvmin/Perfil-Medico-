@@ -36,8 +36,8 @@ Propuesta de Proyecto APT · Capstone_005D (Grupo 7) · Ingeniería Informática
 
 **Fase 2** — en [`Fase 2`](<./Fase 2>):
 
-- [Documentos de evaluación grupales (2.3, 2.4, 2.6)](<./Fase 2/Evidencias Grupales>)
-- [Diario de Reflexión y Autoevaluación individuales (2.1, 2.2)](<./Fase 2/Evidencias Individuales>)
+- [Documentos de evaluación grupales (2.3, 2.4, 2.6)](<./Fase 2/Evidencias Grupales>) — el 2.3 es la pauta de referencia del docente y se sube tal cual, sin rellenar. Las planillas de evaluación de avance/final no se suben al repositorio (uso interno del docente, confirmado con él).
+- [Diario de Reflexión y Autoevaluación individuales (2.1, 2.2)](<./Fase 2/Evidencias Individuales>) — un archivo por integrante, con el patrón `Apellido_Nombre_2.X_...docx` (mismo criterio que en Fase 1).
 - [Metodología Scrum — Sprint Backlog, actas y retrospectivas](<./Metodologia_Scrum>)
 - [Código del backend](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/backend>) (Sprint 1: autenticación)
 - [Código de la app móvil](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/app_movil>) (Sprint 1: pantallas de registro/login)
