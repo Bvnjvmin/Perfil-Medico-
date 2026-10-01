@@ -1,0 +1,88 @@
+erDiagram
+    USUARIO {
+        string id PK "UUID"
+        string nombre
+        string email UK
+        string hashed_password
+        datetime creado_en
+    }
+
+    PERFIL {
+        string id PK "UUID"
+        string cuenta_titular_id FK "usuario dueño del perfil"
+        string tipo "titular | dependiente"
+        string nombre
+        string rut "nullable"
+        string grupo_sanguineo
+        date fecha_nacimiento
+        string subtipo "adulto_mayor | nino - solo dependientes"
+        bool activo
+        datetime creado_en
+    }
+
+    ALERGIA {
+        string id PK "UUID"
+        string perfil_id FK
+        string sustancia
+        string severidad "leve | moderada | severa"
+    }
+
+    CONTACTO_EMERGENCIA {
+        string id PK "UUID"
+        string perfil_id FK
+        string nombre
+        string telefono
+        string relacion
+        int prioridad
+    }
+
+    PERFIL_ACCESO {
+        string id PK "UUID - Sprint 3"
+        string usuario_id FK
+        string perfil_id FK
+        string rol_vinculo "titular | cuidador | lectura"
+        bool puede_confirmar
+        bool puede_editar_rutinas
+        bool puede_ver_indicadores
+        bool recibe_alertas
+        int nivel_escalamiento
+    }
+
+    RUTINA_CUIDADO {
+        string id PK "UUID - Sprint 2"
+        string perfil_id FK
+        string tipo "medicamento | alimentacion | hidratacion"
+        string nombre
+        string dosis "nullable"
+        string frecuencia "diaria | dias_semana | cada_x_horas"
+        date fecha_inicio
+        date fecha_fin "nullable"
+        bool es_critica
+        int minutos_tolerancia
+    }
+
+    RUTINA_HORARIO {
+        string id PK "UUID - Sprint 2"
+        string rutina_id FK
+        time hora
+    }
+
+    ACTIVIDAD {
+        string id PK "UUID - Sprint 2"
+        string rutina_id FK
+        string perfil_id FK
+        datetime programada_para
+        string estado "pendiente | confirmada | omitida | vencida"
+        datetime confirmada_en "nullable"
+        string confirmada_por_id FK "nullable - NULL = la confirmó el propio perfil"
+    }
+
+    USUARIO ||--o{ PERFIL : "administra (titular y dependientes)"
+    USUARIO ||--o{ PERFIL_ACCESO : "tiene acceso a"
+    PERFIL ||--o{ PERFIL_ACCESO : "tiene cuidadores autorizados"
+    PERFIL ||--o{ ALERGIA : "registra"
+    PERFIL ||--o{ CONTACTO_EMERGENCIA : "registra"
+    PERFIL ||--o{ RUTINA_CUIDADO : "tiene rutinas"
+    RUTINA_CUIDADO ||--o{ RUTINA_HORARIO : "se toma a las"
+    RUTINA_CUIDADO ||--o{ ACTIVIDAD : "genera ocurrencias"
+    USUARIO ||--o{ ACTIVIDAD : "confirma (directo o proxy)"
