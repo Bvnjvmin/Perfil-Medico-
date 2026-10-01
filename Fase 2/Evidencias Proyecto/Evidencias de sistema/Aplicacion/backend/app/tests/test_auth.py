@@ -12,13 +12,11 @@ def test_registrar_usuario_nuevo(client):
             "nombre": "Benjamín Leiva",
             "email": "benjamin@perfilmedico.cl",
             "password": "clave-segura-123",
-            "rol": "titular",
         },
     )
     assert respuesta.status_code == 201
     datos = respuesta.json()
     assert datos["email"] == "benjamin@perfilmedico.cl"
-    assert datos["rol"] == "titular"
     assert "hashed_password" not in datos  # nunca se debe filtrar la contraseña
 
 
@@ -27,7 +25,6 @@ def test_no_permite_correo_duplicado(client):
         "nombre": "Sergio Ocares",
         "email": "sergio@perfilmedico.cl",
         "password": "clave-segura-123",
-        "rol": "cuidador",
     }
     primera = client.post("/auth/register", json=payload)
     assert primera.status_code == 201
@@ -44,7 +41,6 @@ def test_login_exitoso_devuelve_token(client):
             "nombre": "Matías Pizarro",
             "email": "matias@perfilmedico.cl",
             "password": "clave-segura-123",
-            "rol": "titular",
         },
     )
 
@@ -65,7 +61,6 @@ def test_login_con_contrasena_incorrecta_falla(client):
             "nombre": "Usuario Prueba",
             "email": "prueba@perfilmedico.cl",
             "password": "clave-correcta",
-            "rol": "titular",
         },
     )
 
@@ -83,7 +78,6 @@ def test_me_devuelve_usuario_del_token(client):
             "nombre": "Ana Cuidadora",
             "email": "ana@perfilmedico.cl",
             "password": "clave-segura-123",
-            "rol": "cuidador",
         },
     )
     login = client.post(

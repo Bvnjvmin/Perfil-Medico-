@@ -15,7 +15,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _passwordCtrl = TextEditingController();
   final _api = ApiService();
 
-  String _rol = 'titular';
   bool _cargando = false;
   String? _error;
 
@@ -32,7 +31,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         nombre: _nombreCtrl.text.trim(),
         email: _emailCtrl.text.trim(),
         password: _passwordCtrl.text,
-        rol: _rol,
       );
 
       if (!mounted) return;
@@ -85,16 +83,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 decoration: const InputDecoration(labelText: 'Contraseña'),
                 obscureText: true,
                 validator: (v) => (v == null || v.length < 8) ? 'Mínimo 8 caracteres' : null,
-              ),
-              const SizedBox(height: 12),
-              DropdownButtonFormField<String>(
-                initialValue: _rol,
-                decoration: const InputDecoration(labelText: 'Tipo de cuenta'),
-                items: const [
-                  DropdownMenuItem(value: 'titular', child: Text('Titular')),
-                  DropdownMenuItem(value: 'cuidador', child: Text('Cuidador')),
-                ],
-                onChanged: (v) => setState(() => _rol = v ?? 'titular'),
               ),
               if (_error != null) ...[
                 const SizedBox(height: 12),

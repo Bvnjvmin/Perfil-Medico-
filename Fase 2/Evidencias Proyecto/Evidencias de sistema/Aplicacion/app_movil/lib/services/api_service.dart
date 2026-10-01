@@ -20,12 +20,11 @@ class ApiService {
 
   static const _headersJson = {'Content-Type': 'application/json'};
 
-  /// POST /auth/register — crea un usuario nuevo (titular o cuidador).
+  /// POST /auth/register — crea un usuario nuevo.
   Future<Usuario> registrar({
     required String nombre,
     required String email,
     required String password,
-    String rol = 'titular',
   }) async {
     final respuesta = await http.post(
       Uri.parse('$baseUrl/auth/register'),
@@ -34,7 +33,6 @@ class ApiService {
         'nombre': nombre,
         'email': email,
         'password': password,
-        'rol': rol,
       }),
     );
 
