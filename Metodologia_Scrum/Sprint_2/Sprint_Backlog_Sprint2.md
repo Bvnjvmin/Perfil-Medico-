@@ -63,8 +63,11 @@
 | Prueba manual registro → login → Home contra el backend, con capturas | HU 3 | Matías | ⏭️ Pendiente | Matías sube las capturas a la misma carpeta de evidencias |
 | Pantalla de agenda diaria (lista medicamentos/rutinas del día) | HU 5 | Matías | ⏭️ Pendiente | Matías implementa y sube `app_movil/lib/screens/agenda_screen.dart` (y el servicio que consuma `/perfiles/{id}/medicamentos` y `/perfiles/{id}/rutinas`) desde su propia cuenta |
 | Marcar actividad como confirmada en la agenda | HU 5 | Matías | ⏭️ Pendiente | Idem, mismo PR/commit de la pantalla de agenda |
+| Exportar el diagrama ER como imagen (arrastre del Sprint 1) | — | Sergio | ⏭️ Pendiente | Sergio sube la imagen a `Base de datos/Diagramas/` desde su propia cuenta |
+| Actualizar `modelo_datos.md` con el estado real de HU 2/HU 4 y la decisión de alcance simplificado | HU 2 / HU 4 | Sergio | ⏭️ Pendiente | Sergio sube el documento actualizado a `Base de datos/modelo_datos.md` |
+| Checklist de aceptación del Product Owner (valida HU 2 y HU 4 contra sus criterios de aceptación) | HU 2 / HU 4 | Sergio | ⏭️ Pendiente | Sergio sube `Base de datos/Checklist_Aceptacion_PO_Sprint2.md` |
 
-**Por qué se separa así:** todo el trabajo de backend (HU 2 y HU 4) ya quedó commiteado en `main` bajo la cuenta de Benjamín, porque es la parte que correspondía desarrollar esta sesión. El trabajo de HU 3 (validación) y HU 5 (pantallas nuevas en la app) es responsabilidad de Matías según el Product Backlog, así que se deja pendiente y debe subirse desde su propia cuenta para que la evaluación individual del curso refleje correctamente el aporte de cada integrante.
+**Por qué se separa así:** todo el trabajo de backend (HU 2 y HU 4) ya quedó commiteado en `main` bajo la cuenta de Benjamín, porque es la parte que correspondía desarrollar esta sesión. El trabajo de HU 3 (validación) y HU 5 (pantallas nuevas en la app) es responsabilidad de Matías según el Product Backlog, así que se deja pendiente y debe subirse desde su propia cuenta. A mitad de sprint se detectó que la carga de Sergio había quedado muy liviana en comparación (solo un arrastre de documentación), así que se agregaron dos tareas más alineadas a su rol de BD y Product Owner: reconciliar su propio documento de diseño con lo que efectivamente se construyó, y validar como PO que HU 2 y HU 4 cumplen sus criterios de aceptación probando la API en vivo. Así los tres integrantes suben trabajo propio y verificable desde su cuenta, y la evaluación individual refleja el aporte real de cada uno.
 
 ## 3. Definition of Done — estado por historia
 
@@ -100,9 +103,10 @@ Definición del equipo: *integrada al repositorio + probada + documentada.*
 | `test_eliminar_rutina_cuidado_propia` | Automática (backend) | ✅ Pasa |
 | `test_rutina_de_perfil_ajeno_devuelve_404` | Automática (backend) | ✅ Pasa |
 | Suite completa de autenticación (HU 1, heredada) | Automática (backend) | ✅ Pasa (7 pruebas) |
-| `usuario_test.dart`, `login_screen_test.dart` | Automática (Flutter) | ⏳ Pendiente (Matías) |
+| `usuario_test.dart`, `login_screen_test.dart` | Automatica (Flutter) | ⏳ Pendiente (Matías) |
 | Flujo registro → login → Home contra el backend | Manual | ⏳ Pendiente (Matías) |
 | Agenda diaria: listar y confirmar actividades | Manual | ⏳ Pendiente (Matías, tras construir HU 5) |
+| Checklist de aceptación PO: criterios de HU 2 y HU 4 contra la API en vivo | Manual (Product Owner) | ⏳ Pendiente (Sergio) |
 
 Comando de las pruebas del backend: `pytest app/tests/ -v` (usan SQLite en memoria; no requieren Docker). Verificado el 30-09-2026 contra el repositorio en GitHub tras los commits de este sprint: **25 passed**.
 
@@ -112,3 +116,4 @@ Comando de las pruebas del backend: `pytest app/tests/ -v` (usan SQLite en memor
 - 30-09: modelo, migración, esquemas, endpoints y pruebas de HU 4 (Benjamín, commits `63f9451`, `de402ba`, `5a73c38`, `246aac5`, `42b274b`).
 - 30-09: registro de los nuevos routers en `main.py` (Benjamín, commit `09151d2`).
 - Pendiente: commits de Matías para el cierre de HU 3 y el desarrollo de HU 5.
+- Pendiente: commits de Sergio para el diagrama ER, la actualización de `modelo_datos.md` y el checklist de aceptación PO.
