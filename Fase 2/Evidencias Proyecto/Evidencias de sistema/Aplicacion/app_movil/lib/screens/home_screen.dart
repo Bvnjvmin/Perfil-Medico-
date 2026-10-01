@@ -80,8 +80,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     const SizedBox(height: 16),
                     Text(_usuario!.nombre, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
                     Text(_usuario!.email),
-                    const SizedBox(height: 8),
-                    Chip(label: Text(_usuario!.rol.toUpperCase())),
                   ],
                 ),
               ),
