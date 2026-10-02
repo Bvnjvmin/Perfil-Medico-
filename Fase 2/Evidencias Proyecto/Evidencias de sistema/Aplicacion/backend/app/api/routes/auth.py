@@ -32,6 +32,7 @@ def register(datos: UsuarioCreate, db: Session = Depends(get_db)):
         nombre=datos.nombre,
         email=datos.email,
         hashed_password=hash_password(datos.password),
+        rol=datos.rol,
     )
     db.add(nuevo_usuario)
     db.commit()
