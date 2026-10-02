@@ -10,12 +10,15 @@ from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
+from app.models.usuario import RolUsuario
+
 
 class UsuarioCreate(BaseModel):
     """Datos que llegan al registrar un usuario nuevo."""
     nombre: str = Field(min_length=2, max_length=120)
     email: EmailStr
     password: str = Field(min_length=8, max_length=72)
+    rol: RolUsuario = RolUsuario.TITULAR
 
 
 class UsuarioOut(BaseModel):
@@ -25,6 +28,7 @@ class UsuarioOut(BaseModel):
     id: str
     nombre: str
     email: EmailStr
+    rol: RolUsuario
     creado_en: datetime
 
 
