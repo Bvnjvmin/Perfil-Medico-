@@ -35,7 +35,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Cuenta creada. Ahora inicia sesión.')),
+        const SnackBar(
+        content: Text('Cuenta creada. Ahora inicia sesión.'),
+        duration: Duration(seconds: 8),
+        showCloseIcon: true,,
       );
       Navigator.of(context).pop();
     } catch (e) {
