@@ -10,7 +10,6 @@ from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
-from app.models.usuario import RolUsuario
 
 
 class UsuarioCreate(BaseModel):
