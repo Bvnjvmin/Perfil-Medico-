@@ -53,7 +53,8 @@ def upgrade() -> None:
     sa.ForeignKeyConstraint(['perfil_id'], ['perfil.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
-
+    op.drop_column('usuarios', 'rol')
+    # ### end Alembic commands ###
 
 def downgrade() -> None:
     """Downgrade schema."""
