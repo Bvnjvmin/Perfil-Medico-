@@ -18,7 +18,6 @@ class UsuarioCreate(BaseModel):
     nombre: str = Field(min_length=2, max_length=120)
     email: EmailStr
     password: str = Field(min_length=8, max_length=72)
-    rol: RolUsuario = RolUsuario.TITULAR
 
 
 class UsuarioOut(BaseModel):
@@ -28,7 +27,6 @@ class UsuarioOut(BaseModel):
     id: str
     nombre: str
     email: EmailStr
-    rol: RolUsuario
     creado_en: datetime
 
 
