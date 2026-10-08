@@ -11,7 +11,6 @@ from datetime import datetime
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 
-
 class UsuarioCreate(BaseModel):
     """Datos que llegan al registrar un usuario nuevo."""
     nombre: str = Field(min_length=2, max_length=120)
