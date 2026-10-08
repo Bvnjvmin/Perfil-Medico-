@@ -36,9 +36,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-        content: Text('Cuenta creada. Ahora inicia sesión.'),
-        duration: Duration(seconds: 8),
-        showCloseIcon: true,,
+          content: Text('Cuenta creada. Ahora inicia sesión.'),
+          duration: Duration(seconds: 8),
+          showCloseIcon: true,
+        ),
       );
       Navigator.of(context).pop();
     } catch (e) {
@@ -85,7 +86,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 controller: _passwordCtrl,
                 decoration: const InputDecoration(labelText: 'Contraseña'),
                 obscureText: true,
-                validator: (v) => (v == null || v.length < 8) ? 'Mínimo 8 caracteres' : null,
+                validator: (v) =>
+                    (v == null || v.length < 8) ? 'Mínimo 8 caracteres' : null,
               ),
               if (_error != null) ...[
                 const SizedBox(height: 12),
