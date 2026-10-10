@@ -4,4 +4,7 @@
          to allow setting breakpoints, to provide hot reload, etc.
     -->
     <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- Solo en debug: el backend local corre en http://10.0.2.2:8000 (sin TLS).
+         Android 9+ bloquea HTTP en texto plano por defecto. -->
+    <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>
