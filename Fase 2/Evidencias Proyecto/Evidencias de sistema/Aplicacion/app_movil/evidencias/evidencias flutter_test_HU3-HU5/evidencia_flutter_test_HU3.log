@@ -1,0 +1,4 @@
+﻿00:00 +0: loading C:/dev/app_movil/test/models/usuario_test.dart
+00:00 +0: C:/dev/app_movil/test/models/usuario_test.dart: Usuario.fromJson construye correctamente desde la respuesta del backend
+00:00 +1: C:/dev/app_movil/test/screens/login_screen_test.dart: Muestra errores de validaci├│n si se env├¡a el formulario vac├¡o
+00:00 +2: All tests passed!

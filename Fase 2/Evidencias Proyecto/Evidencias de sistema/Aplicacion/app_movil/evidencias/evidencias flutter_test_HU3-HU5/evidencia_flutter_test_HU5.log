@@ -1,0 +1,8 @@
+﻿00:00 +0: loading C:/dev/app_movil/test/models/cuidado_test.dart
+00:00 +0: C:/dev/app_movil/test/models/cuidado_test.dart: Perfil.fromJson lee los campos opcionales y la fecha de nacimiento
+00:00 +1: C:/dev/app_movil/test/models/cuidado_test.dart: Perfil.fromJson acepta campos opcionales nulos
+00:00 +2: C:/dev/app_movil/test/models/cuidado_test.dart: Medicamento.fromJson construye desde la respuesta del backend
+00:00 +3: C:/dev/app_movil/test/models/cuidado_test.dart: RutinaCuidado usa la descripci├│n como t├¡tulo y el tipo legible
+00:00 +4: C:/dev/app_movil/test/services/agenda_test.dart: construirAgenda ordena por hora, deja sin hora al final y omite inactivos
+00:00 +5: C:/dev/app_movil/test/services/agenda_test.dart: AgendaStorage guarda las confirmaciones por perfil y por d├¡a
+00:00 +6: All tests passed!
