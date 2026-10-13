@@ -33,7 +33,7 @@ class Alergia(Base):
     __tablename__ = "alergia"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    perfil_id = Column(UUID(as_uuid=True), ForeignKey("perfil.id"), nullable=False)
+    perfil_id = Column(UUID(as_uuid=True), ForeignKey("perfil.id", ondelete="CASCADE"), nullable=False)
     sustancia = Column(String(120), nullable=False)
     severidad = Column(String(50), nullable=False)
 
@@ -41,7 +41,7 @@ class ContactoEmergencia(Base):
     __tablename__ = "contacto_emergencia"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    perfil_id = Column(UUID(as_uuid=True), ForeignKey("perfil.id"), nullable=False)
+    perfil_id = Column(UUID(as_uuid=True), ForeignKey("perfil.id", ondelete="CASCADE"), nullable=False)
     nombre = Column(String(150), nullable=False)
     telefono = Column(String(20), nullable=False)
     relacion = Column(String(50), nullable=True)

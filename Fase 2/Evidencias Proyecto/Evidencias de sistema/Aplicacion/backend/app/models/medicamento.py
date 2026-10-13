@@ -20,7 +20,7 @@ class Medicamento(Base):
     __tablename__ = "medicamento"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    perfil_id = Column(UUID(as_uuid=True), ForeignKey("perfil.id"), nullable=False)
+    perfil_id = Column(UUID(as_uuid=True), ForeignKey("perfil.id", ondelete="CASCADE"), nullable=False)
     nombre = Column(String(120), nullable=False)
     dosis = Column(String(50), nullable=False)
     frecuencia = Column(String(50), nullable=False)
@@ -38,7 +38,7 @@ class RutinaCuidado(Base):
     __tablename__ = "rutina_cuidado"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    perfil_id = Column(UUID(as_uuid=True), ForeignKey("perfil.id"), nullable=False)
+    perfil_id = Column(UUID(as_uuid=True), ForeignKey("perfil.id", ondelete="CASCADE"), nullable=False)
     tipo = Column(String(50), nullable=False)  # ej: 'alimentacion', 'hidratacion', 'vitaminas'
     descripcion = Column(String(200), nullable=True)
     frecuencia = Column(String(50), nullable=False)
