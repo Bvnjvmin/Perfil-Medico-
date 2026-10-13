@@ -1,6 +1,6 @@
 import uuid
 from datetime import datetime, timezone
-from sqlalchemy import Column, String, Date, Boolean, DateTime, ForeignKey, Integer
+from sqlalchemy import Column, String, Date, Boolean, DateTime, ForeignKey, Integer, Index, text
 from sqlalchemy.dialects.postgresql import UUID
 from app.db.session import Base
 
@@ -17,6 +17,17 @@ class Perfil(Base):
     subtipo = Column(String(50), nullable=True)
     activo = Column(Boolean, default=True)
     creado_en = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+
+    # Cada cuenta puede tener un solo perfil titular (índice único parcial).
+    __table_args__ = (
+        Index(
+            "uq_perfil_un_titular_por_cuenta",
+            "cuenta_titular_id",
+            unique=True,
+            postgresql_where=text("tipo = 'titular'"),
+            sqlite_where=text("tipo = 'titular'"),
+        ),
+    )
 
 class Alergia(Base):
     __tablename__ = "alergia"
