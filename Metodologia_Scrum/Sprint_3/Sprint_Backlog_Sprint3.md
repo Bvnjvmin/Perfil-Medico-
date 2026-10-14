@@ -70,7 +70,8 @@ Editar medicamentos y rutinas desde la app, pantallas de alergias y contactos, p
 | Pantalla "Panel" | HU 8 | Matías | ⬜ Pendiente | `app_movil/lib/` |
 | Checklist de aceptación del Product Owner | HU 5 / HU 6 / HU 7 / HU 8 | Sergio | ⬜ Pendiente (jueves 15, con la API de Benjamín) | `Base de datos/Checklist_Aceptacion_PO_Sprint3.md` |
 | Retrospectiva del Sprint 2 | — | Matías | ⬜ Pendiente (después de la reunión del equipo) | `Metodologia_Scrum/Sprint_2/` |
-| Diario de Reflexión 2.1 y Autoevaluación 2.2 | — | Sergio | ⬜ Pendiente | `Evidencias Individuales/` |
+| Diario de Reflexión 2.1 | — | Sergio | ✅ Hecha el 07-10 (commit `9bc9097`) | `Fase 2/Evidencias Individuales/` |
+| Autoevaluación de avance 2.2 | — | Sergio | ⬜ Pendiente | `Fase 2/Evidencias Individuales/` |
 | Sección de base de datos y ensamble del Informe de Avance | — | Sergio | ⬜ Pendiente (viernes 16 y sábado 17) | Informe de Avance |
 | Textos de evidencia del Sprint 2 y del Sprint 3, y secciones del Informe | — | Matías / Benjamín | ⬜ Pendiente | `app_movil/evidencias/`, Informe de Avance |
 | `RUTINA_HORARIO` y datos de prueba | HU 4 | Sergio / Matías | ⬜ Deseable, solo si sobra tiempo | — |
