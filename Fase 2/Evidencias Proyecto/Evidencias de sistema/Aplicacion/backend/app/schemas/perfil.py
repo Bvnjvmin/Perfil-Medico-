@@ -6,20 +6,33 @@ el propio titular (el dueño de la cuenta); desde el Sprint 3 podrá ser
 también un perfil dependiente a cargo del titular.
 """
 from datetime import date, datetime
-from typing import Optional
+from typing import Literal, Optional
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
+
+TipoPerfil = Literal["titular", "dependiente"]
+SubtipoPerfil = Literal["adulto_mayor", "nino"]
 
 
 class PerfilCreate(BaseModel):
     """Datos que llegan al crear un perfil de salud."""
-    tipo: str = Field(min_length=2, max_length=50, description="Ej: 'titular'")
+    tipo: TipoPerfil = Field(description="'titular' o 'dependiente'")
     nombre: str = Field(min_length=2, max_length=120)
     rut: Optional[str] = Field(default=None, max_length=12)
     grupo_sanguineo: Optional[str] = Field(default=None, max_length=15)
     fecha_nacimiento: Optional[date] = None
-    subtipo: Optional[str] = Field(default=None, max_length=50)
+    subtipo: Optional[SubtipoPerfil] = Field(
+        default=None, description="Obligatorio solo para dependientes: 'adulto_mayor' o 'nino'"
+    )
+
+    @model_validator(mode="after")
+    def validar_subtipo_segun_tipo(self):
+        if self.tipo == "dependiente" and self.subtipo is None:
+            raise ValueError("Un perfil dependiente requiere subtipo ('adulto_mayor' o 'nino')")
+        if self.tipo == "titular" and self.subtipo is not None:
+            raise ValueError("El perfil titular no lleva subtipo")
+        return self
 
 
 class PerfilUpdate(BaseModel):
@@ -28,8 +41,15 @@ class PerfilUpdate(BaseModel):
     rut: Optional[str] = Field(default=None, max_length=12)
     grupo_sanguineo: Optional[str] = Field(default=None, max_length=15)
     fecha_nacimiento: Optional[date] = None
-    subtipo: Optional[str] = Field(default=None, max_length=50)
+    subtipo: Optional[SubtipoPerfil] = None
     activo: Optional[bool] = None
+
+
+class AccesoOut(BaseModel):
+    """Qué puede hacer quien consulta sobre un perfil (HU 7)."""
+    rol: str  # 'titular' | 'cuidador' | 'lectura'
+    puede_confirmar: bool
+    puede_editar_rutinas: bool
 
 
 class PerfilOut(BaseModel):
@@ -46,6 +66,7 @@ class PerfilOut(BaseModel):
     subtipo: Optional[str] = None
     activo: bool
     creado_en: datetime
+    mi_acceso: Optional[AccesoOut] = None
 
 
 class AlergiaCreate(BaseModel):
