@@ -14,17 +14,19 @@ GET    /rutinas/{rutina_id}                        -> consulta una rutina propia
 PUT    /rutinas/{rutina_id}                        -> actualiza una rutina propia
 DELETE /rutinas/{rutina_id}                        -> elimina una rutina propia
 
-Igual que en HU 2, todo queda acotado al titular dueño del token a través
-de `obtener_perfil_propio` (app/api/deps.py): un medicamento o rutina solo
-es visible o editable para quien creó el perfil al que pertenece.
+El acceso se decide con `obtener_perfil_con_permiso` (app/api/deps.py): ver
+medicamentos y rutinas lo puede hacer el titular y cualquiera con un vínculo
+al perfil; crearlos, editarlos o borrarlos requiere ser titular o cuidador
+con `puede_editar_rutinas`. Quien no tiene acceso recibe 404.
 """
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from app.api.deps import get_current_user, obtener_perfil_propio
+from app.api.deps import PERMISO_EDITAR_RUTINAS, get_current_user, obtener_perfil_con_permiso
 from app.db.session import get_db
+from app.models.actividad import Actividad
 from app.models.medicamento import Medicamento, RutinaCuidado
 from app.models.usuario import Usuario
 from app.schemas.medicamento import (
@@ -40,21 +42,24 @@ router = APIRouter(tags=["Medicamentos y rutinas de cuidado"])
 
 
 def _obtener_medicamento_propio(
-    medicamento_id: UUID, db: Session, current_user: Usuario
+    medicamento_id: UUID, db: Session, current_user: Usuario, permiso: str | None = None
 ) -> Medicamento:
     medicamento = db.get(Medicamento, medicamento_id)
     if medicamento is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Medicamento no encontrado")
-    # Confirma que el perfil dueño del medicamento es del usuario autenticado.
-    obtener_perfil_propio(medicamento.perfil_id, db, current_user)
+    # Confirma que el usuario tiene acceso al perfil dueño del medicamento
+    # (y el permiso pedido, si la acción modifica datos).
+    obtener_perfil_con_permiso(medicamento.perfil_id, db, current_user, permiso)
     return medicamento
 
 
-def _obtener_rutina_propia(rutina_id: UUID, db: Session, current_user: Usuario) -> RutinaCuidado:
+def _obtener_rutina_propia(
+    rutina_id: UUID, db: Session, current_user: Usuario, permiso: str | None = None
+) -> RutinaCuidado:
     rutina = db.get(RutinaCuidado, rutina_id)
     if rutina is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Rutina no encontrada")
-    obtener_perfil_propio(rutina.perfil_id, db, current_user)
+    obtener_perfil_con_permiso(rutina.perfil_id, db, current_user, permiso)
     return rutina
 
 
@@ -72,7 +77,7 @@ def registrar_medicamento(
     current_user: Usuario = Depends(get_current_user),
 ):
     """Registra un medicamento (nombre, dosis, frecuencia) en un perfil propio."""
-    perfil = obtener_perfil_propio(perfil_id, db, current_user)
+    perfil, _ = obtener_perfil_con_permiso(perfil_id, db, current_user, PERMISO_EDITAR_RUTINAS)
     medicamento = Medicamento(
         perfil_id=perfil.id,
         nombre=datos.nombre,
@@ -93,7 +98,7 @@ def listar_medicamentos(
     current_user: Usuario = Depends(get_current_user),
 ):
     """Lista los medicamentos registrados en un perfil propio."""
-    perfil = obtener_perfil_propio(perfil_id, db, current_user)
+    perfil, _ = obtener_perfil_con_permiso(perfil_id, db, current_user)
     return db.query(Medicamento).filter(Medicamento.perfil_id == perfil.id).all()
 
 
@@ -115,7 +120,7 @@ def actualizar_medicamento(
     current_user: Usuario = Depends(get_current_user),
 ):
     """Actualiza los campos enviados de un medicamento propio."""
-    medicamento = _obtener_medicamento_propio(medicamento_id, db, current_user)
+    medicamento = _obtener_medicamento_propio(medicamento_id, db, current_user, PERMISO_EDITAR_RUTINAS)
     cambios = datos.model_dump(exclude_unset=True)
     for campo, valor in cambios.items():
         setattr(medicamento, campo, valor)
@@ -131,7 +136,9 @@ def eliminar_medicamento(
     current_user: Usuario = Depends(get_current_user),
 ):
     """Elimina un medicamento propio."""
-    medicamento = _obtener_medicamento_propio(medicamento_id, db, current_user)
+    medicamento = _obtener_medicamento_propio(medicamento_id, db, current_user, PERMISO_EDITAR_RUTINAS)
+    # Sus actividades se borran explícitamente (SQLite no aplica ON DELETE CASCADE).
+    db.query(Actividad).filter(Actividad.medicamento_id == medicamento.id).delete()
     db.delete(medicamento)
     db.commit()
 
@@ -150,7 +157,7 @@ def registrar_rutina(
     current_user: Usuario = Depends(get_current_user),
 ):
     """Registra una rutina de cuidado (alimentación, hidratación, vitaminas, etc.) en un perfil propio."""
-    perfil = obtener_perfil_propio(perfil_id, db, current_user)
+    perfil, _ = obtener_perfil_con_permiso(perfil_id, db, current_user, PERMISO_EDITAR_RUTINAS)
     rutina = RutinaCuidado(
         perfil_id=perfil.id,
         tipo=datos.tipo,
@@ -171,7 +178,7 @@ def listar_rutinas(
     current_user: Usuario = Depends(get_current_user),
 ):
     """Lista las rutinas de cuidado registradas en un perfil propio."""
-    perfil = obtener_perfil_propio(perfil_id, db, current_user)
+    perfil, _ = obtener_perfil_con_permiso(perfil_id, db, current_user)
     return db.query(RutinaCuidado).filter(RutinaCuidado.perfil_id == perfil.id).all()
 
 
@@ -193,7 +200,7 @@ def actualizar_rutina(
     current_user: Usuario = Depends(get_current_user),
 ):
     """Actualiza los campos enviados de una rutina de cuidado propia."""
-    rutina = _obtener_rutina_propia(rutina_id, db, current_user)
+    rutina = _obtener_rutina_propia(rutina_id, db, current_user, PERMISO_EDITAR_RUTINAS)
     cambios = datos.model_dump(exclude_unset=True)
     for campo, valor in cambios.items():
         setattr(rutina, campo, valor)
@@ -209,6 +216,7 @@ def eliminar_rutina(
     current_user: Usuario = Depends(get_current_user),
 ):
     """Elimina una rutina de cuidado propia."""
-    rutina = _obtener_rutina_propia(rutina_id, db, current_user)
+    rutina = _obtener_rutina_propia(rutina_id, db, current_user, PERMISO_EDITAR_RUTINAS)
+    db.query(Actividad).filter(Actividad.rutina_id == rutina.id).delete()
     db.delete(rutina)
     db.commit()
