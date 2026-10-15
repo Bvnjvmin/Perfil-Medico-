@@ -18,7 +18,7 @@
 ## 1. Historias comprometidas
 
 ### HU 6 — Perfiles de dependientes
-- **Responsables:** Benjamín Leiva (Backend), Matías Pizarro (App), Sergio Ocares (BD) · **Prioridad:** Imprescindible
+- **Responsables:** Benjamín Leiva (Backend), Matías Pizarro (App), Sergio Ocares (BD) · **Prioridad:** Alta
 - **Criterios de aceptación:**
   - Un titular puede crear perfiles dependientes con `tipo = 'dependiente'` y `subtipo` válido (`adulto_mayor` o `nino`); un subtipo inválido se rechaza, y el titular no lleva subtipo.
   - Cada cuenta tiene un solo perfil titular; un segundo titular se rechaza.
@@ -27,7 +27,7 @@
 - **Estado:** 🟡 **En curso.** Base de datos lista (commits `4f81fdd` y `b010924`) y backend listo (validación de `tipo` y `subtipo`, un solo titular por cuenta y borrado ordenado, 15-10). Faltan las pantallas de la app.
 
 ### HU 5 — Agenda diaria de actividades (cierre)
-- **Responsables:** Sergio Ocares (BD), Benjamín Leiva (Backend), Matías Pizarro (App) · **Prioridad:** Imprescindible
+- **Responsables:** Sergio Ocares (BD), Benjamín Leiva (Backend), Matías Pizarro (App) · **Prioridad:** Alta
 - **Criterios de aceptación:**
   - Existe la tabla `actividad` y la confirmación se guarda en el backend, no en el dispositivo.
   - Al pedir la agenda de una fecha, el backend devuelve las actividades de cada medicamento o rutina activos, sin duplicarlas.
@@ -36,7 +36,7 @@
 - **Estado:** 🟡 **En curso.** Tabla `actividad` lista (commit `7e2ebdb`) y endpoints de actividades listos (15-10). Falta conectar la agenda de la app a la API.
 
 ### HU 7 — Permisos y cuidadores
-- **Responsables:** Sergio Ocares (BD), Benjamín Leiva (Backend), Matías Pizarro (App) · **Prioridad:** Importante
+- **Responsables:** Sergio Ocares (BD), Benjamín Leiva (Backend), Matías Pizarro (App) · **Prioridad:** Alta
 - **Criterios de aceptación:**
   - Existe la tabla `perfil_acceso`, con un solo vínculo por persona y perfil.
   - El titular puede vincular a un cuidador por correo (solo si ya tiene cuenta; si no, recibe un error claro), cambiar sus permisos y revocarlos.
@@ -45,7 +45,7 @@
 - **Estado:** 🟡 **En curso.** Tabla `perfil_acceso` lista (commit `b010924`) y rutas de cuidadores con dependencia de permisos listas (15-10). Falta la app.
 
 ### HU 8 — Panel de estado diario (versión inicial)
-- **Responsables:** Benjamín Leiva (Backend), Matías Pizarro (App) · **Prioridad:** Importante
+- **Responsables:** Benjamín Leiva (Backend), Matías Pizarro (App) · **Prioridad:** Alta
 - **Criterios de aceptación:**
   - `GET /panel?fecha=` devuelve, por cada perfil al que el usuario tiene acceso, el total de actividades, las confirmadas y las pendientes.
   - La pantalla "Panel" muestra ese avance por perfil, propio y compartido.
