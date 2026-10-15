@@ -128,10 +128,10 @@ Comando de las pruebas del backend: `pytest app/tests/ -v` (usan SQLite en memor
 1. **Confirmación persistida de punta a punta (HU 5):** tablas `ACTIVIDAD` y, si alcanza el tiempo, `RUTINA_HORARIO`; endpoints para listar las actividades del día y confirmarlas; y que la agenda de la app deje de usar `shared_preferences`.
 2. **Edición de medicamentos y rutinas desde la app:** el endpoint `PUT` ya existe; faltan las pantallas.
 3. **Pantallas de alergias y contactos de emergencia** (parte de HU 2 que solo existe en la API).
-4. **Retrospectiva y demo interna del Sprint 2:** no existen todavía. Se escriben después de la reunión real del equipo (`Metodologia_Scrum/Sprint_2/Retrospectiva_Sprint2.md`, siguiendo la plantilla de la del Sprint 1).
+4. **Retrospectiva del Sprint 2:** ✅ redactada el 15-10 (`Metodologia_Scrum/Sprint_2/Retrospectiva_Sprint2.md`, a partir del repositorio; se confirma en la reunión del equipo). La demo interna sigue pendiente.
 5. **Textos de la evidencia:** las capturas y los logs están subidos, pero no un texto corto que explique cada captura y a qué criterio corresponde.
-6. **Diario de Reflexión 2.1 de Sergio:** el archivo del repo tiene el mismo contenido que la plantilla vacía y falta subirlo completo.
-7. **Sprint Backlog 3:** es el entregable de la semana 9 del Cronograma y todavía no existe en el repositorio.
+6. **Diario de Reflexión 2.1 de Sergio:** ✅ resuelto. El archivo subido el 07-10 está completo y distinto de la plantilla vacía.
+7. **Sprint Backlog 3:** ✅ subido el 13-10 (`Metodologia_Scrum/Sprint_3/Sprint_Backlog_Sprint3.md`).
 
 ## 7. Seguimiento de commits del sprint
 
