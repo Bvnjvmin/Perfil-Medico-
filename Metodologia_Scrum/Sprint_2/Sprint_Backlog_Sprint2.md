@@ -9,7 +9,7 @@
 
 ## Resultado del sprint
 
-**5 de 5 historias terminadas** (HU 2, HU 3, HU 4 y HU 5, más la HU 1 heredada del Sprint 1 sin cambios). Dos de ellas, **HU 3 y HU 5, se cerraron fuera del plazo del sprint**: el backend de HU 2 y HU 4 quedó en `main` el 30-09, pero el trabajo de la app y la evidencia de HU 3 y HU 5 se subieron el 10-10-2026, una semana después del cierre del 03-10.
+**4 de 4 historias terminadas** (HU 2, HU 3, HU 4 y HU 5), más la HU 1 heredada del Sprint 1 sin cambios. Dos de ellas, **HU 3 y HU 5, se cerraron fuera del plazo del sprint**: el backend de HU 2 y HU 4 quedó en `main` el 30-09, pero el trabajo de la app y la evidencia de HU 3 y HU 5 se subieron el 10-10-2026, una semana después del cierre del 03-10.
 
 **Limitación principal:** la confirmación de actividades de la agenda (HU 5) **se guarda solo en el celular**, no en el backend, porque las tablas `ACTIVIDAD` y `RUTINA_HORARIO` quedaron diferidas al Sprint 3 (decisión de alcance ratificada por el Product Owner el 01-10-2026, ver `Checklist_Aceptacion_PO_Sprint2.md`). Cumple los criterios de aceptación que este sprint escribió, pero **no cumple todavía la "confirmación de actividades de punta a punta (API, BD y UI conectadas)"** que pide el Cronograma para la semana 8. Esa parte pasa al Sprint 3.
 
@@ -85,7 +85,7 @@
 | Marcar actividad como confirmada en la agenda (guardado local) | HU 5 | Matías | ✅ Hecha el 10-10 (commit `48c4c2b`), **solo en el dispositivo** | `app_movil/lib/services/agenda_storage.dart` |
 | Pruebas Flutter de modelos y agenda (6 pruebas) | HU 4 / HU 5 | Matías | ✅ Hecha el 10-10 (commits `9bbc9ff`, `cc673a0`) | `app_movil/test/` |
 | Permiso de internet y ajustes de Android para que la app llame al backend | HU 3 / HU 5 | Matías | ✅ Hecha el 10-10 (commits `3d6984d`, `a602045`, `c6b240a`) | `app_movil/android/` |
-| Quitar el campo `rol` de `usuarios` en modelo, esquema, ruta de registro y migración | HU 1 / HU 2 | Matías | ✅ Hecha el 08-10 (commits `6cce62e`, `d202e1f`, `fc120f1`, `959da63`, `61ab8bd`, `53e58af`) | `backend/` |
+| Quitar el campo `rol` de `usuarios` en modelo, esquema, ruta de registro, migración y app | HU 1 / HU 2 | Sergio / Benjamín / Matías | ✅ Hecha: columna eliminada y referencias de backend y app corregidas el 30-09 (commits `6c01968`, `fc0d184`, `232d2e7`, `8a01b23`, `2a14007`, `ace6ec6`, `4f5bffa`, `0c3a873`, `5d97fc0`); ajustes de la migración y del modelo el 02-10 y el 08-10 (Matías, commits `c9b3abb`, `e083ce5`, `3f779e4`, `9140dda`, `6cce62e`, `d202e1f`, `fc120f1`, `959da63`, `61ab8bd`, `53e58af`) | `backend/` y `app_movil/` |
 | Duración del aviso "Cuenta creada" (8 s, con botón para cerrarlo) | HU 3 | Benjamín / Matías | ✅ Hecha (commits `4a87923` y `be8313b`, este último corrige un error de sintaxis del primero) | `app_movil/lib/screens/register_screen.dart` |
 | Exportar el diagrama ER como imagen (arrastre del Sprint 1) | — | Sergio | ✅ Hecha el 01-10 (commit `64e8e35`) | `Base de datos/Diagramas/` |
 | Actualizar `modelo_datos.md` con el estado real de HU 2/HU 4 y la decisión de alcance simplificado | HU 2 / HU 4 | Sergio | ✅ Hecha el 01-10 (commits `98f2f13`, `54ace69`) | `Base de datos/modelo_datos.md` |
@@ -121,7 +121,7 @@ Comando de las pruebas del backend: `pytest app/tests/ -v` (usan SQLite en memor
 
 1. **Alcance simplificado de HU 4:** `Medicamento` y `RutinaCuidado` directos; `RUTINA_HORARIO` y `ACTIVIDAD` pasan al Sprint 3. Ratificada por el Product Owner (01-10-2026).
 2. **Confirmación local provisoria en HU 5:** como consecuencia de la decisión anterior, la agenda guarda las confirmaciones en el dispositivo hasta que exista el endpoint de confirmar.
-3. **El campo `rol` sale de `usuarios`:** el 08-10 se quitó del modelo, del esquema y de la ruta de registro (y de la migración `39dd888f4030`, que ahora hace `drop_column`). Ser titular o cuidador no es un atributo de la persona sino del vínculo con un perfil, que se modelará en `PERFIL_ACCESO` (Sprint 3). Esto deja el código alineado con `modelo_datos.md`.
+3. **El campo `rol` sale de `usuarios`:** la columna se eliminó el 30-09 y las referencias del backend y de la app se corrigieron ese mismo día; el 02-10 y el 08-10 se ajustaron además la migración `39dd888f4030` (que ahora hace `drop_column`), el modelo y la ruta de registro. Ser titular o cuidador no es un atributo de la persona sino del vínculo con un perfil, que se modelará en `PERFIL_ACCESO` (Sprint 3). Esto deja el código alineado con `modelo_datos.md`.
 
 ## 6. Trabajo que pasa al Sprint 3
 
@@ -139,6 +139,7 @@ Comando de las pruebas del backend: `pytest app/tests/ -v` (usan SQLite en memor
 - 30-09: modelo, migración, esquemas, endpoints y pruebas de HU 4 (Benjamín, commits `63f9451`, `de402ba`, `5a73c38`, `246aac5`, `42b274b`).
 - 30-09: registro de los nuevos routers en `main.py` (Benjamín, commit `09151d2`).
 - 01-10: diagrama ER, `modelo_datos.md` actualizado y checklist de aceptación del PO (Sergio, commits `64e8e35`, `98f2f13`, `54ace69`, `3cd0ee8`).
+- 30-09: columna `rol` eliminada de `usuarios` (Sergio, commit `6c01968`) y referencias quitadas del backend y de la app (Benjamín, commits `fc0d184`, `232d2e7`, `8a01b23`, `2a14007`, `ace6ec6`, `4f5bffa`, `0c3a873`, `5d97fc0`).
 - 02-10: correcciones del campo `rol` en backend y de `pubspec.yaml` (Matías, commits `4262e13`, `c9b3abb`, `e083ce5`, `3f779e4`, `9140dda`).
 - 07-10: duración del aviso de cuenta creada (Benjamín, commit `4a87923`).
 - 08-10: eliminación del campo `rol` y corrección del aviso de cuenta creada (Matías, commits `6cce62e` a `be8313b`).
