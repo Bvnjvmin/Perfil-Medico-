@@ -10,7 +10,7 @@ Documentación interactiva una vez corriendo:
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.routes import auth, medicamento, perfil
+from app.api.routes import actividad, auth, cuidador, medicamento, panel, perfil
 from app.core.config import settings
 
 app = FastAPI(title=settings.PROJECT_NAME)
@@ -28,6 +28,9 @@ app.add_middleware(
 app.include_router(auth.router)
 app.include_router(perfil.router)
 app.include_router(medicamento.router)
+app.include_router(actividad.router)
+app.include_router(cuidador.router)
+app.include_router(panel.router)
 
 
 @app.get("/health", tags=["Estado"])
