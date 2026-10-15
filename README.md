@@ -17,8 +17,14 @@ Propuesta de Proyecto APT · Capstone_005D (Grupo 7) · Ingeniería Informática
   - Backend (FastAPI + PostgreSQL) con registro, login (JWT) y endpoint protegido
   - Migraciones con Alembic, Docker + docker-compose, 7 pruebas automatizadas
   - Cierre con arrastre menor a Sprint 2 (parte de datos básicos de salud y validación de la app) — ver [`Metodologia_Scrum/Sprint_1`](<./Metodologia_Scrum/Sprint_1>)
-- [ ] Sprint 2 (S7-S8) — Medicamentos y rutinas: API + UI conectadas *(en curso, desde el 21-09)*
-- [ ] Sprint 3 (S9-S10) — Perfiles dependientes y permisos · Informe de Avance (Semana 10)
+- [x] Sprint 2 (S7-S8) — Perfil de salud, medicamentos, rutinas de cuidado y agenda diaria *(cerrado: 5 de 5 historias)*
+  - Backend: perfil de salud con alergias y contactos de emergencia, medicamentos y rutinas (25 pruebas automatizadas); entregado el 30-09
+  - App: pantallas de registro e inicio de sesión, perfil, medicamentos, rutinas y agenda diaria, con 8 pruebas de Flutter y capturas de la prueba manual
+  - La app de la HU 3 y la HU 5 se cerró el 10-10, una semana después del cierre del sprint (03-10); la confirmación de actividades quedó guardada solo en el celular y se completa en el Sprint 3 — ver [`Metodologia_Scrum/Sprint_2`](<./Metodologia_Scrum/Sprint_2>)
+- [ ] Sprint 3 (S9-S10) — Perfiles dependientes, cuidadores con permisos y panel diario · Informe de Avance (cierre el 17-10) *(en curso)*
+  - Base de datos terminada (13-10): tablas `actividad` y `perfil_acceso`, índice de un solo titular por cuenta y borrado en cascada
+  - Backend terminado (15-10): perfiles dependientes validados (HU 6), agenda diaria con confirmación guardada en el servidor (HU 5), cuidadores con permisos por perfil (HU 7) y `GET /panel` (HU 8); 119 pruebas automatizadas
+  - Pendiente: pantallas de la app para las HU 6, 7 y 8, checklist de aceptación del Product Owner, retrospectiva del Sprint 2 e Informe de Avance — ver [`Metodologia_Scrum/Sprint_3`](<./Metodologia_Scrum/Sprint_3>)
 - [ ] Sprint 4 (S11-S12) — Recordatorios y alertas escalonadas
 - [ ] Sprint 5 (S13-S14) — Indicadores de salud, módulo de IA, pulsera inteligente (Traccar + Health Connect)
 - [ ] Sprint 6 (S15) — Glucosa manual, recordatorios extendidos, farmacias vía IA, pruebas, Informe Final (Semana 15)
@@ -39,9 +45,9 @@ Propuesta de Proyecto APT · Capstone_005D (Grupo 7) · Ingeniería Informática
 - [Documentos de evaluación grupales (2.3, 2.4, 2.6)](<./Fase 2/Evidencias Grupales>) — el 2.3 es la pauta de referencia del docente y se sube tal cual, sin rellenar. Las planillas de evaluación de avance/final no se suben al repositorio (uso interno del docente, confirmado con él).
 - [Diario de Reflexión y Autoevaluación individuales (2.1, 2.2)](<./Fase 2/Evidencias Individuales>) — un archivo por integrante, con el patrón `Apellido_Nombre_2.X_...docx` (mismo criterio que en Fase 1).
 - [Metodología Scrum — Sprint Backlog, actas y retrospectivas](<./Metodologia_Scrum>)
-- [Código del backend](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/backend>) (Sprint 1: autenticación)
-- [Código de la app móvil](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/app_movil>) (Sprint 1: pantallas de registro/login)
-- [Modelo de datos (diagrama ER)](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Base de datos/modelo_datos.md>)
+- [Código del backend](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/backend>) (autenticación, perfil de salud, medicamentos y rutinas, agenda diaria, perfiles dependientes, cuidadores y panel)
+- [Código de la app móvil](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/app_movil>) (registro e inicio de sesión, perfil, medicamentos, rutinas y agenda diaria; las pantallas de perfiles dependientes, cuidadores y panel están pendientes)
+- [Modelo de datos (diagrama ER)](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Base de datos/modelo_datos.md>) y checklist de aceptación del Product Owner
 
 ## Descripción
 
@@ -107,7 +113,7 @@ Cada perfil dependiente adicional que la misma cuenta agregue (manteniendo el pr
 
 ## Instrucciones para ejecutar el proyecto localmente
 
-### Backend (FastAPI) — Sprint 1 completo (autenticación)
+### Backend (FastAPI) — Sprints 1 a 3 (autenticación, salud, cuidado, perfiles dependientes, cuidadores y panel)
 
 Código en [`Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/backend`](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/backend>).
 
@@ -132,19 +138,24 @@ alembic upgrade head
 uvicorn app.main:app --reload
 ```
 
-**Pruebas** (no requieren Docker ni PostgreSQL, usan SQLite en memoria):
+**Pruebas** (119 pruebas; no requieren Docker ni PostgreSQL, usan SQLite en memoria):
 
 ```bash
 pytest app/tests/ -v
 ```
 
-### App móvil (Flutter) — Sprint 1: autenticación
+SQLite no valida llaves foráneas, así que los cambios de base de datos se prueban además contra PostgreSQL. Solo una persona crea migraciones de Alembic por sprint, para mantener una única cabeza en la cadena.
+
+### App móvil (Flutter) — Sprint 2: registro, perfil, medicamentos, rutinas y agenda
 
 ```bash
 cd "Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/app_movil"
 flutter pub get
 flutter run
+flutter test
 ```
+
+En el emulador de Android la app apunta al backend local en `10.0.2.2:8000`.
 
 ## Integrantes del equipo
 
