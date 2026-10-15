@@ -17,7 +17,7 @@ Propuesta de Proyecto APT · Capstone_005D (Grupo 7) · Ingeniería Informática
   - Backend (FastAPI + PostgreSQL) con registro, login (JWT) y endpoint protegido
   - Migraciones con Alembic, Docker + docker-compose, 7 pruebas automatizadas
   - Cierre con arrastre menor a Sprint 2 (parte de datos básicos de salud y validación de la app) — ver [`Metodologia_Scrum/Sprint_1`](<./Metodologia_Scrum/Sprint_1>)
-- [x] Sprint 2 (S7-S8) — Perfil de salud, medicamentos, rutinas de cuidado y agenda diaria *(cerrado: 5 de 5 historias)*
+- [x] Sprint 2 (S7-S8) — Perfil de salud, medicamentos, rutinas de cuidado y agenda diaria *(cerrado: 4 de 4 historias, más la HU 1 heredada)*
   - Backend: perfil de salud con alergias y contactos de emergencia, medicamentos y rutinas (25 pruebas automatizadas); entregado el 30-09
   - App: pantallas de registro e inicio de sesión, perfil, medicamentos, rutinas y agenda diaria, con 8 pruebas de Flutter y capturas de la prueba manual
   - La app de la HU 3 y la HU 5 se cerró el 10-10, una semana después del cierre del sprint (03-10); la confirmación de actividades quedó guardada solo en el celular y se completa en el Sprint 3 — ver [`Metodologia_Scrum/Sprint_2`](<./Metodologia_Scrum/Sprint_2>)
