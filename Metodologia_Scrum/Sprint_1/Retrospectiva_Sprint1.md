@@ -3,7 +3,7 @@
 **Proyecto:** Perfil Médico+ · Capstone_005D · Grupo 7
 **Periodo del sprint:** 7 al 19 de septiembre de 2026
 **Participantes:** Benjamín Leiva, Sergio Ocares, Matías Pizarro
-**Fecha de la retrospectiva:** 16 de septiembre de 2026 (cierre del sprint; se sumaron daily meetings del 9 al 16 de septiembre, 6 días hábiles)
+**Cierre del sprint:** 19 de septiembre de 2026 (semana 6 del Cronograma). Los daily meetings se realizaron del 9 al 16 de septiembre (6 días hábiles). La retrospectiva se redactó después del cierre, el 30 de septiembre de 2026.
 
 ## Resultado del sprint
 
