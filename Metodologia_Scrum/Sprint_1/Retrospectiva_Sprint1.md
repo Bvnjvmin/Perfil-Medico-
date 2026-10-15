@@ -7,7 +7,7 @@
 
 ## Resultado del sprint
 
-Historias comprometidas: 3 · Terminadas: 1 (HU 1) · Parciales: 2 (HU 2 y HU 3). Detalle en `Sprint_1_S5-S6.md`.
+Historias comprometidas: 3 · Terminadas: 1 (HU 1) · Parciales: 2 (HU 2 y HU 3). Detalle en `Sprint_Backlog_Sprint1.md`.
 
 ## ¿Qué funcionó bien este sprint?
 
