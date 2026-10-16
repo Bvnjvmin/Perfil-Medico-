@@ -69,7 +69,7 @@ class Perfil {
       id: json['id'].toString(),
       nombre: (json['nombre'] ?? '').toString(),
       tipo: (json['tipo'] ?? 'titular').toString(),
-      subtipo: json['subtipo'] as String?,
+      subtipo: _subtipoParaUi(json['subtipo'] as String?),
       rut: json['rut'] as String?,
       grupoSanguineo: json['grupo_sanguineo'] as String?,
       fechaNacimiento:
@@ -79,5 +79,18 @@ class Perfil {
           ? AccesoPerfil.fromJson(json['mi_acceso'] as Map<String, dynamic>)
           : null,
     );
+  }
+}
+
+/// El backend guarda 'adulto_mayor' / 'nino'; la app muestra texto legible.
+/// Cualquier otro valor (ya formateado o null) se deja tal cual.
+String? _subtipoParaUi(String? s) {
+  switch (s) {
+    case 'adulto_mayor':
+      return 'Adulto mayor';
+    case 'nino':
+      return 'Niño';
+    default:
+      return s;
   }
 }
