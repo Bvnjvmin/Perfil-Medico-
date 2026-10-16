@@ -3,13 +3,17 @@ import '../models/rutina_cuidado.dart';
 import '../services/api_service.dart';
 import '../utils/hora.dart';
 
-/// Lista, registra y elimina las rutinas de cuidado del perfil (HU 4):
-/// alimentación, hidratación, vitaminas u otras.
 class RutinasScreen extends StatefulWidget {
   final String token;
   final String perfilId;
+  final bool puedeEditar;
 
-  const RutinasScreen({super.key, required this.token, required this.perfilId});
+  const RutinasScreen({
+    super.key,
+    required this.token,
+    required this.perfilId,
+    this.puedeEditar = true,
+  });
 
   @override
   State<RutinasScreen> createState() => _RutinasScreenState();
@@ -47,7 +51,7 @@ class _RutinasScreenState extends State<RutinasScreen> {
   Future<void> _agregar() async {
     final datos = await showDialog<Map<String, String?>>(
       context: context,
-      builder: (_) => const _NuevaRutinaDialog(),
+      builder: (_) => const _RutinaDialog(),
     );
     if (datos == null) return;
 
@@ -55,6 +59,29 @@ class _RutinasScreenState extends State<RutinasScreen> {
       await _api.registrarRutina(
         widget.token,
         widget.perfilId,
+        tipo: datos['tipo']!,
+        descripcion: datos['descripcion'],
+        frecuencia: datos['frecuencia']!,
+        hora: datos['hora'],
+      );
+      await _cargar();
+    } catch (e) {
+      if (!mounted) return;
+      _mostrarMensaje(e.toString());
+    }
+  }
+
+  Future<void> _editar(RutinaCuidado r) async {
+    final datos = await showDialog<Map<String, String?>>(
+      context: context,
+      builder: (_) => _RutinaDialog(existente: r),
+    );
+    if (datos == null) return;
+
+    try {
+      await _api.actualizarRutina(
+        widget.token,
+        r.id,
         tipo: datos['tipo']!,
         descripcion: datos['descripcion'],
         frecuencia: datos['frecuencia']!,
@@ -117,11 +144,23 @@ class _RutinasScreenState extends State<RutinasScreen> {
             subtitle: Text(
               '${r.tipoLegible} · ${r.frecuencia}${hora.isEmpty ? '' : ' · $hora'}',
             ),
-            trailing: IconButton(
-              icon: const Icon(Icons.delete_outline),
-              tooltip: 'Eliminar',
-              onPressed: () => _eliminar(r),
-            ),
+            trailing: widget.puedeEditar
+                ? Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.edit_outlined),
+                        tooltip: 'Editar',
+                        onPressed: () => _editar(r),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.delete_outline),
+                        tooltip: 'Eliminar',
+                        onPressed: () => _eliminar(r),
+                      ),
+                    ],
+                  )
+                : null,
           );
         },
       );
@@ -129,24 +168,27 @@ class _RutinasScreenState extends State<RutinasScreen> {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Rutinas de cuidado')),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _agregar,
-        tooltip: 'Agregar rutina',
-        child: const Icon(Icons.add),
-      ),
+      floatingActionButton: widget.puedeEditar
+          ? FloatingActionButton(
+              onPressed: _agregar,
+              tooltip: 'Agregar rutina',
+              child: const Icon(Icons.add),
+            )
+          : null,
       body: cuerpo,
     );
   }
 }
 
-class _NuevaRutinaDialog extends StatefulWidget {
-  const _NuevaRutinaDialog();
+class _RutinaDialog extends StatefulWidget {
+  final RutinaCuidado? existente;
+  const _RutinaDialog({this.existente});
 
   @override
-  State<_NuevaRutinaDialog> createState() => _NuevaRutinaDialogState();
+  State<_RutinaDialog> createState() => _RutinaDialogState();
 }
 
-class _NuevaRutinaDialogState extends State<_NuevaRutinaDialog> {
+class _RutinaDialogState extends State<_RutinaDialog> {
   static const _tipos = <String, String>{
     'alimentacion': 'Alimentación',
     'hidratacion': 'Hidratación',
@@ -155,10 +197,19 @@ class _NuevaRutinaDialogState extends State<_NuevaRutinaDialog> {
   };
 
   final _formKey = GlobalKey<FormState>();
-  final _descripcionCtrl = TextEditingController();
-  final _frecuenciaCtrl = TextEditingController();
-  String _tipo = 'alimentacion';
+  late final TextEditingController _descripcionCtrl;
+  late final TextEditingController _frecuenciaCtrl;
+  late String _tipo;
   TimeOfDay? _hora;
+
+  @override
+  void initState() {
+    super.initState();
+    final r = widget.existente;
+    _descripcionCtrl = TextEditingController(text: r?.descripcion ?? '');
+    _frecuenciaCtrl = TextEditingController(text: r?.frecuencia ?? '');
+    _tipo = r?.tipo ?? 'alimentacion';
+  }
 
   @override
   void dispose() {
@@ -182,14 +233,15 @@ class _NuevaRutinaDialogState extends State<_NuevaRutinaDialog> {
       'tipo': _tipo,
       'descripcion': descripcion.isEmpty ? null : descripcion,
       'frecuencia': _frecuenciaCtrl.text.trim(),
-      'hora': _hora == null ? null : horaParaApi(_hora!),
+      'hora': _hora == null ? widget.existente?.hora : horaParaApi(_hora!),
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final esEdicion = widget.existente != null;
     return AlertDialog(
-      title: const Text('Nueva rutina'),
+      title: Text(esEdicion ? 'Editar rutina' : 'Nueva rutina'),
       content: Form(
         key: _formKey,
         child: SingleChildScrollView(
@@ -222,18 +274,24 @@ class _NuevaRutinaDialogState extends State<_NuevaRutinaDialog> {
                   labelText: 'Frecuencia',
                   hintText: 'Ej: 3 veces al día',
                 ),
-                validator: (v) =>
-                    (v == null || v.trim().length < 2) ? 'Ingresa la frecuencia' : null,
+                validator: (v) => (v == null || v.trim().length < 2)
+                    ? 'Ingresa la frecuencia'
+                    : null,
               ),
               const SizedBox(height: 8),
               Row(
                 children: [
                   Expanded(
                     child: Text(
-                      _hora == null ? 'Sin hora' : 'Hora: ${_hora!.format(context)}',
+                      _hora == null
+                          ? (widget.existente?.hora != null
+                              ? 'Hora: ${horaCorta(widget.existente!.hora)}'
+                              : 'Sin hora')
+                          : 'Hora: ${_hora!.format(context)}',
                     ),
                   ),
-                  TextButton(onPressed: _elegirHora, child: const Text('Elegir hora')),
+                  TextButton(
+                      onPressed: _elegirHora, child: const Text('Elegir hora')),
                 ],
               ),
             ],
