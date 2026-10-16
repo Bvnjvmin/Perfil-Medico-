@@ -20,11 +20,6 @@ class ApiService {
   static const String baseUrl = 'http://10.0.2.2:8000';
   static const _headersJson = {'Content-Type': 'application/json'};
 
-  // Respaldo en memoria SOLO para la agenda (el backend aún no tiene rutas de
-  // actividades). Alergias y contactos ya existen en el backend: no se simulan.
-  static final Set<String> _confirmadasRespaldo = {};
-  static final Map<String, Actividad> _cacheActividades = {};
-
   // El backend elimina con /perfiles/{perfil_id}/.../{id}. Estos mapas recuerdan
   // a qué perfil pertenece cada registro para no cambiar la firma de eliminar*.
   static final Map<String, String> _perfilDeAlergia = {};
@@ -326,54 +321,6 @@ class ApiService {
       headers: _auth(token),
     );
     if (r.statusCode == 200) return _lista(r, Actividad.fromJson);
-
-    if (r.statusCode == 404) {
-      final meds = await listarMedicamentos(token, perfilId);
-      final ruts = await listarRutinas(token, perfilId);
-      final List<Actividad> generadas = [];
-
-      for (final m in meds) {
-        final idAct = 'med_${perfilId}_${m.id}_$fechaStr';
-        final conf = _confirmadasRespaldo.contains(idAct);
-        final act = Actividad(
-          id: idAct,
-          perfilId: perfilId,
-          fecha: fechaStr,
-          origenTipo: 'medicamento',
-          origenId: m.id,
-          titulo: m.nombre,
-          detalle: '${m.dosis} • ${m.frecuencia}',
-          hora: m.horaInicio ?? '08:00',
-          estado: conf ? 'confirmada' : 'pendiente',
-        );
-        _cacheActividades[idAct] = act;
-        generadas.add(act);
-      }
-
-      for (final rut in ruts) {
-        final idAct = 'rut_${perfilId}_${rut.id}_$fechaStr';
-        final conf = _confirmadasRespaldo.contains(idAct);
-        final act = Actividad(
-          id: idAct,
-          perfilId: perfilId,
-          fecha: fechaStr,
-          origenTipo: 'rutina',
-          origenId: rut.id,
-          titulo: (rut.descripcion != null && rut.descripcion!.isNotEmpty)
-              ? '${rut.tipo}: ${rut.descripcion}'
-              : rut.tipo,
-          detalle: rut.frecuencia,
-          hora: rut.hora ?? '10:00',
-          estado: conf ? 'confirmada' : 'pendiente',
-        );
-        _cacheActividades[idAct] = act;
-        generadas.add(act);
-      }
-
-      generadas.sort((a, b) => a.hora.compareTo(b.hora));
-      return generadas;
-    }
-
     throw ApiException(_extraerDetalle(r));
   }
 
@@ -385,24 +332,6 @@ class ApiService {
     if (r.statusCode == 200 || r.statusCode == 201) {
       return Actividad.fromJson(_decodificar(r));
     }
-    if (r.statusCode == 404) {
-      _confirmadasRespaldo.add(actividadId);
-      final previa = _cacheActividades[actividadId];
-      final actualizada = Actividad(
-        id: actividadId,
-        perfilId: previa?.perfilId ?? '',
-        fecha: previa?.fecha ?? fechaParaApi(DateTime.now()),
-        origenTipo: previa?.origenTipo ?? 'medicamento',
-        origenId: previa?.origenId ?? '1',
-        titulo: previa?.titulo ?? '',
-        detalle: previa?.detalle,
-        hora: previa?.hora ?? '08:00',
-        estado: 'confirmada',
-        confirmadaEn: DateTime.now().toIso8601String(),
-      );
-      _cacheActividades[actividadId] = actualizada;
-      return actualizada;
-    }
     throw ApiException(_extraerDetalle(r));
   }
 
@@ -412,26 +341,7 @@ class ApiService {
       Uri.parse('$baseUrl/actividades/$actividadId/desconfirmar'),
       headers: _auth(token),
     );
-    if (r.statusCode == 200) {
-      return Actividad.fromJson(_decodificar(r));
-    }
-    if (r.statusCode == 404) {
-      _confirmadasRespaldo.remove(actividadId);
-      final previa = _cacheActividades[actividadId];
-      final actualizada = Actividad(
-        id: actividadId,
-        perfilId: previa?.perfilId ?? '',
-        fecha: previa?.fecha ?? fechaParaApi(DateTime.now()),
-        origenTipo: previa?.origenTipo ?? 'medicamento',
-        origenId: previa?.origenId ?? '1',
-        titulo: previa?.titulo ?? '',
-        detalle: previa?.detalle,
-        hora: previa?.hora ?? '08:00',
-        estado: 'pendiente',
-      );
-      _cacheActividades[actividadId] = actualizada;
-      return actualizada;
-    }
+    if (r.statusCode == 200) return Actividad.fromJson(_decodificar(r));
     throw ApiException(_extraerDetalle(r));
   }
 
@@ -567,8 +477,9 @@ class ApiService {
     throw ApiException(_extraerDetalle(r));
   }
 
-  /// El backend aún no tiene la ruta de cuidadores. Antes un 404 se trataba
-  /// como éxito y la app decía "compartido" sin guardar nada; ahora se avisa.
+  /// POST /perfiles/{id}/cuidadores. El backend espera `rol_vinculo`
+  /// ('cuidador' | 'lectura') y responde 404 "No existe una cuenta con ese
+  /// correo" si el invitado no se ha registrado: ese mensaje se muestra tal cual.
   Future<void> compartirPerfil(
     String token,
     String perfilId, {
@@ -582,16 +493,12 @@ class ApiService {
       headers: _auth(token, json: true),
       body: jsonEncode({
         'email': email,
-        'rol': rol,
+        'rol_vinculo': rol,
         'puede_confirmar': puedeConfirmar,
         'puede_editar_rutinas': puedeEditarRutinas,
       }),
     );
     if (r.statusCode == 201 || r.statusCode == 200) return;
-    if (r.statusCode == 404) {
-      throw ApiException(
-          'Compartir perfil aún no está disponible en el servidor.');
-    }
     throw ApiException(_extraerDetalle(r));
   }
 
