@@ -3,12 +3,17 @@ import '../models/medicamento.dart';
 import '../services/api_service.dart';
 import '../utils/hora.dart';
 
-/// Lista, registra y elimina los medicamentos del perfil (HU 4).
 class MedicamentosScreen extends StatefulWidget {
   final String token;
   final String perfilId;
+  final bool puedeEditar;
 
-  const MedicamentosScreen({super.key, required this.token, required this.perfilId});
+  const MedicamentosScreen({
+    super.key,
+    required this.token,
+    required this.perfilId,
+    this.puedeEditar = true,
+  });
 
   @override
   State<MedicamentosScreen> createState() => _MedicamentosScreenState();
@@ -27,7 +32,8 @@ class _MedicamentosScreenState extends State<MedicamentosScreen> {
 
   Future<void> _cargar() async {
     try {
-      final lista = await _api.listarMedicamentos(widget.token, widget.perfilId);
+      final lista =
+          await _api.listarMedicamentos(widget.token, widget.perfilId);
       if (!mounted) return;
       setState(() {
         _medicamentos = lista;
@@ -46,7 +52,7 @@ class _MedicamentosScreenState extends State<MedicamentosScreen> {
   Future<void> _agregar() async {
     final datos = await showDialog<Map<String, String?>>(
       context: context,
-      builder: (_) => const _NuevoMedicamentoDialog(),
+      builder: (_) => const _MedicamentoDialog(),
     );
     if (datos == null) return;
 
@@ -54,6 +60,29 @@ class _MedicamentosScreenState extends State<MedicamentosScreen> {
       await _api.registrarMedicamento(
         widget.token,
         widget.perfilId,
+        nombre: datos['nombre']!,
+        dosis: datos['dosis']!,
+        frecuencia: datos['frecuencia']!,
+        horaInicio: datos['hora'],
+      );
+      await _cargar();
+    } catch (e) {
+      if (!mounted) return;
+      _mostrarMensaje(e.toString());
+    }
+  }
+
+  Future<void> _editar(Medicamento m) async {
+    final datos = await showDialog<Map<String, String?>>(
+      context: context,
+      builder: (_) => _MedicamentoDialog(existente: m),
+    );
+    if (datos == null) return;
+
+    try {
+      await _api.actualizarMedicamento(
+        widget.token,
+        m.id,
         nombre: datos['nombre']!,
         dosis: datos['dosis']!,
         frecuencia: datos['frecuencia']!,
@@ -103,11 +132,23 @@ class _MedicamentosScreenState extends State<MedicamentosScreen> {
             subtitle: Text(
               '${m.dosis} · ${m.frecuencia}${hora.isEmpty ? '' : ' · $hora'}',
             ),
-            trailing: IconButton(
-              icon: const Icon(Icons.delete_outline),
-              tooltip: 'Eliminar',
-              onPressed: () => _eliminar(m),
-            ),
+            trailing: widget.puedeEditar
+                ? Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.edit_outlined),
+                        tooltip: 'Editar',
+                        onPressed: () => _editar(m),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.delete_outline),
+                        tooltip: 'Eliminar',
+                        onPressed: () => _eliminar(m),
+                      ),
+                    ],
+                  )
+                : null,
           );
         },
       );
@@ -115,29 +156,41 @@ class _MedicamentosScreenState extends State<MedicamentosScreen> {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Medicamentos')),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _agregar,
-        tooltip: 'Agregar medicamento',
-        child: const Icon(Icons.add),
-      ),
+      floatingActionButton: widget.puedeEditar
+          ? FloatingActionButton(
+              onPressed: _agregar,
+              tooltip: 'Agregar medicamento',
+              child: const Icon(Icons.add),
+            )
+          : null,
       body: cuerpo,
     );
   }
 }
 
-class _NuevoMedicamentoDialog extends StatefulWidget {
-  const _NuevoMedicamentoDialog();
+class _MedicamentoDialog extends StatefulWidget {
+  final Medicamento? existente;
+  const _MedicamentoDialog({this.existente});
 
   @override
-  State<_NuevoMedicamentoDialog> createState() => _NuevoMedicamentoDialogState();
+  State<_MedicamentoDialog> createState() => _MedicamentoDialogState();
 }
 
-class _NuevoMedicamentoDialogState extends State<_NuevoMedicamentoDialog> {
+class _MedicamentoDialogState extends State<_MedicamentoDialog> {
   final _formKey = GlobalKey<FormState>();
-  final _nombreCtrl = TextEditingController();
-  final _dosisCtrl = TextEditingController();
-  final _frecuenciaCtrl = TextEditingController();
+  late final TextEditingController _nombreCtrl;
+  late final TextEditingController _dosisCtrl;
+  late final TextEditingController _frecuenciaCtrl;
   TimeOfDay? _hora;
+
+  @override
+  void initState() {
+    super.initState();
+    final m = widget.existente;
+    _nombreCtrl = TextEditingController(text: m?.nombre ?? '');
+    _dosisCtrl = TextEditingController(text: m?.dosis ?? '');
+    _frecuenciaCtrl = TextEditingController(text: m?.frecuencia ?? '');
+  }
 
   @override
   void dispose() {
@@ -161,14 +214,17 @@ class _NuevoMedicamentoDialogState extends State<_NuevoMedicamentoDialog> {
       'nombre': _nombreCtrl.text.trim(),
       'dosis': _dosisCtrl.text.trim(),
       'frecuencia': _frecuenciaCtrl.text.trim(),
-      'hora': _hora == null ? null : horaParaApi(_hora!),
+      'hora': _hora == null
+          ? widget.existente?.horaInicio
+          : horaParaApi(_hora!),
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final esEdicion = widget.existente != null;
     return AlertDialog(
-      title: const Text('Nuevo medicamento'),
+      title: Text(esEdicion ? 'Editar medicamento' : 'Nuevo medicamento'),
       content: Form(
         key: _formKey,
         child: SingleChildScrollView(
@@ -178,8 +234,9 @@ class _NuevoMedicamentoDialogState extends State<_NuevoMedicamentoDialog> {
               TextFormField(
                 controller: _nombreCtrl,
                 decoration: const InputDecoration(labelText: 'Nombre'),
-                validator: (v) =>
-                    (v == null || v.trim().length < 2) ? 'Ingresa el nombre' : null,
+                validator: (v) => (v == null || v.trim().length < 2)
+                    ? 'Ingresa el nombre'
+                    : null,
               ),
               TextFormField(
                 controller: _dosisCtrl,
@@ -196,18 +253,24 @@ class _NuevoMedicamentoDialogState extends State<_NuevoMedicamentoDialog> {
                   labelText: 'Frecuencia',
                   hintText: 'Ej: cada 8 horas',
                 ),
-                validator: (v) =>
-                    (v == null || v.trim().length < 2) ? 'Ingresa la frecuencia' : null,
+                validator: (v) => (v == null || v.trim().length < 2)
+                    ? 'Ingresa la frecuencia'
+                    : null,
               ),
               const SizedBox(height: 8),
               Row(
                 children: [
                   Expanded(
                     child: Text(
-                      _hora == null ? 'Sin hora' : 'Hora: ${_hora!.format(context)}',
+                      _hora == null
+                          ? (widget.existente?.horaInicio != null
+                              ? 'Hora: ${horaCorta(widget.existente!.horaInicio)}'
+                              : 'Sin hora')
+                          : 'Hora: ${_hora!.format(context)}',
                     ),
                   ),
-                  TextButton(onPressed: _elegirHora, child: const Text('Elegir hora')),
+                  TextButton(
+                      onPressed: _elegirHora, child: const Text('Elegir hora')),
                 ],
               ),
             ],
