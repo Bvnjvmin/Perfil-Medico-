@@ -77,6 +77,14 @@ class ApiService {
         if (json) 'Content-Type': 'application/json',
       };
 
+  /// La app muestra "Adulto mayor" / "Niño"; el backend solo acepta
+  /// 'adulto_mayor' o 'nino'.
+  String _subtipoParaApi(String s) {
+    final t = s.trim().toLowerCase();
+    if (t.startsWith('ni')) return 'nino';
+    return 'adulto_mayor';
+  }
+
   dynamic _decodificar(http.Response r) => jsonDecode(utf8.decode(r.bodyBytes));
 
   List<T> _lista<T>(http.Response r, T Function(Map<String, dynamic>) desde) {
@@ -130,7 +138,7 @@ class ApiService {
       headers: _auth(token, json: true),
       body: jsonEncode({
         'tipo': 'dependiente',
-        'subtipo': subtipo,
+        'subtipo': _subtipoParaApi(subtipo),
         'nombre': nombre,
         'rut': rut,
         'grupo_sanguineo': grupoSanguineo,
@@ -158,7 +166,7 @@ class ApiService {
       headers: _auth(token, json: true),
       body: jsonEncode({
         'nombre': nombre,
-        if (subtipo != null) 'subtipo': subtipo,
+        if (subtipo != null) 'subtipo': _subtipoParaApi(subtipo),
         'rut': rut,
         'grupo_sanguineo': grupoSanguineo,
         'fecha_nacimiento':
