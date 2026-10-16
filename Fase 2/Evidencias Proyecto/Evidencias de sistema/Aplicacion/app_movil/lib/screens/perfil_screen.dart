@@ -3,28 +3,40 @@ import '../models/perfil.dart';
 import '../services/api_service.dart';
 import '../utils/hora.dart';
 
-/// Crea o edita el perfil de salud del titular (HU 2).
+/// Crea o edita el perfil de salud del titular (HU 2) o de un dependiente (HU 6).
 /// Al guardar vuelve a la pantalla anterior devolviendo el [Perfil] resultante.
 class PerfilScreen extends StatefulWidget {
   final String token;
   final Perfil? perfil;
+  final bool esDependiente;
 
-  const PerfilScreen({super.key, required this.token, this.perfil});
+  const PerfilScreen({
+    super.key,
+    required this.token,
+    this.perfil,
+    this.esDependiente = false,
+  });
 
   @override
   State<PerfilScreen> createState() => _PerfilScreenState();
 }
 
 class _PerfilScreenState extends State<PerfilScreen> {
+  static const _subtipos = <String>['Adulto mayor', 'Niño'];
+
   final _formKey = GlobalKey<FormState>();
   final _api = ApiService();
   late final TextEditingController _nombreCtrl;
   late final TextEditingController _rutCtrl;
   late final TextEditingController _grupoCtrl;
   DateTime? _fecha;
+  String? _subtipo;
 
   bool _cargando = false;
   String? _error;
+
+  bool get _modoDependiente =>
+      widget.esDependiente || (widget.perfil?.esDependiente ?? false);
 
   @override
   void initState() {
@@ -34,6 +46,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
     _rutCtrl = TextEditingController(text: p?.rut ?? '');
     _grupoCtrl = TextEditingController(text: p?.grupoSanguineo ?? '');
     _fecha = p?.fechaNacimiento;
+    _subtipo = p?.subtipo;
   }
 
   @override
@@ -71,18 +84,30 @@ class _PerfilScreenState extends State<PerfilScreen> {
       final existente = widget.perfil;
       final Perfil resultado;
       if (existente == null) {
-        resultado = await _api.crearPerfil(
-          widget.token,
-          nombre: _nombreCtrl.text.trim(),
-          rut: _vacioANull(_rutCtrl.text),
-          grupoSanguineo: _vacioANull(_grupoCtrl.text),
-          fechaNacimiento: _fecha,
-        );
+        if (_modoDependiente) {
+          resultado = await _api.crearDependiente(
+            widget.token,
+            nombre: _nombreCtrl.text.trim(),
+            subtipo: _subtipo!,
+            rut: _vacioANull(_rutCtrl.text),
+            grupoSanguineo: _vacioANull(_grupoCtrl.text),
+            fechaNacimiento: _fecha,
+          );
+        } else {
+          resultado = await _api.crearPerfil(
+            widget.token,
+            nombre: _nombreCtrl.text.trim(),
+            rut: _vacioANull(_rutCtrl.text),
+            grupoSanguineo: _vacioANull(_grupoCtrl.text),
+            fechaNacimiento: _fecha,
+          );
+        }
       } else {
         resultado = await _api.actualizarPerfil(
           widget.token,
           existente.id,
           nombre: _nombreCtrl.text.trim(),
+          subtipo: _modoDependiente ? _subtipo : null,
           rut: _vacioANull(_rutCtrl.text),
           grupoSanguineo: _vacioANull(_grupoCtrl.text),
           fechaNacimiento: _fecha,
@@ -100,10 +125,12 @@ class _PerfilScreenState extends State<PerfilScreen> {
   @override
   Widget build(BuildContext context) {
     final esNuevo = widget.perfil == null;
+    final titulo = _modoDependiente
+        ? (esNuevo ? 'Agregar dependiente' : 'Editar dependiente')
+        : (esNuevo ? 'Crear perfil de salud' : 'Mi perfil de salud');
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text(esNuevo ? 'Crear perfil de salud' : 'Mi perfil de salud'),
-      ),
+      appBar: AppBar(title: Text(titulo)),
       body: Padding(
         padding: const EdgeInsets.all(24),
         child: Form(
@@ -113,9 +140,27 @@ class _PerfilScreenState extends State<PerfilScreen> {
               TextFormField(
                 controller: _nombreCtrl,
                 decoration: const InputDecoration(labelText: 'Nombre completo'),
-                validator: (v) =>
-                    (v == null || v.trim().length < 2) ? 'Ingresa tu nombre' : null,
+                validator: (v) => (v == null || v.trim().length < 2)
+                    ? 'Ingresa tu nombre'
+                    : null,
               ),
+              if (_modoDependiente) ...[
+                const SizedBox(height: 12),
+                DropdownButtonFormField<String>(
+                  value: _subtipo,
+                  decoration: const InputDecoration(
+                    labelText: 'Subtipo de dependiente',
+                  ),
+                  items: [
+                    for (final s in _subtipos)
+                      DropdownMenuItem(value: s, child: Text(s)),
+                  ],
+                  onChanged: (v) => setState(() => _subtipo = v),
+                  validator: (v) => (v == null || v.isEmpty)
+                      ? 'Selecciona un subtipo'
+                      : null,
+                ),
+              ],
               const SizedBox(height: 12),
               TextFormField(
                 controller: _rutCtrl,
@@ -123,8 +168,9 @@ class _PerfilScreenState extends State<PerfilScreen> {
                   labelText: 'RUT (opcional)',
                   hintText: '12.345.678-9',
                 ),
-                validator: (v) =>
-                    (v != null && v.trim().length > 12) ? 'Máximo 12 caracteres' : null,
+                validator: (v) => (v != null && v.trim().length > 12)
+                    ? 'Máximo 12 caracteres'
+                    : null,
               ),
               const SizedBox(height: 12),
               TextFormField(
@@ -138,7 +184,8 @@ class _PerfilScreenState extends State<PerfilScreen> {
               ListTile(
                 contentPadding: EdgeInsets.zero,
                 title: const Text('Fecha de nacimiento'),
-                subtitle: Text(_fecha == null ? 'Sin definir' : fechaCorta(_fecha!)),
+                subtitle:
+                    Text(_fecha == null ? 'Sin definir' : fechaCorta(_fecha!)),
                 trailing: const Icon(Icons.calendar_today),
                 onTap: _elegirFecha,
               ),
