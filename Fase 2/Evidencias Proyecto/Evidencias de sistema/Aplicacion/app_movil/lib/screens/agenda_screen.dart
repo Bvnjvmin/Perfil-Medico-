@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
-import '../models/actividad_agenda.dart';
-import '../services/agenda_storage.dart';
+import '../models/actividad.dart';
 import '../services/api_service.dart';
 import '../utils/hora.dart';
 
-/// Agenda diaria (HU 5): junta los medicamentos y rutinas de cuidado del
-/// perfil (endpoints de HU 4) y permite marcar cada actividad como hecha.
-///
-/// La confirmación se guarda en el dispositivo, por perfil y por día
-/// (ver [AgendaStorage]); persistirla en el backend queda para el Sprint 3.
+/// Agenda diaria conectada a la API (Cierre de HU 5 - Sprint 3).
 class AgendaScreen extends StatefulWidget {
   final String token;
   final String perfilId;
+  final bool puedeConfirmar;
 
-  const AgendaScreen({super.key, required this.token, required this.perfilId});
+  const AgendaScreen({
+    super.key,
+    required this.token,
+    required this.perfilId,
+    this.puedeConfirmar = true,
+  });
 
   @override
   State<AgendaScreen> createState() => _AgendaScreenState();
@@ -21,11 +22,9 @@ class AgendaScreen extends StatefulWidget {
 
 class _AgendaScreenState extends State<AgendaScreen> {
   final _api = ApiService();
-  final _storage = AgendaStorage();
   final DateTime _hoy = DateTime.now();
 
-  List<ActividadAgenda>? _actividades;
-  Set<String> _confirmadas = <String>{};
+  List<Actividad>? _actividades;
   String? _error;
 
   @override
@@ -36,13 +35,14 @@ class _AgendaScreenState extends State<AgendaScreen> {
 
   Future<void> _cargar() async {
     try {
-      final medicamentos = await _api.listarMedicamentos(widget.token, widget.perfilId);
-      final rutinas = await _api.listarRutinas(widget.token, widget.perfilId);
-      final confirmadas = await _storage.cargar(widget.perfilId, _hoy);
+      final lista = await _api.listarActividades(
+        widget.token,
+        widget.perfilId,
+        _hoy,
+      );
       if (!mounted) return;
       setState(() {
-        _actividades = construirAgenda(medicamentos, rutinas);
-        _confirmadas = confirmadas;
+        _actividades = lista;
         _error = null;
       });
     } catch (e) {
@@ -51,15 +51,36 @@ class _AgendaScreenState extends State<AgendaScreen> {
     }
   }
 
-  Future<void> _alternar(ActividadAgenda actividad, bool? valor) async {
-    final nuevas = <String>{..._confirmadas};
-    if (valor == true) {
-      nuevas.add(actividad.clave);
-    } else {
-      nuevas.remove(actividad.clave);
+  Future<void> _alternar(int index, bool? valor) async {
+    if (!widget.puedeConfirmar || _actividades == null) return;
+
+    final original = _actividades![index];
+    final marcar = valor == true;
+    final estadoOptimista = marcar ? 'confirmada' : 'pendiente';
+
+    // Actualiza la casilla de inmediato
+    setState(() {
+      _actividades![index] = original.copyWith(estado: estadoOptimista);
+    });
+
+    try {
+      final actualizada = marcar
+          ? await _api.confirmarActividad(widget.token, original.id)
+          : await _api.desconfirmarActividad(widget.token, original.id);
+      if (!mounted) return;
+      setState(() {
+        _actividades![index] = actualizada;
+      });
+    } catch (e) {
+      // Si el servidor falla, vuelve atrás y muestra el error
+      if (!mounted) return;
+      setState(() {
+        _actividades![index] = original;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString())),
+      );
     }
-    setState(() => _confirmadas = nuevas);
-    await _storage.guardar(widget.perfilId, _hoy, nuevas);
   }
 
   @override
@@ -87,7 +108,7 @@ class _AgendaScreenState extends State<AgendaScreen> {
         ),
       );
     } else {
-      final hechas = lista.where((a) => _confirmadas.contains(a.clave)).length;
+      final hechas = lista.where((a) => a.estaConfirmada).length;
       cuerpo = RefreshIndicator(
         onRefresh: _cargar,
         child: ListView(
@@ -99,7 +120,8 @@ class _AgendaScreenState extends State<AgendaScreen> {
                 children: [
                   Text(
                     'Hoy, ${fechaCorta(_hoy)}',
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 4),
                   Text('$hechas de ${lista.length} actividades confirmadas'),
@@ -108,31 +130,36 @@ class _AgendaScreenState extends State<AgendaScreen> {
                 ],
               ),
             ),
-            for (final a in lista)
+            for (var i = 0; i < lista.length; i++)
               CheckboxListTile(
-                value: _confirmadas.contains(a.clave),
-                onChanged: (v) => _alternar(a, v),
+                value: lista[i].estaConfirmada,
+                onChanged:
+                    widget.puedeConfirmar ? (v) => _alternar(i, v) : null,
                 controlAffinity: ListTileControlAffinity.leading,
                 title: Text(
-                  a.titulo,
+                  lista[i].titulo,
                   style: TextStyle(
-                    decoration: _confirmadas.contains(a.clave)
+                    decoration: lista[i].estaConfirmada
                         ? TextDecoration.lineThrough
                         : null,
                   ),
                 ),
-                subtitle: Text(a.detalle),
+                subtitle: Text(lista[i].detalle ?? ''),
                 secondary: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(
-                      a.tipo == TipoActividad.medicamento
+                      lista[i].origenTipo == 'medicamento'
                           ? Icons.medication
                           : Icons.favorite_border,
                       size: 18,
                     ),
                     const SizedBox(width: 6),
-                    Text(horaCorta(a.hora).isEmpty ? '--:--' : horaCorta(a.hora)),
+                    Text(
+                      horaCorta(lista[i].hora).isEmpty
+                          ? '--:--'
+                          : horaCorta(lista[i].hora),
+                    ),
                   ],
                 ),
               ),
