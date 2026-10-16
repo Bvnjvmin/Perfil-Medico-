@@ -1,56 +1,77 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:app_movil/models/actividad_agenda.dart';
-import 'package:app_movil/models/medicamento.dart';
-import 'package:app_movil/models/rutina_cuidado.dart';
-import 'package:app_movil/services/agenda_storage.dart';
+import 'package:app_movil/models/actividad.dart';
+import 'package:app_movil/models/perfil.dart';
+import 'package:app_movil/screens/panel_screen.dart';
 
 void main() {
-  TestWidgetsFlutterBinding.ensureInitialized();
+  group('Pruebas de Actividad y Panel (M3 y M5)', () {
+    test('Actividad.fromJson parsea todos los campos del contrato', () {
+      final json = {
+        'id': '101',
+        'perfil_id': '2',
+        'fecha': '2026-10-14',
+        'origen_tipo': 'medicamento',
+        'origen_id': '5',
+        'titulo': 'Losartán 50mg',
+        'detalle': '1 comprimido',
+        'hora': '08:00',
+        'estado': 'confirmada',
+        'confirmada_en': '2026-10-14T08:05:00',
+        'confirmada_por_id': '1',
+      };
 
-  Medicamento med(String id, String nombre, String? hora, {bool activo = true}) =>
-      Medicamento(
-        id: id,
-        perfilId: 'p1',
-        nombre: nombre,
-        dosis: '500 mg',
-        frecuencia: 'cada 8 horas',
-        horaInicio: hora,
-        activo: activo,
-      );
+      final actividad = Actividad.fromJson(json);
 
-  RutinaCuidado rutina(String id, String tipo, String? hora) => RutinaCuidado(
-        id: id,
-        perfilId: 'p1',
-        tipo: tipo,
-        frecuencia: '3 veces al día',
-        hora: hora,
-        activo: true,
-      );
+      expect(actividad.id, '101');
+      expect(actividad.perfilId, '2');
+      expect(actividad.origenTipo, 'medicamento');
+      expect(actividad.titulo, 'Losartán 50mg');
+      expect(actividad.estaConfirmada, isTrue);
+      expect(actividad.confirmadaPorId, '1');
+    });
 
-  test('construirAgenda ordena por hora, deja sin hora al final y omite inactivos', () {
-    final agenda = construirAgenda(
-      [
-        med('m1', 'Paracetamol', '20:00:00'),
-        med('m2', 'Antiguo', '07:00:00', activo: false),
-        med('m3', 'Vitamina D', null),
-      ],
-      [rutina('r1', 'hidratacion', '08:00:00')],
-    );
+    test('ResumenAvancePerfil cuenta correctamente confirmadas y pendientes', () {
+      final perfil = Perfil(id: '2', nombre: 'Dependiente 1', tipo: 'dependiente');
+      final actividades = [
+        Actividad(
+          id: '1',
+          perfilId: '2',
+          fecha: '2026-10-14',
+          origenTipo: 'medicamento',
+          origenId: '1',
+          titulo: 'Med 1',
+          hora: '08:00',
+          estado: 'confirmada',
+        ),
+        Actividad(
+          id: '2',
+          perfilId: '2',
+          fecha: '2026-10-14',
+          origenTipo: 'rutina',
+          origenId: '2',
+          titulo: 'Caminata',
+          hora: '10:00',
+          estado: 'pendiente',
+        ),
+        Actividad(
+          id: '3',
+          perfilId: '2',
+          fecha: '2026-10-14',
+          origenTipo: 'medicamento',
+          origenId: '3',
+          titulo: 'Med 2',
+          hora: '20:00',
+          estado: 'confirmada',
+        ),
+      ];
 
-    expect(agenda.map((a) => a.clave).toList(), ['rut:r1', 'med:m1', 'med:m3']);
-    expect(agenda.first.tipo, TipoActividad.rutina);
-  });
+      final resumen =
+          AvancePerfil.desdeActividades(perfil, actividades);
 
-  test('AgendaStorage guarda las confirmaciones por perfil y por día', () async {
-    SharedPreferences.setMockInitialValues({});
-    final storage = AgendaStorage();
-    final dia = DateTime(2026, 10, 8);
-
-    await storage.guardar('p1', dia, {'med:m1', 'rut:r1'});
-
-    expect(await storage.cargar('p1', dia), {'med:m1', 'rut:r1'});
-    expect(await storage.cargar('p1', DateTime(2026, 10, 9)), isEmpty);
-    expect(await storage.cargar('otro-perfil', dia), isEmpty);
+      expect(resumen.confirmadas, 2);
+      expect(resumen.pendientes, 1);
+      expect(resumen.total, 3);
+      expect(resumen.resumenTexto, '2 de 3 confirmadas');
+    });
   });
 }
