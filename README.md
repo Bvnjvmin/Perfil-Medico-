@@ -21,12 +21,13 @@ Propuesta de Proyecto APT · Capstone_005D (Grupo 7) · Ingeniería Informática
   - Backend: perfil de salud con alergias y contactos de emergencia, medicamentos y rutinas (25 pruebas automatizadas); entregado el 30-09
   - App: pantallas de registro e inicio de sesión, perfil, medicamentos, rutinas y agenda diaria, con 8 pruebas de Flutter y capturas de la prueba manual
   - La app de la HU 3 y la HU 5 se cerró el 10-10, una semana después del cierre del sprint (03-10); la confirmación de actividades quedó guardada solo en el celular y se completa en el Sprint 3 — ver [`Metodologia_Scrum/Sprint_2`](<./Metodologia_Scrum/Sprint_2>)
-- [ ] Sprint 3 (S9-S10) — Perfiles dependientes, cuidadores con permisos y panel diario · Informe de Avance (cierre el 17-10) *(en curso)*
+- [x] Sprint 3 (S9-S10) — Perfiles dependientes, cuidadores con permisos y panel diario · Informe de Avance (cierre el 17-10) *(HU 5, 6, 7 y 8 listas; falta la aceptación del Product Owner)*
   - Base de datos terminada (13-10): tablas `actividad` y `perfil_acceso`, índice de un solo titular por cuenta y borrado en cascada
   - Backend terminado (15-10): perfiles dependientes validados (HU 6), agenda diaria con confirmación guardada en el servidor (HU 5), cuidadores con permisos por perfil (HU 7) y `GET /panel` (HU 8); 119 pruebas automatizadas
-  - Pendiente: pantallas de la app para las HU 6, 7 y 8, checklist de aceptación del Product Owner, retrospectiva del Sprint 2 e Informe de Avance — ver [`Metodologia_Scrum/Sprint_3`](<./Metodologia_Scrum/Sprint_3>)
-- [ ] Sprint 4 (S11-S12) — Recordatorios y alertas escalonadas
-- [ ] Sprint 5 (S13-S14) — Indicadores de salud, módulo de IA, pulsera inteligente (Traccar + Health Connect)
+  - App terminada (15-10): pantallas de perfiles dependientes, compartir perfil con permisos y panel, y agenda conectada a la API; 10 pruebas de Flutter y prueba manual con dos cuentas (17 capturas)
+  - Pendiente: checklist de aceptación del Product Owner, retrospectiva del Sprint 3 e Informe de Avance — ver [`Metodologia_Scrum/Sprint_3`](<./Metodologia_Scrum/Sprint_3>)
+- [ ] Sprint 4 (S11-S12) — `RUTINA_HORARIO`, recordatorios y alertas escalonadas, interfaz simplificada para el perfil dependiente
+- [ ] Sprint 5 (S13-S14) — Indicadores de salud e historial de cumplimiento, módulo de IA, pulsera inteligente (Traccar + Health Connect) y botón de asistencia
 - [ ] Sprint 6 (S15) — Glucosa manual, recordatorios extendidos, farmacias vía IA, pruebas, Informe Final (Semana 15)
 
 **Fase 3 — Presentación y defensa final (Semanas 16-18)**
@@ -46,7 +47,7 @@ Propuesta de Proyecto APT · Capstone_005D (Grupo 7) · Ingeniería Informática
 - [Diario de Reflexión y Autoevaluación individuales (2.1, 2.2)](<./Fase 2/Evidencias Individuales>) — un archivo por integrante, con el patrón `Apellido_Nombre_2.X_...docx` (mismo criterio que en Fase 1).
 - [Metodología Scrum — Sprint Backlog, actas y retrospectivas](<./Metodologia_Scrum>)
 - [Código del backend](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/backend>) (autenticación, perfil de salud, medicamentos y rutinas, agenda diaria, perfiles dependientes, cuidadores y panel)
-- [Código de la app móvil](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/app_movil>) (registro e inicio de sesión, perfil, medicamentos, rutinas y agenda diaria; las pantallas de perfiles dependientes, cuidadores y panel están pendientes)
+- [Código de la app móvil](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/app_movil>) (registro e inicio de sesión, perfil, medicamentos, rutinas, agenda diaria, perfiles dependientes, cuidadores con permisos y panel)
 - [Modelo de datos (diagrama ER)](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Base de datos/modelo_datos.md>) y checklist de aceptación del Product Owner
 
 ## Descripción
@@ -146,7 +147,7 @@ pytest app/tests/ -v
 
 SQLite no valida llaves foráneas, así que los cambios de base de datos se prueban además contra PostgreSQL. Solo una persona crea migraciones de Alembic por sprint, para mantener una única cabeza en la cadena.
 
-### App móvil (Flutter) — Sprint 2: registro, perfil, medicamentos, rutinas y agenda
+### App móvil (Flutter) — Sprints 2 y 3: registro, perfil, medicamentos, rutinas, agenda, perfiles dependientes, cuidadores y panel
 
 ```bash
 cd "Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/app_movil"
@@ -167,7 +168,7 @@ En el emulador de Android la app apunta al backend local en `10.0.2.2:8000`.
 
 ## Metodología de trabajo
 
-El equipo trabaja con **Scrum**: sprints quincenales, Product Backlog priorizado con historias de usuario, Sprint Backlog por sprint, revisión y retrospectiva al cierre de cada sprint. La evidencia de avance (Sprint Backlog, actas de seguimiento y retrospectivas) queda documentada en [`Metodologia_Scrum`](<./Metodologia_Scrum>), conforme a lo exigido por el Instructivo CAPSTONE. El Product Backlog completo y el Cronograma del equipo viven en [`Cronograma_Actividades_Equipo_PerfilMedico.xlsx`](<./Fase 1/Evidencias Grupales/Cronograma_Actividades_Equipo_PerfilMedico.xlsx>).
+El equipo trabaja con **Scrum**: sprints quincenales, Product Backlog priorizado con historias de usuario, Sprint Backlog por sprint, demostración interna (demo), revisión y retrospectiva al cierre de cada sprint. La evidencia de avance (Sprint Backlog, actas de seguimiento y retrospectivas) queda documentada en [`Metodologia_Scrum`](<./Metodologia_Scrum>), conforme a lo exigido por el Instructivo CAPSTONE. El Product Backlog completo y el Cronograma del equipo viven en [`Cronograma_Actividades_Equipo_PerfilMedico.xlsx`](<./Fase 1/Evidencias Grupales/Cronograma_Actividades_Equipo_PerfilMedico.xlsx>).
 
 ## Arquitectura de la solución
 
