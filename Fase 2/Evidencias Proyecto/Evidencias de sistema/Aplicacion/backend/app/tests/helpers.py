@@ -1,5 +1,10 @@
 """Funciones auxiliares compartidas por las pruebas de HU 5, 6, 7 y 8."""
-FECHA = "2026-10-14"
+from datetime import date, timedelta
+
+# Las actividades solo se generan desde la creación del medicamento (menos un día),
+# así que las pruebas usan la fecha de hoy y no una fija.
+FECHA = date.today().isoformat()
+MANANA = (date.today() + timedelta(days=1)).isoformat()
 
 
 def registrar_y_loguear(client, email: str) -> str:

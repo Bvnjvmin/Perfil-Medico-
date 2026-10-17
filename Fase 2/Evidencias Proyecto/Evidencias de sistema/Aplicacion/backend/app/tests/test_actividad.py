@@ -2,7 +2,7 @@
 Pruebas de HU 5 (cierre): agenda diaria con confirmación guardada en el backend.
 """
 from app.tests.helpers import (
-    FECHA, actividades, crear_medicamento, crear_perfil, crear_rutina, headers, registrar_y_loguear,
+    FECHA, MANANA, actividades, crear_medicamento, crear_perfil, crear_rutina, headers, registrar_y_loguear,
 )
 
 
@@ -99,7 +99,7 @@ def test_cada_dia_tiene_sus_actividades(client):
     crear_medicamento(client, token, perfil["id"])
     hoy = actividades(client, token, perfil["id"], FECHA).json()[0]
     client.post(f"/actividades/{hoy['id']}/confirmar", headers=headers(token))
-    manana = actividades(client, token, perfil["id"], "2026-10-15").json()
+    manana = actividades(client, token, perfil["id"], MANANA).json()
     assert len(manana) == 1
     assert manana[0]["estado"] == "pendiente"
     assert manana[0]["id"] != hoy["id"]

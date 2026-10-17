@@ -7,7 +7,7 @@ lectura y una cuenta ajena sin ningún vínculo.
 import pytest
 
 from app.tests.helpers import (
-    actividades, crear_medicamento, crear_perfil, crear_rutina, headers, registrar_y_loguear, vincular,
+    FECHA, actividades, crear_medicamento, crear_perfil, crear_rutina, headers, registrar_y_loguear, vincular,
 )
 
 
@@ -41,7 +41,7 @@ def _status(e, quien, metodo, ruta, **kw):
 @pytest.mark.parametrize("quien,esperado", [("dueno", 200), ("cuidador", 200), ("lectura", 200), ("ajena", 404)])
 @pytest.mark.parametrize(
     "ruta",
-    ["", "/alergias", "/contactos-emergencia", "/medicamentos", "/rutinas", "/actividades?fecha=2026-10-14"],
+    ["", "/alergias", "/contactos-emergencia", "/medicamentos", "/rutinas", f"/actividades?fecha={FECHA}"],
 )
 def test_ver_el_perfil(escenario, ruta, quien, esperado):
     assert _status(escenario, quien, "get", f"/perfiles/{escenario['perfil']}{ruta}") == esperado
