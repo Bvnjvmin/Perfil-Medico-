@@ -131,7 +131,7 @@ Criterios propuestos el 12-10-2026; se confirman o se ajustan en la reunión del
 Se completa al cierre del sprint. Lo previsto hasta ahora:
 
 1. **`RUTINA_HORARIO`** y el job programado que genera las actividades con anticipación, necesario para las notificaciones.
-2. **Alertas escalonadas** (HU 10) y **% de cumplimiento** (HU 13), que dependen de `ACTIVIDAD` y de `nivel_escalamiento` de `PERFIL_ACCESO`.
+2. **Alertas escalonadas** (HU 10), que dependen de `ACTIVIDAD` y de `nivel_escalamiento` de `PERFIL_ACCESO`. El **% de cumplimiento** (HU 13) sigue planificado para el Sprint 5, junto con los indicadores de salud.
 3. **Lo que no alcance del Sprint 3:** extras Deseables, edición de medicamentos y rutinas desde la app, y pantallas de alergias y contactos.
 4. **Ideas pendientes de decisión:** recuperar contraseña y cambiar correo (requieren infraestructura de correo), invitación de cuidadores por enlace o código, y creación automática del perfil titular al registrarse.
 
