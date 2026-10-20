@@ -2,7 +2,7 @@
 
 **Proyecto:** Perfil Médico+ · Capstone_005D · Grupo 7
 **Periodo:** 5 al 17 de octubre de 2026 (semanas 9 y 10 del Cronograma)
-**Última actualización:** 17 de octubre de 2026 (estado verificado contra `main`, commit `5c6783a`)
+**Última actualización:** 20 de octubre de 2026 (estado verificado contra `main`, commit `6a948d8`)
 **Objetivo del sprint:** cerrar la confirmación de actividades de punta a punta (HU 5), validar los perfiles de dependientes (HU 6), permitir que un titular vincule cuidadores con permisos por perfil (HU 7) y entregar una versión inicial del panel de estado diario (HU 8).
 **Product Owner:** Sergio Ocares · **Scrum Master:** Matías Pizarro
 **Entregables del Cronograma:** Sprint Backlog 3 y Autoevaluación de avance de Fase 2 (semana 9); **Informe de Avance, evaluación sumativa del 20 %** (semana 10, cierre el sábado 17).
@@ -17,7 +17,9 @@
 
 **Pruebas del backend (17-10).** Las 119 pruebas fallaban a partir del 15-10 porque usaban fechas fijas y las actividades solo se generan desde la creación del medicamento. Se cambiaron a la fecha de hoy y vuelven a pasar las 119.
 
-**Pendiente:** checklist de aceptación del Product Owner, Autoevaluaciones 2.2 de Matías y Sergio, textos de evidencia y retrospectiva del Sprint 3 corregidos, y el Informe de Avance. Esta sección se actualiza a medida que avanza el sprint.
+**Cierre (17 al 19-10).** Los textos de evidencia y la retrospectiva del Sprint 3 (Matías, 17-10), las autoevaluaciones 2.2 de Matías (17-10) y de Sergio (19-10) y el Informe de Avance (`Informe_Avance_2_4.docx`, 17-10) están en `main`.
+
+**Pendiente:** el checklist de aceptación del Product Owner (`Checklist_Aceptacion_PO_Sprint3.md`), que Sergio sube antes de la evaluación del 21-10.
 
 ## 1. Historias comprometidas
 
@@ -76,13 +78,13 @@ Editar medicamentos y rutinas desde la app, pantallas de alergias y contactos, p
 | Pantalla "Panel" | HU 8 | Matías | ✅ Hecha el 15-10 (commit `45308b6`) | `app_movil/lib/` |
 | Pruebas de la app (`flutter test`, 10 de 10) y logs del sprint | HU 5 / HU 6 / HU 7 / HU 8 | Matías | ✅ Hecha el 15 y 16-10 (commits `71571ae`, `85114c8`, `1a1c0d9` y `5c6783a`) | `app_movil/test/`, `evidencias/` |
 | Pruebas del backend con fecha dinámica (119 pasan) | HU 5 | Benjamín | ✅ Hecha el 17-10 | `backend/app/tests/` |
-| Checklist de aceptación del Product Owner | HU 5 / HU 6 / HU 7 / HU 8 | Sergio | ⬜ Pendiente (sin entregar al 17-10) | `Base de datos/Checklist_Aceptacion_PO_Sprint3.md` | `Base de datos/Checklist_Aceptacion_PO_Sprint3.md` |
+| Checklist de aceptación del Product Owner | HU 5 / HU 6 / HU 7 / HU 8 | Sergio | ⬜ Pendiente: Sergio lo sube antes del 21-10 | `Base de datos/Checklist_Aceptacion_PO_Sprint3.md` |
 | Retrospectiva del Sprint 2 | — | Matías | ✅ Redactada el 15-10 a partir del repositorio (commit `656cf4b`); se confirma en la reunión del equipo | `Metodologia_Scrum/Sprint_2/` |
 | Diario de Reflexión 2.1 | — | Sergio | ✅ Hecha el 07-10 (commit `9bc9097`) | `Fase 2/Evidencias Individuales/` |
 | Autoevaluación de avance 2.2 | — | Benjamín | ✅ Hecha el 15-10 (commit `dd5dd13`) | `Fase 2/Evidencias Individuales/` |
-| Autoevaluación de avance 2.2 | — | Sergio / Matías | ⬜ Pendiente | `Fase 2/Evidencias Individuales/` |
-| Sección de base de datos y ensamble del Informe de Avance | — | Sergio | ⬜ Pendiente (viernes 16 y sábado 17) | Informe de Avance |
-| Textos de evidencia del Sprint 3 (borrador en `main`, falta la versión corregida) y secciones del Informe | — | Matías / Benjamín | 🟡 En curso | `app_movil/evidencias/`, Informe de Avance |
+| Autoevaluación de avance 2.2 | — | Sergio / Matías | ✅ Hecha el 17-10 (Matías) y el 19-10 (Sergio) | `Fase 2/Evidencias Individuales/` |
+| Sección de base de datos y ensamble del Informe de Avance | — | Sergio | ✅ Hecha el 17-10 | `Fase 2/Evidencias Grupales/Informe_Avance_2_4.docx` |
+| Textos de evidencia y retrospectiva del Sprint 3, y secciones del Informe | — | Matías / Benjamín | ✅ Hecha el 17-10 | `app_movil/evidencias/`, `Metodologia_Scrum/Sprint_3/`, Informe de Avance |
 | `RUTINA_HORARIO` y datos de prueba | HU 4 | Sergio / Matías | ⬜ Deseable, solo si sobra tiempo | — |
 
 ## 3. Definition of Done — estado por historia
@@ -91,10 +93,10 @@ Definición del equipo: *integrada al repositorio + probada + documentada.*
 
 | Historia | Integrada al repo | Probada | Documentada | ¿Terminada? |
 |---|---|---|---|---|
-| HU 6 | ✅ Base de datos, backend y app | ✅ 119 pruebas del backend, 10 de la app y emulador | 🟡 `modelo_datos.md` y borrador de evidencia | Falta la aceptación del PO |
-| HU 5 (cierre) | ✅ Tabla, backend y app | ✅ 119 pruebas del backend, 10 de la app y emulador | 🟡 `modelo_datos.md` y borrador de evidencia | Falta la aceptación del PO |
-| HU 7 | ✅ Tabla, backend y app | ✅ 119 pruebas del backend, 10 de la app y emulador (dos cuentas) | 🟡 `modelo_datos.md` y borrador de evidencia | Falta la aceptación del PO |
-| HU 8 | ✅ Backend y app | ✅ 119 pruebas del backend, 10 de la app y emulador | 🟡 Borrador de evidencia | Falta la aceptación del PO |
+| HU 6 | ✅ Base de datos, backend y app | ✅ 119 pruebas del backend, 10 de la app y emulador | ✅ `modelo_datos.md` y `Evidencia_Sprint3.md` | Falta el checklist del PO |
+| HU 5 (cierre) | ✅ Tabla, backend y app | ✅ 119 pruebas del backend, 10 de la app y emulador | ✅ `modelo_datos.md` y `Evidencia_Sprint3.md` | Falta el checklist del PO |
+| HU 7 | ✅ Tabla, backend y app | ✅ 119 pruebas del backend, 10 de la app y emulador (dos cuentas) | ✅ `modelo_datos.md` y `Evidencia_Sprint3.md` | Falta el checklist del PO |
+| HU 8 | ✅ Backend y app | ✅ 119 pruebas del backend, 10 de la app y emulador | ✅ `Evidencia_Sprint3.md` | Falta el checklist del PO |
 
 Las migraciones de este sprint se probaron desde una base vacía, hacia arriba y hacia abajo, y borrar un perfil con datos asociados deja todas las tablas limpias.
 
@@ -108,7 +110,7 @@ Las migraciones de este sprint se probaron desde una base vacía, hacia arriba y
 | Actividad con las dos llaves vacías, con las dos llenas o duplicada el mismo día | Automática | ✅ Pasan (15-10) |
 | Borrar un perfil con datos asociados | Manual (PostgreSQL) | ✅ Todo queda limpio (13-10) |
 | Matriz de permisos (titular, cuidador, lectura y cuenta ajena) | Automática (backend) | ✅ Pasan (15-10, 119 pruebas en total; el 17-10 se cambiaron las fechas fijas por la fecha de hoy y vuelven a pasar las 119) |
-| Checklist de aceptación del Product Owner con tres cuentas (dueño, cuidador y ajena) | Manual (Product Owner) | ⬜ Pendiente (sin entregar al 17-10) |
+| Checklist de aceptación del Product Owner con tres cuentas (dueño, cuidador y ajena) | Manual (Product Owner) | ⬜ Pendiente: Sergio lo sube antes del 21-10 |
 | Flujo equivalente desde la app (perfiles, agenda, panel y permisos de cuidador, con dos cuentas) | Manual (emulador, Matías) | ✅ 15 y 16-10, 17 capturas en `app_movil/evidencias/evidencias Sprint 3/` |
 | `flutter test` y `flutter analyze` | Automática (app) | ✅ 10 de 10 pasan; sin errores y 4 avisos informativos (16-10) |
 
@@ -142,3 +144,6 @@ Se completa al cierre del sprint. Lo previsto hasta ahora:
 - 15-10: permisos por vínculo, validación de perfiles dependientes, agenda diaria, cuidadores, panel y pruebas del backend (Benjamín, commits `beedd83` a `7d30476`); autoevaluación 2.2 de Benjamín (commit `dd5dd13`); retrospectiva del Sprint 2 (commit `656cf4b`).
 - 15 y 16-10: pantallas de perfiles, panel y compartir, agenda conectada a la API, pruebas de la app, logs y capturas del Sprint 3 (Matías, commits `45308b6` a `5c6783a`).
 - 17-10: pruebas del backend con fecha dinámica y `pytest.log` nuevo (Benjamín); este Sprint Backlog actualizado.
+- 17-10: evidencia y retrospectiva del Sprint 3 corregidas, autoevaluación 2.2 de Matías y capturas renombradas (Matías, commits `0f457a8` a `e5feecc`); Informe de Avance subido (Sergio).
+- 19-10: autoevaluación 2.2 de Sergio.
+- 20-10: estados de este Sprint Backlog y de los README al día.
