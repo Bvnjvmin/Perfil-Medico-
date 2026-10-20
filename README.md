@@ -21,11 +21,11 @@ Propuesta de Proyecto APT · Capstone_005D (Grupo 7) · Ingeniería Informática
   - Backend: perfil de salud con alergias y contactos de emergencia, medicamentos y rutinas (25 pruebas automatizadas); entregado el 30-09
   - App: pantallas de registro e inicio de sesión, perfil, medicamentos, rutinas y agenda diaria, con 8 pruebas de Flutter y capturas de la prueba manual
   - La app de la HU 3 y la HU 5 se cerró el 10-10, una semana después del cierre del sprint (03-10); la confirmación de actividades quedó guardada solo en el celular y se completa en el Sprint 3 — ver [`Metodologia_Scrum/Sprint_2`](<./Metodologia_Scrum/Sprint_2>)
-- [x] Sprint 3 (S9-S10) — Perfiles dependientes, cuidadores con permisos y panel diario · Informe de Avance (cierre el 17-10) *(HU 5, 6, 7 y 8 listas; falta la aceptación del Product Owner)*
+- [x] Sprint 3 (S9-S10) — Perfiles dependientes, cuidadores con permisos y panel diario · Informe de Avance (cierre el 17-10) *(HU 5, 6, 7 y 8 terminadas y aceptadas por el Product Owner)*
   - Base de datos terminada (13-10): tablas `actividad` y `perfil_acceso`, índice de un solo titular por cuenta y borrado en cascada
   - Backend terminado (15-10): perfiles dependientes validados (HU 6), agenda diaria con confirmación guardada en el servidor (HU 5), cuidadores con permisos por perfil (HU 7) y `GET /panel` (HU 8); 119 pruebas automatizadas
   - App terminada (15-10): pantallas de perfiles dependientes, compartir perfil con permisos y panel, y agenda conectada a la API; 10 pruebas de Flutter y prueba manual con dos cuentas (17 capturas)
-  - Cierre: evidencia, retrospectiva, autoevaluaciones 2.2 e Informe de Avance entregados (17 al 19-10). Pendiente: checklist de aceptación del Product Owner, que Sergio sube antes de la evaluación del 21-10 — ver [`Metodologia_Scrum/Sprint_3`](<./Metodologia_Scrum/Sprint_3>)
+  - Cierre: evidencia, retrospectiva, autoevaluaciones 2.2 e Informe de Avance entregados (17 al 19-10) y checklist de aceptación del Product Owner con 17 de 17 criterios (20-10) — ver [`Metodologia_Scrum/Sprint_3`](<./Metodologia_Scrum/Sprint_3>)
 - [ ] Sprint 4 (S11-S12) — `RUTINA_HORARIO`, recordatorios y alertas escalonadas, interfaz simplificada para el perfil dependiente
 - [ ] Sprint 5 (S13-S14) — Indicadores de salud e historial de cumplimiento, módulo de IA, pulsera inteligente (Traccar + Health Connect) y botón de asistencia
 - [ ] Sprint 6 (S15) — Glucosa manual, recordatorios extendidos, farmacias vía IA, pruebas, Informe Final (Semana 15)
