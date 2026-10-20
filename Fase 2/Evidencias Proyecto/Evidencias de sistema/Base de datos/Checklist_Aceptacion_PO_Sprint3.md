@@ -59,16 +59,16 @@
 
 La app hace una llamada por perfil en vez de usar `GET /panel` (ver Sprint Backlog 3).
 
-- [ ] **Acepto** la limitación para esta versión inicial del panel.
+- [x] **Acepto** la limitación para esta versión inicial del panel.
 - [ ] **No acepto** — especificar qué falta:
   - _____________________________________________
 
 ## Veredicto final
 
-- [ ] **HU 5: Aceptada**
-- [ ] **HU 6: Aceptada**
-- [ ] **HU 7: Aceptada**
-- [ ] **HU 8: Aceptada** (versión inicial)
+- [x] **HU 5: Aceptada**
+- [x] **HU 6: Aceptada**
+- [x] **HU 7: Aceptada**
+- [x] **HU 8: Aceptada** (versión inicial)
 
 **Product Owner:** Sergio Ocares
 **Fecha:** 20 de octubre de 2026
