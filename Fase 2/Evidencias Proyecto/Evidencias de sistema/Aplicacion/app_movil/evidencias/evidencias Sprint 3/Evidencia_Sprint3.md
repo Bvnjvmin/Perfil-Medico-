@@ -51,4 +51,4 @@ Las capturas están en esta misma carpeta (`evidencias Sprint 3/`).
 * El Panel hace una llamada por perfil; el backend ya ofrece `GET /panel?fecha=` para hacerlo en una sola.
 * Sin timeouts ni manejo explícito de `SocketException` en las llamadas HTTP.
 * Los 4 avisos de `flutter analyze` (`value` → `initialValue`) se corrigen en el Sprint 4.
-* Aceptación del Product Owner: pendiente (`Checklist_Aceptacion_PO_Sprint3.md`, a cargo de Sergio).
+* Aceptación del Product Owner: HU 5, 6, 7 y 8 aceptadas el 20-10, con 17 de 17 criterios cumplidos (`Checklist_Aceptacion_PO_Sprint3.md`).
