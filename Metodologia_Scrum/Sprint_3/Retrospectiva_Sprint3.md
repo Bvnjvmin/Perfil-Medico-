@@ -8,7 +8,7 @@
 
 ## Resultado del sprint
 
-Historias comprometidas: 4 (HU 5 en su cierre, HU 6, HU 7 y HU 8) · Terminadas en base de datos, backend y app: 4 · Pendiente: la aceptación del Product Owner (`Checklist_Aceptacion_PO_Sprint3.md`). Detalle en `Sprint_Backlog_Sprint3.md`.
+Historias comprometidas: 4 (HU 5 en su cierre, HU 6, HU 7 y HU 8) · Terminadas en base de datos, backend y app: 4 · Aceptadas por el Product Owner el 20-10, 17 de 17 criterios (`Checklist_Aceptacion_PO_Sprint3.md`). Detalle en `Sprint_Backlog_Sprint3.md`.
 
 - **Base de datos (13-10):** tablas `actividad` y `perfil_acceso`, índice de titular único, borrado en cascada y `modelo_datos.md` al día.
 - **Backend (15-10):** perfiles dependientes validados, agenda con confirmación guardada en el servidor, cuidadores con permisos por perfil y `GET /panel`; 119 pruebas pasan.

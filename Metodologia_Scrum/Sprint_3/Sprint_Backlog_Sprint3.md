@@ -19,7 +19,7 @@
 
 **Cierre (17 al 19-10).** Los textos de evidencia y la retrospectiva del Sprint 3 (Matías, 17-10), las autoevaluaciones 2.2 de Matías (17-10) y de Sergio (19-10) y el Informe de Avance (`Informe_Avance_2_4.docx`, 17-10) están en `main`.
 
-**Pendiente:** el checklist de aceptación del Product Owner (`Checklist_Aceptacion_PO_Sprint3.md`), que Sergio sube antes de la evaluación del 21-10.
+**Aceptación del Product Owner (20-10).** Sergio validó las cuatro historias: 13 criterios contra la API con tres cuentas y 4 en el emulador, 17 de 17 cumplidos (`Checklist_Aceptacion_PO_Sprint3.md`). Con esto el sprint queda cerrado sin pendientes.
 
 ## 1. Historias comprometidas
 
@@ -30,7 +30,7 @@
   - Cada cuenta tiene un solo perfil titular; un segundo titular se rechaza.
   - Borrar un perfil con alergias, contactos, medicamentos, rutinas, actividades y vínculos deja todo limpio.
   - La app muestra la pantalla "Mis perfiles" y permite elegir el perfil activo.
-- **Estado:** 🟡 **Lista, falta la aceptación del PO.** Base de datos lista (commits `4f81fdd` y `b010924`) y backend listo (validación de `tipo` y `subtipo`, un solo titular por cuenta y borrado ordenado, 15-10). Las pantallas "Mis perfiles" (con etiquetas "Tuyo" y "Compartido contigo"), el formulario de dependiente con subtipo y el selector de perfil activo están en `main` (Matías, 15-10); probado en el emulador (capturas `S3_01` a `S3_03`). Falta la aceptación del Product Owner.
+- **Estado:** ✅ **Terminada y aceptada por el PO (20-10).** Base de datos lista (commits `4f81fdd` y `b010924`) y backend listo (validación de `tipo` y `subtipo`, un solo titular por cuenta y borrado ordenado, 15-10). Las pantallas "Mis perfiles" (con etiquetas "Tuyo" y "Compartido contigo"), el formulario de dependiente con subtipo y el selector de perfil activo están en `main` (Matías, 15-10); probado en el emulador (capturas `S3_01` a `S3_03`).
 
 ### HU 5 — Agenda diaria de actividades (cierre)
 - **Responsables:** Sergio Ocares (BD), Benjamín Leiva (Backend), Matías Pizarro (App) · **Prioridad:** Alta
@@ -39,7 +39,7 @@
   - Al pedir la agenda de una fecha, el backend devuelve las actividades de cada medicamento o rutina activos, sin duplicarlas.
   - Se puede confirmar y desconfirmar una actividad, y el cambio se conserva al volver a consultar.
   - La agenda de la app consume la API en vez de `shared_preferences`.
-- **Estado:** 🟡 **Lista, falta la aceptación del PO.** Tabla `actividad` (commit `7e2ebdb`), endpoints (15-10) y agenda de la app conectada a la API (Matías, 15-10); la confirmación se conserva al cerrar sesión y volver a entrar (capturas `S3_04`).
+- **Estado:** ✅ **Terminada y aceptada por el PO (20-10).** Tabla `actividad` (commit `7e2ebdb`), endpoints (15-10) y agenda de la app conectada a la API (Matías, 15-10); la confirmación se conserva al cerrar sesión y volver a entrar (capturas `S3_04`).
 
 ### HU 7 — Permisos y cuidadores
 - **Responsables:** Sergio Ocares (BD), Benjamín Leiva (Backend), Matías Pizarro (App) · **Prioridad:** Alta
@@ -48,14 +48,14 @@
   - El titular puede vincular a un cuidador por correo (solo si ya tiene cuenta; si no, recibe un error claro), cambiar sus permisos y revocarlos.
   - Se respeta la matriz de acceso: un cuidador ve el perfil y confirma solo si tiene `puede_confirmar` (si no, 403); no puede editar ni borrar el perfil; una cuenta ajena recibe 404.
   - La app respeta los permisos de cada perfil.
-- **Estado:** 🟡 **Lista, falta la aceptación del PO.** Tabla `perfil_acceso` lista (commit `b010924`) y rutas de cuidadores con dependencia de permisos listas (15-10). La app (15-10) muestra el formulario para compartir, bloquea la edición y la confirmación según el rol, y muestra el mensaje del backend si el correo no existe (capturas `S3_06`). Falta la aceptación del Product Owner.
+- **Estado:** ✅ **Terminada y aceptada por el PO (20-10).** Tabla `perfil_acceso` lista (commit `b010924`) y rutas de cuidadores con dependencia de permisos listas (15-10). La app (15-10) muestra el formulario para compartir, bloquea la edición y la confirmación según el rol, y muestra el mensaje del backend si el correo no existe (capturas `S3_06`).
 
 ### HU 8 — Panel de estado diario (versión inicial)
 - **Responsables:** Benjamín Leiva (Backend), Matías Pizarro (App) · **Prioridad:** Alta
 - **Criterios de aceptación:**
   - `GET /panel?fecha=` devuelve, por cada perfil al que el usuario tiene acceso, el total de actividades, las confirmadas y las pendientes.
   - La pantalla "Panel" muestra ese avance por perfil, propio y compartido.
-- **Estado:** 🟡 **Lista, falta la aceptación del PO.** `GET /panel?fecha=` en el backend (15-10) y pantalla "Panel" en la app (Matías, 15-10), con una tarjeta de avance por perfil (captura `S3_05`). Limitación conocida: la app hace una llamada por perfil en vez de usar `GET /panel`.
+- **Estado:** ✅ **Terminada y aceptada por el PO (20-10).** `GET /panel?fecha=` en el backend (15-10) y pantalla "Panel" en la app (Matías, 15-10), con una tarjeta de avance por perfil (captura `S3_05`). Limitación conocida: la app hace una llamada por perfil en vez de usar `GET /panel`.
 
 ### Extras (Deseable)
 Editar medicamentos y rutinas desde la app, pantallas de alergias y contactos, pantalla para compartir un perfil, `RUTINA_HORARIO` y datos de prueba. Son lo primero que se recorta.
@@ -78,7 +78,7 @@ Editar medicamentos y rutinas desde la app, pantallas de alergias y contactos, p
 | Pantalla "Panel" | HU 8 | Matías | ✅ Hecha el 15-10 (commit `45308b6`) | `app_movil/lib/` |
 | Pruebas de la app (`flutter test`, 10 de 10) y logs del sprint | HU 5 / HU 6 / HU 7 / HU 8 | Matías | ✅ Hecha el 15 y 16-10 (commits `71571ae`, `85114c8`, `1a1c0d9` y `5c6783a`) | `app_movil/test/`, `evidencias/` |
 | Pruebas del backend con fecha dinámica (119 pasan) | HU 5 | Benjamín | ✅ Hecha el 17-10 | `backend/app/tests/` |
-| Checklist de aceptación del Product Owner | HU 5 / HU 6 / HU 7 / HU 8 | Sergio | ⬜ Pendiente: Sergio lo sube antes del 21-10 | `Base de datos/Checklist_Aceptacion_PO_Sprint3.md` |
+| Checklist de aceptación del Product Owner | HU 5 / HU 6 / HU 7 / HU 8 | Sergio | ✅ Hecha el 20-10 (17 de 17 criterios) | `Base de datos/Checklist_Aceptacion_PO_Sprint3.md` |
 | Retrospectiva del Sprint 2 | — | Matías | ✅ Redactada el 15-10 a partir del repositorio (commit `656cf4b`); se confirma en la reunión del equipo | `Metodologia_Scrum/Sprint_2/` |
 | Diario de Reflexión 2.1 | — | Sergio | ✅ Hecha el 07-10 (commit `9bc9097`) | `Fase 2/Evidencias Individuales/` |
 | Autoevaluación de avance 2.2 | — | Benjamín | ✅ Hecha el 15-10 (commit `dd5dd13`) | `Fase 2/Evidencias Individuales/` |
@@ -93,10 +93,10 @@ Definición del equipo: *integrada al repositorio + probada + documentada.*
 
 | Historia | Integrada al repo | Probada | Documentada | ¿Terminada? |
 |---|---|---|---|---|
-| HU 6 | ✅ Base de datos, backend y app | ✅ 119 pruebas del backend, 10 de la app y emulador | ✅ `modelo_datos.md` y `Evidencia_Sprint3.md` | Falta el checklist del PO |
-| HU 5 (cierre) | ✅ Tabla, backend y app | ✅ 119 pruebas del backend, 10 de la app y emulador | ✅ `modelo_datos.md` y `Evidencia_Sprint3.md` | Falta el checklist del PO |
-| HU 7 | ✅ Tabla, backend y app | ✅ 119 pruebas del backend, 10 de la app y emulador (dos cuentas) | ✅ `modelo_datos.md` y `Evidencia_Sprint3.md` | Falta el checklist del PO |
-| HU 8 | ✅ Backend y app | ✅ 119 pruebas del backend, 10 de la app y emulador | ✅ `Evidencia_Sprint3.md` | Falta el checklist del PO |
+| HU 6 | ✅ Base de datos, backend y app | ✅ 119 pruebas del backend, 10 de la app y emulador | ✅ `modelo_datos.md` y `Evidencia_Sprint3.md` | ✅ Aceptada por el PO (20-10) |
+| HU 5 (cierre) | ✅ Tabla, backend y app | ✅ 119 pruebas del backend, 10 de la app y emulador | ✅ `modelo_datos.md` y `Evidencia_Sprint3.md` | ✅ Aceptada por el PO (20-10) |
+| HU 7 | ✅ Tabla, backend y app | ✅ 119 pruebas del backend, 10 de la app y emulador (dos cuentas) | ✅ `modelo_datos.md` y `Evidencia_Sprint3.md` | ✅ Aceptada por el PO (20-10) |
+| HU 8 | ✅ Backend y app | ✅ 119 pruebas del backend, 10 de la app y emulador | ✅ `Evidencia_Sprint3.md` | ✅ Aceptada por el PO (20-10) |
 
 Las migraciones de este sprint se probaron desde una base vacía, hacia arriba y hacia abajo, y borrar un perfil con datos asociados deja todas las tablas limpias.
 
@@ -110,7 +110,7 @@ Las migraciones de este sprint se probaron desde una base vacía, hacia arriba y
 | Actividad con las dos llaves vacías, con las dos llenas o duplicada el mismo día | Automática | ✅ Pasan (15-10) |
 | Borrar un perfil con datos asociados | Manual (PostgreSQL) | ✅ Todo queda limpio (13-10) |
 | Matriz de permisos (titular, cuidador, lectura y cuenta ajena) | Automática (backend) | ✅ Pasan (15-10, 119 pruebas en total; el 17-10 se cambiaron las fechas fijas por la fecha de hoy y vuelven a pasar las 119) |
-| Checklist de aceptación del Product Owner con tres cuentas (dueño, cuidador y ajena) | Manual (Product Owner) | ⬜ Pendiente: Sergio lo sube antes del 21-10 |
+| Checklist de aceptación del Product Owner con tres cuentas (dueño, cuidador y ajena) | Manual (Product Owner) | ✅ 17 de 17 criterios cumplidos (20-10) |
 | Flujo equivalente desde la app (perfiles, agenda, panel y permisos de cuidador, con dos cuentas) | Manual (emulador, Matías) | ✅ 15 y 16-10, 17 capturas en `app_movil/evidencias/evidencias Sprint 3/` |
 | `flutter test` y `flutter analyze` | Automática (app) | ✅ 10 de 10 pasan; sin errores y 4 avisos informativos (16-10) |
 
@@ -146,4 +146,4 @@ Se completa al cierre del sprint. Lo previsto hasta ahora:
 - 17-10: pruebas del backend con fecha dinámica y `pytest.log` nuevo (Benjamín); este Sprint Backlog actualizado.
 - 17-10: evidencia y retrospectiva del Sprint 3 corregidas, autoevaluación 2.2 de Matías y capturas renombradas (Matías, commits `0f457a8` a `e5feecc`); Informe de Avance subido (Sergio).
 - 19-10: autoevaluación 2.2 de Sergio.
-- 20-10: estados de este Sprint Backlog y de los README al día.
+- 20-10: checklist de aceptación del Product Owner subido (Sergio, 17 de 17 criterios) y estados de este Sprint Backlog y de los README al día.
