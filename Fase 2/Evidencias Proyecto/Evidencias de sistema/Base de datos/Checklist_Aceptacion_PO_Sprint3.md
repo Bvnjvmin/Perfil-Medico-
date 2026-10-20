@@ -71,7 +71,7 @@ La app hace una llamada por perfil en vez de usar `GET /panel` (ver Sprint Backl
 - [ ] **HU 8: Aceptada** (versión inicial)
 
 **Product Owner:** Sergio Ocares
-**Fecha:** ____ de octubre de 2026
+**Fecha:** 20 de octubre de 2026
 
 ---
 
