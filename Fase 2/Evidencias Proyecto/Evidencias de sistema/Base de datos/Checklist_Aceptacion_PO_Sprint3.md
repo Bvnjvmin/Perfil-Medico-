@@ -1,0 +1,71 @@
+# Checklist de aceptación — Product Owner (Sprint 3)
+
+**Rol:** Sergio Ocares, Product Owner
+**Qué es esto:** antes de dar por cerradas las HU 5, 6, 7 y 8, el Product Owner valida que lo construido cumple los criterios de aceptación del Sprint Backlog 3. No basta con que las pruebas automatizadas pasen: alguien que no escribió el código lo prueba desde afuera, con tres cuentas (titular, cuidador autorizado y persona ajena). Esto completa la Definition of Done del equipo ("integrada al repositorio + probada + documentada") desde el ángulo del PO.
+
+## Cómo probar
+
+1. Levanta el backend: `docker compose up --build` desde `Aplicacion/backend` (o `uvicorn app.main:app --reload` si ya tienes el entorno local armado).
+2. Abre `http://localhost:8000/docs`: ahí están todos los endpoints con un botón para probarlos sin necesitar la app ni Postman.
+3. Registra tres usuarios (`POST /auth/register`): **titular**, **cuidador** y **ajena**. Autentícate con cada uno (`POST /auth/login`, botón "Authorize") según la fila que pruebes.
+4. Para los criterios de la app, usa el emulador con dos cuentas (titular y cuidador).
+5. Marca cada fila (✅ / ❌) a medida que la pruebas.
+
+## HU 6 — Perfiles de dependientes
+
+| # | Criterio de aceptación | Cómo probarlo | ✅ / ❌ | Notas |
+|---|---|---|---|---|
+| 1 | El titular crea un perfil dependiente con `tipo = 'dependiente'` y `subtipo` válido (`adulto_mayor` o `nino`) | `POST /perfiles` con cada subtipo → 201 | | |
+| 2 | Un subtipo inválido se rechaza y el perfil titular no lleva subtipo | `POST /perfiles` con `subtipo = 'otro'` → error; titular con subtipo → error | | |
+| 3 | Cada cuenta tiene un solo perfil titular | Crear un segundo `tipo = 'titular'` con la misma cuenta → rechazado | | |
+| 4 | Borrar un perfil con alergias, contactos, medicamentos, rutinas, actividades y vínculos deja todo limpio | `DELETE /perfiles/{id}` y luego consultar cada recurso → 404 / vacío | | |
+| 5 | La app muestra "Mis perfiles" y permite elegir el perfil activo | Emulador: capturas `S3_01` a `S3_03` | | |
+
+## HU 5 — Agenda diaria de actividades (cierre)
+
+| # | Criterio de aceptación | Cómo probarlo | ✅ / ❌ | Notas |
+|---|---|---|---|---|
+| 6 | La confirmación se guarda en el backend (tabla `actividad`), no en el dispositivo | Confirmar una actividad, cerrar sesión, volver a entrar y consultar | | |
+| 7 | La agenda de una fecha devuelve las actividades de cada medicamento o rutina activos, sin duplicarlas | `GET` de la agenda con `?fecha=AAAA-MM-DD`, dos veces seguidas → mismo resultado | | |
+| 8 | Se puede confirmar y desconfirmar, y el cambio se conserva | Confirmar, desconfirmar y volver a consultar | | |
+| 9 | La agenda de la app consume la API (no `shared_preferences`) | Emulador: capturas `S3_04` | | |
+
+## HU 7 — Permisos y cuidadores
+
+| # | Criterio de aceptación | Cómo probarlo | ✅ / ❌ | Notas |
+|---|---|---|---|---|
+| 10 | Existe un solo vínculo por persona y perfil | Vincular dos veces al mismo cuidador al mismo perfil → rechazado | | |
+| 11 | El titular vincula a un cuidador por correo; si el correo no tiene cuenta, recibe un error claro | Vincular con el correo de **cuidador** → 201; con un correo inexistente → error con mensaje | | |
+| 12 | El titular cambia los permisos y revoca el vínculo | `PUT` y `DELETE` sobre el vínculo; el cuidador pierde el acceso | | |
+| 13 | Matriz de acceso: el cuidador ve el perfil; confirma solo con `puede_confirmar` (si no, 403); no edita ni borra el perfil; la cuenta **ajena** recibe 404 | Probar cada caso con las tres cuentas | | |
+| 14 | La app respeta los permisos de cada perfil | Emulador con la cuenta cuidador: capturas `S3_06` | | |
+
+## HU 8 — Panel de estado diario (versión inicial)
+
+| # | Criterio de aceptación | Cómo probarlo | ✅ / ❌ | Notas |
+|---|---|---|---|---|
+| 15 | `GET /panel?fecha=` devuelve, por perfil con acceso, el total de actividades, las confirmadas y las pendientes | Consultar con la cuenta titular y comparar con la agenda | | |
+| 16 | El panel no incluye perfiles de cuentas sin vínculo | Consultar con la cuenta **ajena** → lista vacía | | |
+| 17 | La pantalla "Panel" muestra el avance por perfil, propio y compartido | Emulador: captura `S3_05` | | |
+
+## Limitación conocida de la HU 8
+
+La app hace una llamada por perfil en vez de usar `GET /panel` (ver Sprint Backlog 3).
+
+- [ ] **Acepto** la limitación para esta versión inicial del panel.
+- [ ] **No acepto** — especificar qué falta:
+  - _____________________________________________
+
+## Veredicto final
+
+- [ ] **HU 5: Aceptada**
+- [ ] **HU 6: Aceptada**
+- [ ] **HU 7: Aceptada**
+- [ ] **HU 8: Aceptada** (versión inicial)
+
+**Product Owner:** Sergio Ocares
+**Fecha:** ____ de octubre de 2026
+
+---
+
+*Una vez completado, sube este archivo a `Fase 2/Evidencias Proyecto/Evidencias de sistema/Base de datos/` con un commit del tipo: `Agrega checklist de aceptación del PO del Sprint 3`.*
