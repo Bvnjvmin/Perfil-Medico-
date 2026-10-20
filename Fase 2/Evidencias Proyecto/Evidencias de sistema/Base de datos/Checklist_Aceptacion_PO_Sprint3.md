@@ -73,6 +73,3 @@ La app hace una llamada por perfil en vez de usar `GET /panel` (ver Sprint Backl
 **Product Owner:** Sergio Ocares
 **Fecha:** 20 de octubre de 2026
 
----
-
-*Una vez completado, sube este archivo a `Fase 2/Evidencias Proyecto/Evidencias de sistema/Base de datos/` con un commit del tipo: `Agrega checklist de aceptación del PO del Sprint 3`.*
