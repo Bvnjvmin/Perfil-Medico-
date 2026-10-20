@@ -25,7 +25,7 @@ Propuesta de Proyecto APT · Capstone_005D (Grupo 7) · Ingeniería Informática
   - Base de datos terminada (13-10): tablas `actividad` y `perfil_acceso`, índice de un solo titular por cuenta y borrado en cascada
   - Backend terminado (15-10): perfiles dependientes validados (HU 6), agenda diaria con confirmación guardada en el servidor (HU 5), cuidadores con permisos por perfil (HU 7) y `GET /panel` (HU 8); 119 pruebas automatizadas
   - App terminada (15-10): pantallas de perfiles dependientes, compartir perfil con permisos y panel, y agenda conectada a la API; 10 pruebas de Flutter y prueba manual con dos cuentas (17 capturas)
-  - Pendiente: checklist de aceptación del Product Owner, retrospectiva del Sprint 3 e Informe de Avance — ver [`Metodologia_Scrum/Sprint_3`](<./Metodologia_Scrum/Sprint_3>)
+  - Cierre: evidencia, retrospectiva, autoevaluaciones 2.2 e Informe de Avance entregados (17 al 19-10). Pendiente: checklist de aceptación del Product Owner, que Sergio sube antes de la evaluación del 21-10 — ver [`Metodologia_Scrum/Sprint_3`](<./Metodologia_Scrum/Sprint_3>)
 - [ ] Sprint 4 (S11-S12) — `RUTINA_HORARIO`, recordatorios y alertas escalonadas, interfaz simplificada para el perfil dependiente
 - [ ] Sprint 5 (S13-S14) — Indicadores de salud e historial de cumplimiento, módulo de IA, pulsera inteligente (Traccar + Health Connect) y botón de asistencia
 - [ ] Sprint 6 (S15) — Glucosa manual, recordatorios extendidos, farmacias vía IA, pruebas, Informe Final (Semana 15)
