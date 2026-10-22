@@ -64,7 +64,8 @@ erDiagram
         uuid medicamento_id FK "nullable - ON DELETE CASCADE"
         uuid rutina_id FK "nullable - ON DELETE CASCADE"
         date fecha
-        string estado "pendiente | confirmada"
+        time hora "nullable - Sprint 4"
+        string estado "pendiente | confirmada | vencida | omitida"
         datetime confirmada_en "nullable"
         string confirmada_por_id FK "nullable - ON DELETE SET NULL"
     }
@@ -82,10 +83,29 @@ erDiagram
     }
 
     RUTINA_HORARIO {
-        uuid id PK "Pendiente - Sprint 4"
-        uuid medicamento_id FK "nullable"
-        uuid rutina_id FK "nullable"
+        uuid id PK "Sprint 4"
+        uuid medicamento_id FK "nullable - ON DELETE CASCADE"
+        uuid rutina_id FK "nullable - ON DELETE CASCADE"
         time hora
+    }
+
+    ALERTA {
+        uuid id PK "Sprint 4"
+        uuid actividad_id FK "ON DELETE CASCADE"
+        string usuario_id FK "destinatario - ON DELETE CASCADE"
+        string tipo "recordatorio | alerta"
+        int nivel "0 recordatorio, 1 y 2 alertas"
+        string mensaje
+        datetime creada_en
+        datetime leida_en "nullable"
+    }
+
+    DISPOSITIVO_PUSH {
+        uuid id PK "Sprint 4"
+        string usuario_id FK "ON DELETE CASCADE"
+        string token UK
+        string plataforma
+        datetime creado_en
     }
 
     USUARIO ||--o{ PERFIL : "administra (titular y dependientes)"
@@ -96,8 +116,11 @@ erDiagram
     PERFIL ||--o{ MEDICAMENTO : "tiene medicamentos"
     PERFIL ||--o{ RUTINA_CUIDADO : "tiene rutinas"
     PERFIL ||--o{ ACTIVIDAD : "tiene actividades"
-    MEDICAMENTO ||--o{ ACTIVIDAD : "genera (una por dia)"
-    RUTINA_CUIDADO ||--o{ ACTIVIDAD : "genera (una por dia)"
+    MEDICAMENTO ||--o{ ACTIVIDAD : "genera (una por horario y dia)"
+    RUTINA_CUIDADO ||--o{ ACTIVIDAD : "genera (una por horario y dia)"
     USUARIO ||--o{ ACTIVIDAD : "confirma (directo o proxy)"
     MEDICAMENTO ||--o{ RUTINA_HORARIO : "se toma a las"
     RUTINA_CUIDADO ||--o{ RUTINA_HORARIO : "se hace a las"
+    ACTIVIDAD ||--o{ ALERTA : "origina avisos"
+    USUARIO ||--o{ ALERTA : "recibe"
+    USUARIO ||--o{ DISPOSITIVO_PUSH : "registra"
