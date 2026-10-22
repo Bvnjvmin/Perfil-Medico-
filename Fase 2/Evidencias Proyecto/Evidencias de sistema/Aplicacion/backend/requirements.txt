@@ -9,6 +9,7 @@ PyJWT==2.7.0
 bcrypt==5.0.0
 python-multipart==0.0.32
 alembic==1.20.0
+tzdata==2026.5  # zonas horarias (America/Santiago) en la imagen slim de Docker
 
 # Solo para desarrollo y pruebas (no se necesitan en producción)
 pytest==9.1.1

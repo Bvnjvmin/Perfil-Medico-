@@ -24,6 +24,8 @@ services:
     environment:
       # Dentro de la red de Docker, la base de datos se llama "db" (no localhost)
       DATABASE_URL: postgresql://postgres:postgres@db:5432/perfil_medico
+      # Genera las actividades y envía recordatorios y alertas cada minuto (Sprint 4).
+      TAREAS_PROGRAMADAS: "true"
     ports:
       - "8000:8000"
     depends_on:
