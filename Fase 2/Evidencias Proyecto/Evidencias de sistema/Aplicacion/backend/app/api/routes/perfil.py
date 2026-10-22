@@ -37,6 +37,8 @@ from app.api.deps import (
 )
 from app.db.session import get_db
 from app.models.actividad import Actividad
+from app.models.alerta import Alerta
+from app.models.rutina_horario import RutinaHorario
 from app.models.medicamento import Medicamento, RutinaCuidado
 from app.models.perfil import Alergia, ContactoEmergencia, Perfil
 from app.models.perfil_acceso import PerfilAcceso
@@ -177,7 +179,13 @@ def eliminar_perfil(
     llaves foráneas, y así el mismo código funciona igual en PostgreSQL.
     """
     perfil, _ = obtener_perfil_con_permiso(perfil_id, db, current_user, PERMISO_TITULAR)
+    ids_actividades = db.query(Actividad.id).filter(Actividad.perfil_id == perfil.id)
+    db.query(Alerta).filter(Alerta.actividad_id.in_(ids_actividades)).delete(synchronize_session=False)
     db.query(Actividad).filter(Actividad.perfil_id == perfil.id).delete()
+    ids_medicamentos = db.query(Medicamento.id).filter(Medicamento.perfil_id == perfil.id)
+    ids_rutinas = db.query(RutinaCuidado.id).filter(RutinaCuidado.perfil_id == perfil.id)
+    db.query(RutinaHorario).filter(RutinaHorario.medicamento_id.in_(ids_medicamentos)).delete(synchronize_session=False)
+    db.query(RutinaHorario).filter(RutinaHorario.rutina_id.in_(ids_rutinas)).delete(synchronize_session=False)
     db.query(Medicamento).filter(Medicamento.perfil_id == perfil.id).delete()
     db.query(RutinaCuidado).filter(RutinaCuidado.perfil_id == perfil.id).delete()
     db.query(PerfilAcceso).filter(PerfilAcceso.perfil_id == perfil.id).delete()

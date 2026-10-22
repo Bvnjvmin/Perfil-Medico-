@@ -41,6 +41,8 @@ def _a_salida(vinculo: PerfilAcceso, usuario: Usuario) -> CuidadorOut:
         rol_vinculo=vinculo.rol_vinculo,
         puede_confirmar=False if es_lectura else vinculo.puede_confirmar,
         puede_editar_rutinas=False if es_lectura else vinculo.puede_editar_rutinas,
+        recibe_alertas=vinculo.recibe_alertas,
+        nivel_escalamiento=vinculo.nivel_escalamiento,
     )
 
 
@@ -88,6 +90,8 @@ def vincular_cuidador(
         rol_vinculo=datos.rol_vinculo,
         puede_confirmar=False if es_lectura else datos.puede_confirmar,
         puede_editar_rutinas=False if es_lectura else datos.puede_editar_rutinas,
+        recibe_alertas=datos.recibe_alertas,
+        nivel_escalamiento=datos.nivel_escalamiento,
     )
     db.add(vinculo)
     db.commit()

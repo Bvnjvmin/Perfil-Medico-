@@ -27,6 +27,8 @@ from sqlalchemy.orm import Session
 from app.api.deps import PERMISO_EDITAR_RUTINAS, get_current_user, obtener_perfil_con_permiso
 from app.db.session import get_db
 from app.models.actividad import Actividad
+from app.models.alerta import Alerta
+from app.models.rutina_horario import RutinaHorario
 from app.models.medicamento import Medicamento, RutinaCuidado
 from app.models.usuario import Usuario
 from app.schemas.medicamento import (
@@ -138,7 +140,10 @@ def eliminar_medicamento(
     """Elimina un medicamento propio."""
     medicamento = _obtener_medicamento_propio(medicamento_id, db, current_user, PERMISO_EDITAR_RUTINAS)
     # Sus actividades se borran explícitamente (SQLite no aplica ON DELETE CASCADE).
+    ids = db.query(Actividad.id).filter(Actividad.medicamento_id == medicamento.id)
+    db.query(Alerta).filter(Alerta.actividad_id.in_(ids)).delete(synchronize_session=False)
     db.query(Actividad).filter(Actividad.medicamento_id == medicamento.id).delete()
+    db.query(RutinaHorario).filter(RutinaHorario.medicamento_id == medicamento.id).delete()
     db.delete(medicamento)
     db.commit()
 
@@ -217,6 +222,9 @@ def eliminar_rutina(
 ):
     """Elimina una rutina de cuidado propia."""
     rutina = _obtener_rutina_propia(rutina_id, db, current_user, PERMISO_EDITAR_RUTINAS)
+    ids = db.query(Actividad.id).filter(Actividad.rutina_id == rutina.id)
+    db.query(Alerta).filter(Alerta.actividad_id.in_(ids)).delete(synchronize_session=False)
     db.query(Actividad).filter(Actividad.rutina_id == rutina.id).delete()
+    db.query(RutinaHorario).filter(RutinaHorario.rutina_id == rutina.id).delete()
     db.delete(rutina)
     db.commit()
