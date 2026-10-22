@@ -21,6 +21,6 @@ class ActividadOut(BaseModel):
     titulo: str
     detalle: str
     hora: Optional[time] = None
-    estado: Literal["pendiente", "confirmada"]
+    estado: Literal["pendiente", "confirmada", "vencida", "omitida"]
     confirmada_en: Optional[datetime] = None
     confirmada_por_id: Optional[str] = None
