@@ -1,10 +1,10 @@
 # Modelo de Datos — Perfil Médico+
 
-**Responsable:** Sergio Ocares · **Sprint 1** (S5-S6), actualizado en Sprint 2 (S7-S8) y Sprint 3 (S9-S10)
+**Responsable:** Sergio Ocares · **Sprint 1** (S5-S6), actualizado en Sprint 2 (S7-S8), Sprint 3 (S9-S10) y Sprint 4 (S11-S12)
 
 ## Diagrama entidad-relación
 
-El diagrama refleja lo **realmente construido** hasta el Sprint 3 (ver `Aplicacion/backend/app/models/`). `RUTINA_HORARIO` aparece marcada como pendiente: se muestra para dar contexto de hacia dónde va el modelo, no está implementada.
+El diagrama refleja lo **realmente construido** hasta el Sprint 4 (ver `Aplicacion/backend/app/models/`). El Sprint 4 agrega `RUTINA_HORARIO`, `ALERTA` y `DISPOSITIVO_PUSH`, y la columna `hora` de `ACTIVIDAD`.
 
 ```mermaid
 erDiagram
@@ -73,7 +73,8 @@ erDiagram
         uuid medicamento_id FK "nullable - ON DELETE CASCADE"
         uuid rutina_id FK "nullable - ON DELETE CASCADE"
         date fecha
-        string estado "pendiente | confirmada"
+        time hora "nullable - Sprint 4"
+        string estado "pendiente | confirmada | vencida | omitida"
         datetime confirmada_en "nullable"
         string confirmada_por_id FK "nullable - ON DELETE SET NULL"
     }
@@ -91,10 +92,29 @@ erDiagram
     }
 
     RUTINA_HORARIO {
-        uuid id PK "Pendiente - Sprint 4"
-        uuid medicamento_id FK "nullable"
-        uuid rutina_id FK "nullable"
+        uuid id PK "Sprint 4"
+        uuid medicamento_id FK "nullable - ON DELETE CASCADE"
+        uuid rutina_id FK "nullable - ON DELETE CASCADE"
         time hora
+    }
+
+    ALERTA {
+        uuid id PK "Sprint 4"
+        uuid actividad_id FK "ON DELETE CASCADE"
+        string usuario_id FK "destinatario - ON DELETE CASCADE"
+        string tipo "recordatorio | alerta"
+        int nivel "0 recordatorio, 1 y 2 alertas"
+        string mensaje
+        datetime creada_en
+        datetime leida_en "nullable"
+    }
+
+    DISPOSITIVO_PUSH {
+        uuid id PK "Sprint 4"
+        string usuario_id FK "ON DELETE CASCADE"
+        string token UK
+        string plataforma
+        datetime creado_en
     }
 
     USUARIO ||--o{ PERFIL : "administra (titular y dependientes)"
@@ -105,11 +125,14 @@ erDiagram
     PERFIL ||--o{ MEDICAMENTO : "tiene medicamentos"
     PERFIL ||--o{ RUTINA_CUIDADO : "tiene rutinas"
     PERFIL ||--o{ ACTIVIDAD : "tiene actividades"
-    MEDICAMENTO ||--o{ ACTIVIDAD : "genera (una por dia)"
-    RUTINA_CUIDADO ||--o{ ACTIVIDAD : "genera (una por dia)"
+    MEDICAMENTO ||--o{ ACTIVIDAD : "genera (una por horario y dia)"
+    RUTINA_CUIDADO ||--o{ ACTIVIDAD : "genera (una por horario y dia)"
     USUARIO ||--o{ ACTIVIDAD : "confirma (directo o proxy)"
     MEDICAMENTO ||--o{ RUTINA_HORARIO : "se toma a las"
     RUTINA_CUIDADO ||--o{ RUTINA_HORARIO : "se hace a las"
+    ACTIVIDAD ||--o{ ALERTA : "origina avisos"
+    USUARIO ||--o{ ALERTA : "recibe"
+    USUARIO ||--o{ DISPOSITIVO_PUSH : "registra"
 ```
 
 ## Decisiones de diseño
@@ -157,6 +180,19 @@ Migraciones del sprint (cadena de Alembic con una sola cabeza, a cargo de Sergio
 - **Borrado en cascada desde `perfil`.** Las llaves de `alergia`, `contacto_emergencia`, `medicamento`, `rutina_cuidado`, `actividad` y `perfil_acceso` hacia `perfil` usan `ON DELETE CASCADE`, de modo que borrar un perfil deja todo limpio. `perfil_acceso` también se borra en cascada si se elimina el usuario. La llave `actividad.confirmada_por_id` usa `ON DELETE SET NULL`: si se borra a quien confirmó, la actividad se conserva. El borrado explícito en el código del backend se mantiene como segunda protección, porque las pruebas con SQLite no validan llaves foráneas.
 - **Columnas de alertas incluidas desde ahora.** `recibe_alertas` y `nivel_escalamiento` de `perfil_acceso` no se usan hasta el Sprint 4, pero se crearon ahora para evitar otra migración.
 
+## Decisiones del Sprint 4
+
+Migraciones del sprint (la cadena sigue con una sola cabeza): `f7a8b9c0d1e2` (tabla `rutina_horario`), `a8b9c0d1e2f3` (`actividad.hora` y estados), `b9c0d1e2f3a4` (tabla `alerta`) y `c0d1e2f3a4b5` (tabla `dispositivo_push`, cabeza actual). Se probaron sobre PostgreSQL 16: `upgrade` desde la cabeza anterior, `downgrade`/`upgrade` de cada una, relleno de datos existentes, restricciones únicas y borrado en cascada.
+
+- **`RUTINA_HORARIO` con las mismas dos llaves opcionales que `ACTIVIDAD`.** `medicamento_id` o `rutina_id`, con `CHECK` de que exactamente una tenga valor, y únicas `(medicamento_id, hora)` y `(rutina_id, hora)`. Se borra en cascada con su medicamento o rutina.
+- **`ACTIVIDAD` gana la columna `hora` y la clave única pasa a `(origen, fecha, hora)`.** Es la respuesta a la pregunta abierta del contrato: con varios horarios al día hace falta una actividad por cada uno. Las actividades que ya existían reciben la `hora` de su medicamento o rutina (relleno en la migración). Como en PostgreSQL varios `NULL` no chocan en una restricción única, se agregaron índices únicos parciales para las actividades sin hora. El `downgrade` conserva una actividad por origen y día.
+- **Estados `vencida` y `omitida`.** `vencida` la marca el backend cuando termina el día y la actividad sigue pendiente; `omitida` queda disponible en el modelo, pero ninguna ruta la usa todavía.
+- **Las actividades se generan con una tarea programada, además de al consultar la agenda.** El backend ejecuta un ciclo cada `TAREAS_INTERVALO_SEGUNDOS` (60 por defecto) dentro de su propio proceso, sin infraestructura extra; crea las actividades de hoy y de los próximos `GENERAR_DIAS_ADELANTE` días (2), y borra las pendientes de horarios que ya no existen. Está apagada por defecto (`TAREAS_PROGRAMADAS=False`) y encendida en `docker-compose.yml`.
+- **`ALERTA` guarda un aviso por actividad, destinatario, tipo y nivel.** La restricción única `(actividad_id, usuario_id, tipo, nivel)` impide repetir un aviso aunque el ciclo corra muchas veces; el índice `(usuario_id, creada_en)` acelera la consulta de avisos de un usuario. El nivel 0 es el recordatorio (HU 9) y los niveles 1 y 2 son las alertas escalonadas (HU 10).
+- **Quién recibe cada nivel.** Recordatorio (nivel 0): titular y vinculados con `recibe_alertas`. Nivel 1: titular y vinculados con `recibe_alertas` y `nivel_escalamiento = 1`. Nivel 2: vinculados con `nivel_escalamiento = 2`. Los plazos son configurables: recordatorio 10 min antes, alerta 1 a los 30 min y alerta 2 a los 60 min desde la hora (valores propuestos, por confirmar con el equipo).
+- **`DISPOSITIVO_PUSH` guarda el token por usuario.** El token es único: si otra cuenta lo registra en el mismo celular, el token se reasigna. El envío real de notificaciones (FCM) no está implementado; el backend usa un notificador que escribe en el log y los avisos se consultan dentro de la app.
+- **Borrado explícito además de la cascada.** Las rutas que borran medicamento, rutina o perfil también eliminan sus `alerta` y `rutina_horario`, porque las pruebas con SQLite no validan llaves foráneas.
+
 ## Estado por sprint
 
 | Tabla | Sprint | Estado |
@@ -167,7 +203,10 @@ Migraciones del sprint (cadena de Alembic con una sola cabeza, a cargo de Sergio
 | `medicamento`, `rutina_cuidado` | Sprint 2 | Implementada (HU 4) — alcance simplificado, ver sección anterior; borrado en cascada en Sprint 3 |
 | `actividad` | Diferida de Sprint 2 a Sprint 3 | **Implementada (Sprint 3)** — cierre de HU 5 |
 | `perfil_acceso` | Sprint 3 | **Implementada (Sprint 3)** — HU 7 |
-| `rutina_horario` | Diferida | Pendiente (Sprint 4) |
+| `rutina_horario` | Diferida de Sprint 2 | **Implementada (Sprint 4)** — habilitador de HU 9 y HU 10 |
+| `alerta` | Sprint 4 | **Implementada (Sprint 4)** — HU 9 y HU 10 |
+| `dispositivo_push` | Sprint 4 | **Implementada (Sprint 4)** — HU 9; el envío real por FCM queda pendiente |
+| `actividad.hora` | Sprint 4 | **Implementada (Sprint 4)** — una actividad por origen, día y hora |
 
 ## Cambios respecto de la versión anterior del documento
 
@@ -178,3 +217,4 @@ Migraciones del sprint (cadena de Alembic con una sola cabeza, a cargo de Sergio
 5. Menores: permisos como booleanos en vez de JSON, horarios en tabla propia en vez de string cron, `confirmada_por_id` en vez de `fue_proxy`.
 6. **(Sprint 2)** Se actualiza el estado de implementación de `perfiles`/`alergias`/`contactos_emergencia` (HU 2, ya implementadas) y de `medicamento`/`rutina_cuidado` (HU 4, implementadas con alcance simplificado); se documenta la decisión de diferir `RUTINA_HORARIO` y `ACTIVIDAD` a Sprint 3.
 7. **(Sprint 3)** `actividad` y `perfil_acceso` pasan a "Implementada". `ACTIVIDAD` se construyó con dos llaves opcionales (`medicamento_id` o `rutina_id`) en vez de la `rutina_id` única del diseño original. Se agregan el índice de titular único y el borrado en cascada desde `perfil`. El diagrama se actualiza con `MEDICAMENTO` y `RUTINA_CUIDADO` tal como se construyeron en el Sprint 2, y `RUTINA_HORARIO` queda marcada como pendiente (Sprint 4).
+8. **(Sprint 4)** `RUTINA_HORARIO` pasa a "Implementada" y se agregan `ALERTA` y `DISPOSITIVO_PUSH`. `ACTIVIDAD` gana `hora` y los estados `vencida` y `omitida`, y su clave única pasa a incluir la hora. Se documenta la tarea programada de generación y las reglas de destinatarios por nivel.
