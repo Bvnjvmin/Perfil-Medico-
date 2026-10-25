@@ -16,3 +16,7 @@ String fechaParaApi(DateTime d) => '${d.year}-${_dos(d.month)}-${_dos(d.day)}';
 
 /// "08/10/2026" para mostrar en pantalla.
 String fechaCorta(DateTime d) => '${_dos(d.day)}/${_dos(d.month)}/${d.year}';
+
+/// "22/10 08:30" para mostrar cuándo llegó un aviso.
+String fechaHoraCorta(DateTime d) =>
+    '${_dos(d.day)}/${_dos(d.month)} ${_dos(d.hour)}:${_dos(d.minute)}';
