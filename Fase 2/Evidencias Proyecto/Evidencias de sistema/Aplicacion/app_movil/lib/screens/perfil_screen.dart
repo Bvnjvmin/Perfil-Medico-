@@ -147,7 +147,7 @@ class _PerfilScreenState extends State<PerfilScreen> {
               if (_modoDependiente) ...[
                 const SizedBox(height: 12),
                 DropdownButtonFormField<String>(
-                  value: _subtipo,
+                  initialValue: _subtipo,
                   decoration: const InputDecoration(
                     labelText: 'Subtipo de dependiente',
                   ),
