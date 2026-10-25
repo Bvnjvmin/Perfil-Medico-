@@ -1,6 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import '../models/actividad.dart';
+import '../models/alerta.dart';
 import '../models/alergia.dart';
 import '../models/contacto_emergencia.dart';
 import '../models/medicamento.dart';
@@ -14,6 +17,43 @@ class ApiException implements Exception {
   ApiException(this.mensaje);
   @override
   String toString() => mensaje;
+}
+
+/// Peticiones HTTP con tiempo límite y mensajes claros cuando no hay conexión
+/// (acción del Sprint 3: timeouts y manejo de errores de red).
+class _Http {
+  static const _limite = Duration(seconds: 15);
+
+  static Future<http.Response> _enviar(
+      Future<http.Response> Function() peticion) async {
+    try {
+      return await peticion().timeout(_limite);
+    } on TimeoutException {
+      throw ApiException(
+          'El servidor tardó demasiado en responder. Revisa tu conexión e inténtalo de nuevo.');
+    } on SocketException {
+      throw ApiException(
+          'No se pudo conectar con el servidor. Revisa tu conexión e inténtalo de nuevo.');
+    } on http.ClientException {
+      throw ApiException(
+          'No se pudo conectar con el servidor. Revisa tu conexión e inténtalo de nuevo.');
+    }
+  }
+
+  static Future<http.Response> get(Uri url, {Map<String, String>? headers}) =>
+      _enviar(() => http.get(url, headers: headers));
+
+  static Future<http.Response> post(Uri url,
+          {Map<String, String>? headers, Object? body}) =>
+      _enviar(() => http.post(url, headers: headers, body: body));
+
+  static Future<http.Response> put(Uri url,
+          {Map<String, String>? headers, Object? body}) =>
+      _enviar(() => http.put(url, headers: headers, body: body));
+
+  static Future<http.Response> delete(Uri url,
+          {Map<String, String>? headers, Object? body}) =>
+      _enviar(() => http.delete(url, headers: headers, body: body));
 }
 
 class ApiService {
@@ -30,7 +70,7 @@ class ApiService {
     required String email,
     required String password,
   }) async {
-    final respuesta = await http.post(
+    final respuesta = await _Http.post(
       Uri.parse('$baseUrl/auth/register'),
       headers: _headersJson,
       body: jsonEncode({
@@ -47,7 +87,7 @@ class ApiService {
   }
 
   Future<String> login({required String email, required String password}) async {
-    final respuesta = await http.post(
+    final respuesta = await _Http.post(
       Uri.parse('$baseUrl/auth/login'),
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
       body: {'username': email, 'password': password},
@@ -61,7 +101,7 @@ class ApiService {
   }
 
   Future<Usuario> obtenerUsuarioActual(String token) async {
-    final respuesta = await http.get(
+    final respuesta = await _Http.get(
       Uri.parse('$baseUrl/auth/me'),
       headers: {'Authorization': 'Bearer $token'},
     );
@@ -97,7 +137,7 @@ class ApiService {
 
   Future<List<Perfil>> listarPerfiles(String token) async {
     final r =
-        await http.get(Uri.parse('$baseUrl/perfiles'), headers: _auth(token));
+        await _Http.get(Uri.parse('$baseUrl/perfiles'), headers: _auth(token));
     if (r.statusCode == 200) return _lista(r, Perfil.fromJson);
     throw ApiException(_extraerDetalle(r));
   }
@@ -109,7 +149,7 @@ class ApiService {
     String? grupoSanguineo,
     DateTime? fechaNacimiento,
   }) async {
-    final r = await http.post(
+    final r = await _Http.post(
       Uri.parse('$baseUrl/perfiles'),
       headers: _auth(token, json: true),
       body: jsonEncode({
@@ -133,7 +173,7 @@ class ApiService {
     String? grupoSanguineo,
     DateTime? fechaNacimiento,
   }) async {
-    final r = await http.post(
+    final r = await _Http.post(
       Uri.parse('$baseUrl/perfiles'),
       headers: _auth(token, json: true),
       body: jsonEncode({
@@ -161,7 +201,7 @@ class ApiService {
     String? grupoSanguineo,
     DateTime? fechaNacimiento,
   }) async {
-    final r = await http.put(
+    final r = await _Http.put(
       Uri.parse('$baseUrl/perfiles/$perfilId'),
       headers: _auth(token, json: true),
       body: jsonEncode({
@@ -178,7 +218,7 @@ class ApiService {
   }
 
   Future<void> eliminarPerfil(String token, String perfilId) async {
-    final r = await http.delete(
+    final r = await _Http.delete(
       Uri.parse('$baseUrl/perfiles/$perfilId'),
       headers: _auth(token),
     );
@@ -190,7 +230,7 @@ class ApiService {
 
   Future<List<Medicamento>> listarMedicamentos(
       String token, String perfilId) async {
-    final r = await http.get(
+    final r = await _Http.get(
       Uri.parse('$baseUrl/perfiles/$perfilId/medicamentos'),
       headers: _auth(token),
     );
@@ -206,7 +246,7 @@ class ApiService {
     required String frecuencia,
     String? horaInicio,
   }) async {
-    final r = await http.post(
+    final r = await _Http.post(
       Uri.parse('$baseUrl/perfiles/$perfilId/medicamentos'),
       headers: _auth(token, json: true),
       body: jsonEncode({
@@ -228,7 +268,7 @@ class ApiService {
     required String frecuencia,
     String? horaInicio,
   }) async {
-    final r = await http.put(
+    final r = await _Http.put(
       Uri.parse('$baseUrl/medicamentos/$medicamentoId'),
       headers: _auth(token, json: true),
       body: jsonEncode({
@@ -243,7 +283,7 @@ class ApiService {
   }
 
   Future<void> eliminarMedicamento(String token, String medicamentoId) async {
-    final r = await http.delete(
+    final r = await _Http.delete(
       Uri.parse('$baseUrl/medicamentos/$medicamentoId'),
       headers: _auth(token),
     );
@@ -255,7 +295,7 @@ class ApiService {
 
   Future<List<RutinaCuidado>> listarRutinas(
       String token, String perfilId) async {
-    final r = await http.get(
+    final r = await _Http.get(
       Uri.parse('$baseUrl/perfiles/$perfilId/rutinas'),
       headers: _auth(token),
     );
@@ -271,7 +311,7 @@ class ApiService {
     required String frecuencia,
     String? hora,
   }) async {
-    final r = await http.post(
+    final r = await _Http.post(
       Uri.parse('$baseUrl/perfiles/$perfilId/rutinas'),
       headers: _auth(token, json: true),
       body: jsonEncode({
@@ -293,7 +333,7 @@ class ApiService {
     required String frecuencia,
     String? hora,
   }) async {
-    final r = await http.put(
+    final r = await _Http.put(
       Uri.parse('$baseUrl/rutinas/$rutinaId'),
       headers: _auth(token, json: true),
       body: jsonEncode({
@@ -308,7 +348,7 @@ class ApiService {
   }
 
   Future<void> eliminarRutina(String token, String rutinaId) async {
-    final r = await http.delete(
+    final r = await _Http.delete(
       Uri.parse('$baseUrl/rutinas/$rutinaId'),
       headers: _auth(token),
     );
@@ -324,7 +364,7 @@ class ApiService {
     DateTime fecha,
   ) async {
     final fechaStr = fechaParaApi(fecha);
-    final r = await http.get(
+    final r = await _Http.get(
       Uri.parse('$baseUrl/perfiles/$perfilId/actividades?fecha=$fechaStr'),
       headers: _auth(token),
     );
@@ -333,7 +373,7 @@ class ApiService {
   }
 
   Future<Actividad> confirmarActividad(String token, String actividadId) async {
-    final r = await http.post(
+    final r = await _Http.post(
       Uri.parse('$baseUrl/actividades/$actividadId/confirmar'),
       headers: _auth(token),
     );
@@ -345,7 +385,7 @@ class ApiService {
 
   Future<Actividad> desconfirmarActividad(
       String token, String actividadId) async {
-    final r = await http.post(
+    final r = await _Http.post(
       Uri.parse('$baseUrl/actividades/$actividadId/desconfirmar'),
       headers: _auth(token),
     );
@@ -353,10 +393,52 @@ class ApiService {
     throw ApiException(_extraerDetalle(r));
   }
 
+  // --- Panel (HU 8) --------------------------------------------------------
+
+  /// GET /panel?fecha=: una sola llamada con el avance del día de cada perfil
+  /// propio o compartido. Devuelve los elementos tal como los envía el backend
+  /// (`perfil`, `mi_acceso`, `total`, `confirmadas`, `pendientes`).
+  Future<List<Map<String, dynamic>>> obtenerPanel(
+      String token, DateTime fecha) async {
+    final r = await _Http.get(
+      Uri.parse('$baseUrl/panel?fecha=${fechaParaApi(fecha)}'),
+      headers: _auth(token),
+    );
+    if (r.statusCode == 200) {
+      return (_decodificar(r) as List)
+          .map((e) => e as Map<String, dynamic>)
+          .toList();
+    }
+    throw ApiException(_extraerDetalle(r));
+  }
+
+  // --- Recordatorios y alertas (HU 9 y HU 10) ------------------------------
+
+  /// GET /alertas: avisos del usuario, los más nuevos primero.
+  Future<List<Alerta>> listarAlertas(String token,
+      {bool soloNoLeidas = false}) async {
+    final r = await _Http.get(
+      Uri.parse('$baseUrl/alertas?solo_no_leidas=$soloNoLeidas'),
+      headers: _auth(token),
+    );
+    if (r.statusCode == 200) return _lista(r, Alerta.fromJson);
+    throw ApiException(_extraerDetalle(r));
+  }
+
+  /// POST /alertas/{id}/leida.
+  Future<Alerta> marcarAlertaLeida(String token, String alertaId) async {
+    final r = await _Http.post(
+      Uri.parse('$baseUrl/alertas/$alertaId/leida'),
+      headers: _auth(token),
+    );
+    if (r.statusCode == 200) return Alerta.fromJson(_decodificar(r));
+    throw ApiException(_extraerDetalle(r));
+  }
+
   // --- Alergias, Contactos y Cuidadores (M7 - HU 2 y HU 7) -----------------
 
   Future<List<Alergia>> listarAlergias(String token, String perfilId) async {
-    final r = await http.get(
+    final r = await _Http.get(
       Uri.parse('$baseUrl/perfiles/$perfilId/alergias'),
       headers: _auth(token),
     );
@@ -379,7 +461,7 @@ class ApiService {
     String? severidad,
     String? reaccion,
   }) async {
-    final r = await http.post(
+    final r = await _Http.post(
       Uri.parse('$baseUrl/perfiles/$perfilId/alergias'),
       headers: _auth(token, json: true),
       body: jsonEncode({
@@ -407,7 +489,7 @@ class ApiService {
       throw ApiException(
           'No se pudo determinar el perfil de la alergia. Recarga la lista.');
     }
-    final r = await http.delete(
+    final r = await _Http.delete(
       Uri.parse('$baseUrl/perfiles/$pid/alergias/$alergiaId'),
       headers: _auth(token),
     );
@@ -420,7 +502,7 @@ class ApiService {
 
   Future<List<ContactoEmergencia>> listarContactos(
       String token, String perfilId) async {
-    final r = await http.get(
+    final r = await _Http.get(
       Uri.parse('$baseUrl/perfiles/$perfilId/contactos-emergencia'),
       headers: _auth(token),
     );
@@ -444,7 +526,7 @@ class ApiService {
     String? parentesco,
     int prioridad = 1,
   }) async {
-    final r = await http.post(
+    final r = await _Http.post(
       Uri.parse('$baseUrl/perfiles/$perfilId/contactos-emergencia'),
       headers: _auth(token, json: true),
       body: jsonEncode({
@@ -474,7 +556,7 @@ class ApiService {
       throw ApiException(
           'No se pudo determinar el perfil del contacto. Recarga la lista.');
     }
-    final r = await http.delete(
+    final r = await _Http.delete(
       Uri.parse('$baseUrl/perfiles/$pid/contactos-emergencia/$contactoId'),
       headers: _auth(token),
     );
@@ -496,7 +578,7 @@ class ApiService {
     required bool puedeConfirmar,
     required bool puedeEditarRutinas,
   }) async {
-    final r = await http.post(
+    final r = await _Http.post(
       Uri.parse('$baseUrl/perfiles/$perfilId/cuidadores'),
       headers: _auth(token, json: true),
       body: jsonEncode({
