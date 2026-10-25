@@ -188,7 +188,7 @@ class _DialogoAlergiaState extends State<_DialogoAlergia> {
               ),
               const SizedBox(height: 12),
               DropdownButtonFormField<String>(
-                value: _severidad,
+                initialValue: _severidad,
                 decoration: const InputDecoration(labelText: 'Severidad'),
                 items: const [
                   DropdownMenuItem(value: 'Leve', child: Text('Leve')),
