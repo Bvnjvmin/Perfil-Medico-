@@ -93,7 +93,7 @@ class _CompartirPerfilScreenState extends State<CompartirPerfilScreen> {
               ),
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
-                value: _rol,
+                initialValue: _rol,
                 decoration: const InputDecoration(labelText: 'Rol de acceso'),
                 items: const [
                   DropdownMenuItem(
