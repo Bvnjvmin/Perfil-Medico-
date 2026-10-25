@@ -7,7 +7,7 @@ class Actividad {
   final String titulo;
   final String? detalle;
   final String hora;
-  final String estado; // 'pendiente' | 'confirmada'
+  final String estado; // 'pendiente' | 'confirmada' | 'vencida' | 'omitida'
   final String? confirmadaEn;
   final String? confirmadaPorId;
 
@@ -26,6 +26,9 @@ class Actividad {
   });
 
   bool get estaConfirmada => estado.toLowerCase() == 'confirmada';
+
+  /// Pasó el día sin confirmarse (la marca el backend a la medianoche).
+  bool get estaVencida => estado.toLowerCase() == 'vencida';
 
   factory Actividad.fromJson(Map<String, dynamic> json) {
     return Actividad(
