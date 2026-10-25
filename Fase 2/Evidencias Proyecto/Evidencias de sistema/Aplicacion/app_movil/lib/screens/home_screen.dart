@@ -5,11 +5,13 @@ import '../services/api_service.dart';
 import '../services/token_storage.dart';
 import 'agenda_screen.dart';
 import 'alergias_screen.dart';
+import 'alertas_screen.dart';
 import 'compartir_perfil_screen.dart';
 import 'contactos_emergencia_screen.dart';
 import 'login_screen.dart';
 import 'medicamentos_screen.dart';
 import 'mis_perfiles_screen.dart';
+import 'modo_simplificado_screen.dart';
 import 'panel_screen.dart';
 import 'perfil_screen.dart';
 import 'rutinas_screen.dart';
@@ -146,6 +148,29 @@ class _HomeScreenState extends State<HomeScreen> {
     await _recargarPerfiles();
   }
 
+  Future<void> _abrirAlertas() async {
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => AlertasScreen(token: _token!, perfiles: _perfiles),
+      ),
+    );
+  }
+
+  void _abrirModoSimplificado() {
+    final perfil = _perfilActivo;
+    if (perfil == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Primero completa tu perfil de salud.')),
+      );
+      return;
+    }
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => ModoSimplificadoScreen(token: _token!, perfil: perfil),
+      ),
+    );
+  }
+
   void _abrirConPerfil(
       Widget Function(String token, Perfil perfil) construir) {
     final perfil = _perfilActivo;
@@ -169,6 +194,11 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text('Perfil Médico+'),
         actions: [
+          IconButton(
+            onPressed: _token == null ? null : _abrirAlertas,
+            icon: const Icon(Icons.notifications_none),
+            tooltip: 'Avisos',
+          ),
           IconButton(
             onPressed: _cerrarSesion,
             icon: const Icon(Icons.logout),
@@ -197,7 +227,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(height: 24),
                 if (_perfiles.isNotEmpty) ...[
                   DropdownButtonFormField<String>(
-                    value: _perfilActivo?.id,
+                    key: ValueKey(_perfilActivo?.id),
+                    initialValue: _perfilActivo?.id,
                     decoration: const InputDecoration(
                       labelText: 'Perfil con el que se trabaja',
                       prefixIcon: Icon(Icons.switch_account),
@@ -245,6 +276,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   subtitle: const Text('Avance diario de cada perfil'),
                   trailing: const Icon(Icons.chevron_right),
                   onTap: _abrirPanel,
+                ),
+                ListTile(
+                  leading: const Icon(Icons.accessibility_new),
+                  title: const Text('Modo simplificado'),
+                  subtitle: const Text(
+                      'Pantalla con letra y botones grandes para el perfil activo'),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: _abrirModoSimplificado,
                 ),
                 const Divider(),
                 ListTile(
