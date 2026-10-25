@@ -20,6 +20,18 @@ class AvancePerfil {
   double get progreso => total == 0 ? 0.0 : confirmadas / total;
   String get resumenTexto => '$confirmadas de $total confirmadas';
 
+  /// Un elemento de `GET /panel` (HU 8): el backend ya trae los totales del día.
+  factory AvancePerfil.desdePanel(Map<String, dynamic> json) {
+    final datos = Map<String, dynamic>.from(json['perfil'] as Map);
+    datos['mi_acceso'] = json['mi_acceso'];
+    return AvancePerfil(
+      perfil: Perfil.fromJson(datos),
+      confirmadas: (json['confirmadas'] as num?)?.toInt() ?? 0,
+      pendientes: (json['pendientes'] as num?)?.toInt() ?? 0,
+      total: (json['total'] as num?)?.toInt() ?? 0,
+    );
+  }
+
   static AvancePerfil desdeActividades(
     Perfil perfil,
     List<Actividad> actividades,
@@ -57,15 +69,9 @@ class _PanelScreenState extends State<PanelScreen> {
 
   Future<void> _cargar() async {
     try {
-      final perfiles = await _api.listarPerfiles(widget.token);
-      final hoy = DateTime.now();
-      final resultados = <AvancePerfil>[];
-
-      for (final p in perfiles) {
-        final actividades =
-            await _api.listarActividades(widget.token, p.id, hoy);
-        resultados.add(AvancePerfil.desdeActividades(p, actividades));
-      }
+      // Una sola llamada (GET /panel) en vez de una por cada perfil.
+      final panel = await _api.obtenerPanel(widget.token, DateTime.now());
+      final resultados = panel.map(AvancePerfil.desdePanel).toList();
 
       if (!mounted) return;
       setState(() {
