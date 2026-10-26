@@ -3,6 +3,7 @@
 **Proyecto:** Perfil Médico+ · Capstone_005D · Grupo 7
 **Periodo:** 19 al 31 de octubre de 2026 (semanas 11 y 12 del Cronograma)
 **Publicado:** 21 de octubre de 2026 · **Última actualización:** 25 de octubre de 2026 · **Estado del sprint:** en curso; el backend está probado (148 pruebas) y la app se probó en el emulador el 25-10 (10 flujos, capturas `S4_01` a `S4_10`, ver `Evidencia_Sprint4.md`); faltan registrar los commits, la aceptación del Product Owner, el push real (FCM), un par de mejoras y la retrospectiva
+
 **Objetivo del sprint:** que el sistema genere solo las actividades de cada día (`RUTINA_HORARIO` y generación programada), avise al usuario antes de cada actividad (HU 9), escale el aviso a los cuidadores cuando una actividad importante no se confirma (HU 10) y que el perfil dependiente tenga una interfaz simplificada de un toque (HU 11).
 **Product Owner:** Sergio Ocares · **Scrum Master:** Matías Pizarro
 **Entregables del Cronograma:** Sprint Backlog 4 (semana 11); Demo interna y Retrospectiva del Sprint 4 (semana 12, cierre el sábado 31).
