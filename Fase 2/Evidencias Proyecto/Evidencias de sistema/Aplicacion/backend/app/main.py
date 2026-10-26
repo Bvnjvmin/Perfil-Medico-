@@ -18,6 +18,7 @@ from app.api.routes import actividad, auth, aviso, cuidador, horario, medicament
 from app.core.config import settings
 
 logger = logging.getLogger("perfil_medico.tareas")
+logging.basicConfig(level=logging.INFO)
 
 
 def _ejecutar_ciclo() -> None:
