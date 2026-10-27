@@ -32,12 +32,12 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Perfil> _perfiles = [];
   Perfil? _perfilActivo;
 
-  Perfil? get _perfilTitular {
+  /// Perfil de salud de la propia cuenta. No cae en el perfil titular de otra
+  /// persona que se compartió con esta cuenta: un cuidador sin perfil propio ve
+  /// "Aún no lo completas" y puede crearlo.
+  Perfil? get _perfilPropio {
     for (final p in _perfiles) {
       if (p.esTitular && p.esPropio) return p;
-    }
-    for (final p in _perfiles) {
-      if (p.esTitular) return p;
     }
     return null;
   }
@@ -91,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
         return;
       }
     }
-    _perfilActivo = _perfilTitular ?? _perfiles.first;
+    _perfilActivo = _perfilPropio ?? _perfiles.first;
   }
 
   Future<void> _recargarPerfiles() async {
@@ -119,10 +119,10 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _abrirPerfil() async {
-    final titular = _perfilTitular;
+    final propio = _perfilPropio;
     final resultado = await Navigator.of(context).push<Perfil>(
       MaterialPageRoute(
-        builder: (_) => PerfilScreen(token: _token!, perfil: titular),
+        builder: (_) => PerfilScreen(token: _token!, perfil: propio),
       ),
     );
     if (resultado != null && mounted) {
@@ -188,7 +188,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final usuario = _usuario;
-    final titular = _perfilTitular;
+    final propio = _perfilPropio;
 
     return Scaffold(
       appBar: AppBar(
@@ -259,7 +259,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   leading: const Icon(Icons.badge_outlined),
                   title: const Text('Mi perfil de salud'),
                   subtitle: Text(
-                      titular == null ? 'Aún no lo completas' : titular.nombre),
+                      propio == null ? 'Aún no lo completas' : propio.nombre),
                   trailing: const Icon(Icons.chevron_right),
                   onTap: _abrirPerfil,
                 ),
@@ -357,7 +357,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     (token, perfil) => ContactosEmergenciaScreen(
                       token: token,
                       perfilId: perfil.id,
-                      puedeEditar: !perfil.esSoloLectura,
+                      puedeEditar: !perfil.esSoloLectura, 
                     ),
                   ),
                 ),
