@@ -80,9 +80,54 @@ Si un medicamento o rutina no tiene horarios, la actividad usa su `hora_inicio` 
 
 | Tarea | Estado | Fecha | Commit |
 |---|---|---|---|
-| Contrato revisado con Matías y Sergio | ⬜ | | |
+| Contrato revisado con Matías y Sergio | 🟡 Matías revisó contra la app el 27-10 (sección 9); falta el visto bueno de Sergio | 27-10 | |
 | Rutas de horarios | 🟡 listas, falta subir | 21-10 | |
 | Tarea programada de actividades | 🟡 lista, falta subir | 21-10 | |
 | Dispositivos y avisos | 🟡 listos, falta subir (sin push real) | 21-10 | |
 | Motor de alertas | 🟡 listo, falta subir | 21-10 | |
 | Pruebas sin fechas fijas | ✅ 148 de 148 | 21-10 | |
+
+## 9. Revisión de la app (Matías Pizarro, 27-10-2026)
+
+**Alcance:** se comparó este contrato con las rutas del backend (`app/api/routes/`) y con las llamadas de la app (`lib/services/api_service.dart`, `lib/models/`). Además, la app se probó contra el backend en el emulador el 25-10 (`Evidencia_Sprint4.md`, capturas `S4_*`). No se encontraron diferencias entre el contrato y el backend.
+
+### 9.1 Rutas que la app usa hoy
+
+| Ruta | Dónde se usa | Resultado |
+|---|---|---|
+| `GET /perfiles/{id}/actividades?fecha=` | Agenda y modo simplificado | ✅ Coincide con el contrato (sección 2) |
+| `POST /actividades/{id}/confirmar` y `/desconfirmar` | Agenda y modo simplificado | ✅ Sin cambios |
+| `GET /panel?fecha=` | Panel de dependientes | ✅ Coincide (sección 5) |
+| `GET /alertas?solo_no_leidas=` | Pantalla Avisos y campana del Home | ✅ Coincide (sección 4) |
+| `POST /alertas/{id}/leida` | Al tocar un aviso | ✅ Coincide (sección 4) |
+
+### 9.2 Rutas del contrato que la app todavía no usa
+
+| Ruta o campo | Estado en la app | Cómo se probó |
+|---|---|---|
+| `POST /dispositivos` y `DELETE /dispositivos/{token}` | No se llaman: la app no registra el dispositivo (falta definir FCM) | `/docs`, `S4_02.0` |
+| `POST/GET /medicamentos/{id}/horarios`, `POST/GET /rutinas/{id}/horarios`, `DELETE /horarios/{id}` | Sin pantalla; la app muestra los horarios como actividades de la agenda | `/docs`, `S4_01.1` |
+| `recibe_alertas` y `nivel_escalamiento` en `POST` y `PUT /perfiles/{id}/cuidadores` | La app no los envía al compartir un perfil: el cuidador queda con `recibe_alertas = true` y `nivel_escalamiento = 1`. No hay forma de configurar el nivel 2 desde la app | `/docs`, `S4_04.3` y `S4_04.4` |
+
+### 9.3 Cumplimiento de lo que el contrato pide a la app
+
+- **Estados desconocidos:** la app guarda `estado` como texto y solo distingue `confirmada` y `vencida`; cualquier otro valor (por ejemplo `omitida`) se trata como no confirmada y no rompe. ✅
+- **Campos de un aviso:** el modelo `Alerta` lee los 8 campos de `AlertaOut` (`id`, `perfil_id`, `actividad_id`, `tipo`, `nivel`, `mensaje`, `creada_en`, `leida_en`) y tolera valores ausentes. ✅
+- **Errores:** la app muestra el `detail` en español tal cual y un mensaje de conexión cuando no hay respuesta (`S4_10`). ✅
+- **Fecha:** se envía como `?fecha=AAAA-MM-DD`. ✅
+
+### 9.4 Observaciones
+
+1. **Ruta de cuidadores:** la sección 5 menciona `PUT /perfiles/{id}/cuidadores`; en el backend lleva el id del vínculo (`PUT /perfiles/{id}/cuidadores/{acceso_id}`, usado en `S4_04.4`). Conviene corregir el texto del contrato.
+2. **Fecha de los avisos:** `creada_en` llega sin conversión y la pantalla Avisos parece mostrarla en UTC (una alerta de una actividad de las 16:30 aparece como 20:00). Falta confirmar y definir si la conversión a hora de Chile la hace la app o el backend.
+3. **A quién llega el nivel 2:** hoy solo a los vinculados con `nivel_escalamiento = 2`; el titular y los vinculados en nivel 1 no lo reciben aunque pase el tiempo. Falta que el Product Owner confirme si eso es lo esperado (decisión 9 del Sprint Backlog). Además, el esquema acepta `nivel_escalamiento = 3`, pero el motor solo crea los niveles 0, 1 y 2.
+4. **Dependencia de la configuración:** los avisos solo se generan con `TAREAS_PROGRAMADAS=true`; conviene dejar esa variable (y las demás del Sprint 4) en `.env.example`.
+
+### 9.5 Resultado
+
+**Aprobado con observaciones** para el alcance del Sprint 4: las rutas que la app usa coinciden con el contrato. Las observaciones 1 a 3 se resuelven antes de cerrar el sprint o pasan al Sprint 5. Falta el visto bueno de Sergio (Product Owner), en especial sobre la observación 3.
+
+| Revisó | Fecha | Visto bueno |
+|---|---|---|
+| Matías Pizarro (App móvil) | 27-10-2026 | ✅ |
+| Sergio Ocares (Product Owner) | | ⬜ |
