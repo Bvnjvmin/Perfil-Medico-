@@ -119,7 +119,7 @@ Si un medicamento o rutina no tiene horarios, la actividad usa su `hora_inicio` 
 ### 9.4 Observaciones
 
 1. **Ruta de cuidadores:** la sección 5 menciona `PUT /perfiles/{id}/cuidadores`; en el backend lleva el id del vínculo (`PUT /perfiles/{id}/cuidadores/{acceso_id}`, usado en `S4_04.4`). Conviene corregir el texto del contrato.
-2. **Fecha de los avisos:** `creada_en` llega sin conversión y la pantalla Avisos parece mostrarla en UTC (una alerta de una actividad de las 16:30 aparece como 20:00). Falta confirmar y definir si la conversión a hora de Chile la hace la app o el backend.
+2. **Fecha de los avisos:** `creada_en` llega sin conversión. En las capturas del 25-10 la pantalla Avisos la mostraba en UTC (una alerta de una actividad de las 16:30 aparecía como 20:00); en las del 28-10 (`S4_05.3` a `S4_05.5`) aparece en hora de Chile. Falta confirmar si hubo un cambio y si la conversión la hace la app o el backend.
 3. **A quién llega el nivel 2:** hoy solo a los vinculados con `nivel_escalamiento = 2`; el titular y los vinculados en nivel 1 no lo reciben aunque pase el tiempo. Falta que el Product Owner confirme si eso es lo esperado (decisión 9 del Sprint Backlog). Además, el esquema acepta `nivel_escalamiento = 3`, pero el motor solo crea los niveles 0, 1 y 2.
 4. **Dependencia de la configuración:** los avisos solo se generan con `TAREAS_PROGRAMADAS=true`; conviene dejar esa variable (y las demás del Sprint 4) en `.env.example`.
 

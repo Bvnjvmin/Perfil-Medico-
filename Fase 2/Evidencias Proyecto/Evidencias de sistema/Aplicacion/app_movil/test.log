@@ -1,16 +1,16 @@
-00:00 +0: loading C:/dev/app_movil/test/models/perfil_y_dependiente_test.dart
-00:00 +0: C:/dev/app_movil/test/models/perfil_y_dependiente_test.dart: Perfil.fromJson lee los campos opcionales y la fecha de nacimiento
-00:00 +1: C:/dev/app_movil/test/models/usuario_test.dart: Usuario.fromJson construye correctamente desde la respuesta del backend
-00:00 +2: C:/dev/app_movil/test/models/perfil_y_dependiente_test.dart: Perfil.fromJson acepta campos opcionales nulos
-00:00 +3: C:/dev/app_movil/test/models/perfil_y_dependiente_test.dart: Perfil.fromJson parsea tipo, subtipo, activo y mi_acceso (HU 6 y HU 7)
-00:00 +4: C:/dev/app_movil/test/models/perfil_y_dependiente_test.dart: Formulario de dependiente valida que el subtipo sea obligatorio (HU 6)
-00:00 +5: C:/dev/app_movil/test/models/perfil_y_dependiente_test.dart: Formulario de dependiente valida que el subtipo sea obligatorio (HU 6)
-00:00 +6: C:/dev/app_movil/test/models/perfil_y_dependiente_test.dart: Formulario de dependiente valida que el subtipo sea obligatorio (HU 6)
-00:00 +7: C:/dev/app_movil/test/models/perfil_y_dependiente_test.dart: Formulario de dependiente valida que el subtipo sea obligatorio (HU 6)
-00:00 +8: C:/dev/app_movil/test/models/perfil_y_dependiente_test.dart: Formulario de dependiente valida que el subtipo sea obligatorio (HU 6)
-00:00 +9: C:/dev/app_movil/test/models/perfil_y_dependiente_test.dart: Formulario de dependiente valida que el subtipo sea obligatorio (HU 6)
-00:00 +10: C:/dev/app_movil/test/models/perfil_y_dependiente_test.dart: Formulario de dependiente valida que el subtipo sea obligatorio (HU 6)
-00:01 +11: C:/dev/app_movil/test/screens/login_screen_test.dart: Muestra errores de validaci├│n si se env├¡a el formulario vac├¡o
-00:01 +12: C:/dev/app_movil/test/screens/login_screen_test.dart: Muestra errores de validaci├│n si se env├¡a el formulario vac├¡o
-00:01 +13: C:/dev/app_movil/test/screens/login_screen_test.dart: Muestra errores de validaci├│n si se env├¡a el formulario vac├¡o
+﻿00:00 +0: loading C:/dev/perfil-medico-sprint4/Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/app_movil/test/models/perfil_y_dependiente_test.dart
+00:00 +0: C:/dev/perfil-medico-sprint4/Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/app_movil/test/models/usuario_test.dart: Usuario.fromJson construye correctamente desde la respuesta del backend
+00:00 +1: C:/dev/perfil-medico-sprint4/Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/app_movil/test/models/perfil_y_dependiente_test.dart: Perfil.fromJson lee los campos opcionales y la fecha de nacimiento
+00:00 +2: C:/dev/perfil-medico-sprint4/Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/app_movil/test/models/perfil_y_dependiente_test.dart: Perfil.fromJson acepta campos opcionales nulos
+00:00 +3: C:/dev/perfil-medico-sprint4/Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/app_movil/test/models/perfil_y_dependiente_test.dart: Perfil.fromJson parsea tipo, subtipo, activo y mi_acceso (HU 6 y HU 7)
+00:00 +4: C:/dev/perfil-medico-sprint4/Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/app_movil/test/models/perfil_y_dependiente_test.dart: Formulario de dependiente valida que el subtipo sea obligatorio (HU 6)
+00:00 +5: C:/dev/perfil-medico-sprint4/Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/app_movil/test/models/perfil_y_dependiente_test.dart: Formulario de dependiente valida que el subtipo sea obligatorio (HU 6)
+00:00 +6: C:/dev/perfil-medico-sprint4/Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/app_movil/test/models/perfil_y_dependiente_test.dart: Formulario de dependiente valida que el subtipo sea obligatorio (HU 6)
+00:00 +7: C:/dev/perfil-medico-sprint4/Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/app_movil/test/models/perfil_y_dependiente_test.dart: Formulario de dependiente valida que el subtipo sea obligatorio (HU 6)
+00:00 +8: C:/dev/perfil-medico-sprint4/Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/app_movil/test/models/perfil_y_dependiente_test.dart: Formulario de dependiente valida que el subtipo sea obligatorio (HU 6)
+00:00 +9: C:/dev/perfil-medico-sprint4/Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/app_movil/test/models/perfil_y_dependiente_test.dart: Formulario de dependiente valida que el subtipo sea obligatorio (HU 6)
+00:00 +10: C:/dev/perfil-medico-sprint4/Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/app_movil/test/models/perfil_y_dependiente_test.dart: Formulario de dependiente valida que el subtipo sea obligatorio (HU 6)
+00:01 +11: C:/dev/perfil-medico-sprint4/Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/app_movil/test/screens/login_screen_test.dart: Muestra errores de validaci├│n si se env├¡a el formulario vac├¡o
+00:01 +12: C:/dev/perfil-medico-sprint4/Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/app_movil/test/models/perfil_y_dependiente_test.dart: Medicamento.fromJson construye desde la respuesta del backend
+00:01 +13: C:/dev/perfil-medico-sprint4/Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/app_movil/test/models/perfil_y_dependiente_test.dart: RutinaCuidado usa la descripci├│n como t├¡tulo y el tipo legible
 00:01 +14: All tests passed!

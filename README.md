@@ -26,7 +26,11 @@ Propuesta de Proyecto APT · Capstone_005D (Grupo 7) · Ingeniería Informática
   - Backend terminado (15-10): perfiles dependientes validados (HU 6), agenda diaria con confirmación guardada en el servidor (HU 5), cuidadores con permisos por perfil (HU 7) y `GET /panel` (HU 8); 119 pruebas automatizadas
   - App terminada (15-10): pantallas de perfiles dependientes, compartir perfil con permisos y panel, y agenda conectada a la API; 10 pruebas de Flutter y prueba manual con dos cuentas (17 capturas)
   - Cierre: evidencia, retrospectiva, autoevaluaciones 2.2 e Informe de Avance entregados (17 al 19-10) y checklist de aceptación del Product Owner con 17 de 17 criterios (20-10) — ver [`Metodologia_Scrum/Sprint_3`](<./Metodologia_Scrum/Sprint_3>)
-- [ ] Sprint 4 (S11-S12) — `RUTINA_HORARIO`, recordatorios y alertas escalonadas, interfaz simplificada para el perfil dependiente
+- [ ] Sprint 4 (S11-S12, 19 al 31-10) — `RUTINA_HORARIO`, recordatorios y alertas escalonadas, interfaz simplificada para el perfil dependiente *(en curso; estado al 27-10: HU 9, 10 y 11 construidas y probadas en backend y emulador, pendientes la aceptación del Product Owner y el cierre del sprint)*
+  - Base de datos: tablas `rutina_horario`, `alerta` y `dispositivo_push`, columna `hora` y estados `omitida` y `vencida` en `actividad`; 4 migraciones nuevas (cabeza `c0d1e2f3a4b5`) probadas en PostgreSQL
+  - Backend: horarios por medicamento o rutina, generación programada de actividades (hoy y 2 días adelante), recordatorio 10 min antes (HU 9), alertas de nivel 1 a los 30 min y de nivel 2 a los 60 min (HU 10), `GET /alertas` y `POST /dispositivos`; 148 pruebas automatizadas. Contrato en [`Contrato_API_Sprint4.md`](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/backend/Contrato_API_Sprint4.md>)
+  - App: pantalla Avisos (recordatorios y alertas), modo simplificado del dependiente de un toque (HU 11), Panel con `GET /panel` y manejo de errores de conexión; `flutter analyze` sin avisos, 14 pruebas de Flutter y prueba manual de 10 flujos (34 capturas)
+  - Límites conocidos: el push real al celular (FCM) no está implementado (los avisos se ven en la app y se registran en el log del backend) — ver [`Metodologia_Scrum/Sprint_4`](<./Metodologia_Scrum/Sprint_4>)
 - [ ] Sprint 5 (S13-S14) — Indicadores de salud e historial de cumplimiento, módulo de IA, pulsera inteligente (Traccar + Health Connect) y botón de asistencia
 - [ ] Sprint 6 (S15) — Glucosa manual, recordatorios extendidos, farmacias vía IA, pruebas, Informe Final (Semana 15)
 
@@ -46,8 +50,9 @@ Propuesta de Proyecto APT · Capstone_005D (Grupo 7) · Ingeniería Informática
 - [Documentos de evaluación grupales (2.3, 2.4, 2.6)](<./Fase 2/Evidencias Grupales>) — el 2.3 es la pauta de referencia del docente y se sube tal cual, sin rellenar. Las planillas de evaluación de avance/final no se suben al repositorio (uso interno del docente, confirmado con él).
 - [Diario de Reflexión y Autoevaluación individuales (2.1, 2.2)](<./Fase 2/Evidencias Individuales>) — un archivo por integrante, con el patrón `Apellido_Nombre_2.X_...docx` (mismo criterio que en Fase 1).
 - [Metodología Scrum — Sprint Backlog, actas y retrospectivas](<./Metodologia_Scrum>)
-- [Código del backend](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/backend>) (autenticación, perfil de salud, medicamentos y rutinas, agenda diaria, perfiles dependientes, cuidadores y panel)
-- [Código de la app móvil](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/app_movil>) (registro e inicio de sesión, perfil, medicamentos, rutinas, agenda diaria, perfiles dependientes, cuidadores con permisos y panel)
+- [Código del backend](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/backend>) (autenticación, perfil de salud, medicamentos y rutinas con horarios, agenda diaria, perfiles dependientes, cuidadores, panel, recordatorios y alertas escalonadas)
+- [Código de la app móvil](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/app_movil>) (registro e inicio de sesión, perfil, medicamentos, rutinas, agenda diaria, perfiles dependientes, cuidadores con permisos, panel, avisos y modo simplificado)
+- [Evidencia de pruebas del Sprint 4](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/app_movil/evidencias/evidencias Sprint 4/Evidencia_Sprint4.md>) y [contrato de API del Sprint 4](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/backend/Contrato_API_Sprint4.md>)
 - [Modelo de datos (diagrama ER)](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Base de datos/modelo_datos.md>) y checklist de aceptación del Product Owner
 
 ## Descripción
@@ -114,7 +119,7 @@ Cada perfil dependiente adicional que la misma cuenta agregue (manteniendo el pr
 
 ## Instrucciones para ejecutar el proyecto localmente
 
-### Backend (FastAPI) — Sprints 1 a 3 (autenticación, salud, cuidado, perfiles dependientes, cuidadores y panel)
+### Backend (FastAPI) — Sprints 1 a 4 (autenticación, salud, cuidado, perfiles dependientes, cuidadores, panel, recordatorios y alertas)
 
 Código en [`Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/backend`](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/backend>).
 
@@ -126,7 +131,9 @@ cp .env.example .env
 docker compose up --build
 ```
 
-La API queda en `http://localhost:8000` y la documentación interactiva en `http://localhost:8000/docs`.
+La API queda en `http://localhost:8000` y la documentación interactiva en `http://localhost:8000/docs`. Con Docker Compose, la API aplica las migraciones al arrancar y activa la tarea programada (`TAREAS_PROGRAMADAS=true`), que cada 60 s genera las actividades y crea recordatorios y alertas.
+
+Parámetros del Sprint 4 (con sus valores por defecto, en `app/core/config.py`; se pueden cambiar como variables de entorno): `RECORDATORIO_MINUTOS_ANTES=10`, `ALERTA_PLAZO_1_MINUTOS=30`, `ALERTA_PLAZO_2_MINUTOS=60`, `ZONA_HORARIA=America/Santiago`, `GENERAR_DIAS_ADELANTE=2` y `NOTIFICADOR=log`. Hoy los avisos no llegan al celular como push: el notificador solo los escribe en el log del backend y la app los muestra en la pantalla Avisos.
 
 **Sin Docker:**
 
@@ -136,10 +143,10 @@ python3 -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\ac
 pip install -r requirements.txt
 cp .env.example .env
 alembic upgrade head
-uvicorn app.main:app --reload
+TAREAS_PROGRAMADAS=true uvicorn app.main:app --reload   # sin esa variable no se generan actividades ni avisos solos
 ```
 
-**Pruebas** (119 pruebas; no requieren Docker ni PostgreSQL, usan SQLite en memoria):
+**Pruebas** (148 pruebas; no requieren Docker ni PostgreSQL, usan SQLite en memoria):
 
 ```bash
 pytest app/tests/ -v
@@ -147,16 +154,17 @@ pytest app/tests/ -v
 
 SQLite no valida llaves foráneas, así que los cambios de base de datos se prueban además contra PostgreSQL. Solo una persona crea migraciones de Alembic por sprint, para mantener una única cabeza en la cadena.
 
-### App móvil (Flutter) — Sprints 2 y 3: registro, perfil, medicamentos, rutinas, agenda, perfiles dependientes, cuidadores y panel
+### App móvil (Flutter) — Sprints 2 a 4: registro, perfil, medicamentos, rutinas, agenda, perfiles dependientes, cuidadores, panel, avisos y modo simplificado
 
 ```bash
 cd "Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/app_movil"
 flutter pub get
 flutter run
-flutter test
+flutter analyze
+flutter test   # 14 pruebas
 ```
 
-En el emulador de Android la app apunta al backend local en `10.0.2.2:8000`.
+En el emulador de Android la app apunta al backend local en `10.0.2.2:8000`. Para ver recordatorios y alertas, el backend debe estar corriendo con la tarea programada activa y la cuenta debe tener actividades con hora; los avisos se abren con la campana del Home.
 
 ## Integrantes del equipo
 
@@ -179,7 +187,7 @@ Arquitectura de alto nivel orientada a servicios:
 - **Base de datos (PostgreSQL):** modelo relacional que conecta cuentas, perfiles dependientes, actividades de cuidado y su estado de cumplimiento. Versionada con Alembic.
 - **Servidor Traccar:** recibe la señal GPS de la pulsera inteligente directo, sin pasar por el fabricante; el backend consulta su API REST.
 - **Servicio de IA:** integración externa vía API de LLM para consultas de síntomas y farmacias cercanas, desacoplada del núcleo del sistema.
-- **Sistema de notificaciones/alertas:** genera recordatorios y escala a alertas al cuidador cuando una actividad no se confirma en el tiempo esperado.
+- **Sistema de notificaciones/alertas:** genera recordatorios y escala a alertas al cuidador cuando una actividad no se confirma en el tiempo esperado. En el Sprint 4 corre como una tarea dentro del proceso de la API; el envío push real (FCM) queda pendiente.
 
 ```
 [App Flutter] ──HTTPS──> [API FastAPI] ──> [PostgreSQL]
