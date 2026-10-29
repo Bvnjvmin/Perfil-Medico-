@@ -2,7 +2,7 @@
 
 **Proyecto:** Perfil Médico+ · Capstone_005D · Grupo 7
 **Periodo:** 19 al 31 de octubre de 2026 (semanas 11 y 12 del Cronograma)
-**Publicado:** 21 de octubre de 2026 · **Última actualización:** 28 de octubre de 2026 (día 10 de 13) · **Estado del sprint:** en curso; el backend está probado (148 pruebas) y la app se probó en el emulador el 25-10 (10 flujos, capturas `S4_01` a `S4_11`, ver `Evidencia_Sprint4.md`; 10 ✅; los flujos 5 y 9 se repitieron el 27 y el 28-10); faltan registrar los commits, la aceptación del Product Owner, el push real (FCM) y la retrospectiva final
+**Subido al repositorio:** 25 de octubre de 2026 (`31c3353`) · **Última actualización:** 29 de octubre de 2026 (día 11 de 13) · **Estado del sprint:** en curso; el backend está probado (148 pruebas) y la app se probó en el emulador el 25-10 (10 flujos, capturas `S4_01` a `S4_11`, ver `Evidencia_Sprint4.md`; 10 ✅; los flujos 5 y 9 se repitieron el 27 y el 28-10); faltan la aceptación del Product Owner, el push real (FCM) y la retrospectiva final
 
 **Objetivo del sprint:** que el sistema genere solo las actividades de cada día (`RUTINA_HORARIO` y generación programada), avise al usuario antes de cada actividad (HU 9), escale el aviso a los cuidadores cuando una actividad importante no se confirma (HU 10) y que el perfil dependiente tenga una interfaz simplificada de un toque (HU 11).
 **Product Owner:** Sergio Ocares · **Scrum Master:** Matías Pizarro
@@ -43,7 +43,7 @@
 - **Estado:** 🟡 Probado en el emulador (25-10): solo actividades de hoy, botones grandes, confirmación en un toque guardada en el servidor y sin opciones de editar o borrar (capturas `S4_06` a `S4_08`). La salida pide confirmación (`S4_06.1`). Falta la aceptación del PO.
 
 ### Habilitadores técnicos (del Cronograma, semana 11)
-`RUTINA_HORARIO` y generación programada de actividades: son la base de HU 9 y HU 10, porque las notificaciones y las alertas necesitan saber de antemano qué actividad toca y a qué hora. **Estado:** 🟡 tabla, rutas de horarios y tarea programada listas y probadas (backend y PostgreSQL); falta subirlas.
+`RUTINA_HORARIO` y generación programada de actividades: son la base de HU 9 y HU 10, porque las notificaciones y las alertas necesitan saber de antemano qué actividad toca y a qué hora. **Estado:** 🟡 tabla, rutas de horarios y tarea programada listas, probadas (backend y PostgreSQL) y subidas el 22-10 (sección 7).
 
 ### Extras (Deseable)
 Editar medicamentos y rutinas desde la app, y pantallas de alergias y contactos. Son lo primero que se recorta.
@@ -53,21 +53,21 @@ Editar medicamentos y rutinas desde la app, y pantallas de alergias y contactos.
 | Tarea | Historia | Responsable | Estado | Dónde |
 |---|---|---|---|---|
 | Contrato de API del sprint (rutas, cuerpos y errores) acordado con la app **antes** de implementar | HU 9 / HU 10 | Benjamín | 🟡 Redactado con las rutas reales (`Contrato_API_Sprint4.md`); Matías lo revisó el 27-10 (sección 9 del contrato, aprobado con observaciones); falta el visto bueno de Sergio | `backend/` |
-| Migración y modelo de `RUTINA_HORARIO` | Habilitador | Sergio | 🟡 Listo y probado en PostgreSQL; falta subir | `alembic/versions/`, `models/` |
-| Migraciones de `alerta` y de dispositivos para notificaciones; `hora` y estados `omitida` y `vencida` de `actividad` | HU 9 / HU 10 | Sergio | 🟡 Listas y probadas en PostgreSQL; falta subir | `alembic/versions/` |
-| `modelo_datos.md` y diagrama ER al día | Habilitador | Sergio | 🟡 Actualizados (decisiones del Sprint 4, diagrama y PNG); falta subir | `Base de datos/` |
-| Rutas para crear y listar los horarios de un medicamento o rutina | Habilitador | Benjamín | 🟡 Listas, 10 pruebas; falta subir | `backend/app/api/routes/` |
-| Tarea programada que genera las actividades con 24 a 48 h de anticipación | Habilitador | Benjamín | 🟡 Lista (ciclo dentro del backend, hoy y 2 días adelante); falta subir | `backend/app/services/` |
-| Registro del dispositivo y envío de notificaciones | HU 9 | Benjamín | 🟡 Registro y avisos listos; el envío real por FCM no está hecho (notificador de log) | `backend/` |
-| Motor de alertas escalonadas y consulta de alertas | HU 10 | Benjamín | 🟡 Listo (19 pruebas de avisos); falta subir | `backend/` |
-| Pruebas del backend de cada ruta nueva (sin fechas fijas) | HU 9 / HU 10 | Benjamín | ✅ 29 pruebas nuevas; suite completa 148 de 148 (21-10) | `backend/app/tests/` |
+| Migración y modelo de `RUTINA_HORARIO` | Habilitador | Sergio | ✅ Listo, probado en PostgreSQL y subido el 22-10 (`4539965`, `4542b76`) | `alembic/versions/`, `models/` |
+| Migraciones de `alerta` y de dispositivos para notificaciones; `hora` y estados `omitida` y `vencida` de `actividad` | HU 9 / HU 10 | Sergio | ✅ Listas, probadas en PostgreSQL y subidas el 22-10 (`4539965`, `4542b76`) | `alembic/versions/` |
+| `modelo_datos.md` y diagrama ER al día | Habilitador | Sergio | ✅ Actualizados (decisiones del Sprint 4, diagrama y PNG) y subidos el 22-10 (`8cc29c2`, `ca2f230`) | `Base de datos/` |
+| Rutas para crear y listar los horarios de un medicamento o rutina | Habilitador | Benjamín | ✅ Listas, 10 pruebas, subidas el 22-10 (`3546342`, `fd5bec6`) | `backend/app/api/routes/` |
+| Tarea programada que genera las actividades con 24 a 48 h de anticipación | Habilitador | Benjamín | ✅ Lista (ciclo dentro del backend, hoy y 2 días adelante), subida el 22-10 (`09e90e6`, `9c51bcf`, `34b907b`) | `backend/app/services/` |
+| Registro del dispositivo y envío de notificaciones | HU 9 | Benjamín | 🟡 Registro y avisos listos y subidos el 22-10 (`3546342`); el envío real por FCM no está hecho (notificador de log) | `backend/` |
+| Motor de alertas escalonadas y consulta de alertas | HU 10 | Benjamín | ✅ Listo (19 pruebas de avisos), subido el 22-10 (`09e90e6`) | `backend/` |
+| Pruebas del backend de cada ruta nueva (sin fechas fijas) | HU 9 / HU 10 | Benjamín | ✅ 29 pruebas nuevas; suite completa 148 de 148, subidas el 22-10 (`e1144e6`) | `backend/app/tests/` |
 | Recepción de notificaciones y registro del dispositivo en la app | HU 9 | Matías | ⬜ Pendiente: la app consulta los avisos (`GET /alertas`) pero no recibe push ni registra el dispositivo hasta elegir FCM | `app_movil/lib/` |
 | Modo simplificado del dependiente | HU 11 | Matías | 🟡 Probado en el emulador el 25-10 (`S4_06` a `S4_08`, incluida la salida con confirmación `S4_06.1`); falta aceptación del PO | `app_movil/lib/screens/` |
 | Mostrar alertas recibidas en la app | HU 10 | Matías | 🟡 Pantalla Avisos probada en el emulador el 25-10 (`S4_02` a `S4_05`); niveles 1 y 2 evidenciados (`S4_04`); "confirmar detiene" evidenciado el 28-10 (`S4_05.3` a `S4_05.5`) | `app_movil/lib/` |
 | Acciones de la retrospectiva del Sprint 3: "Mi perfil de salud" para cuidadores, Panel con `GET /panel?fecha=`, timeouts y los 4 avisos de `flutter analyze` | Mejora | Matías | ✅ Panel con `GET /panel` (`S4_09.2`), timeouts y mensaje de error de conexión (`S4_10`), `flutter analyze` sin avisos (`analyze.log`) y "Mi perfil de salud" del cuidador corregido el 27-10 en `home_screen.dart` (`S4_09.3`); `flutter analyze` y `flutter test` repetidos el 28-10 con ese cambio y en verde | `app_movil/lib/` |
-| Pruebas de la app (`flutter test`, `flutter analyze`) y evidencia del sprint | HU 9 / HU 10 / HU 11 | Matías | 🟡 Evidencia manual lista (`Evidencia_Sprint4.md`, 10 de 10 flujos ✅); `flutter analyze` sin avisos; `flutter test` 14 de 14 pruebas en verde (7 de modelos, 1 de login, 2 de agenda y 4 de avisos; `test.log` y `S4_11`); falta pegar el hash del commit en la evidencia. Repetidos el 28-10 tras el cambio de `home_screen.dart`: `flutter analyze` sin avisos y `flutter test` 14 de 14 | `app_movil/evidencias/evidencias Sprint 4/` |
+| Pruebas de la app (`flutter test`, `flutter analyze`) y evidencia del sprint | HU 9 / HU 10 / HU 11 | Matías | 🟡 Evidencia manual lista (`Evidencia_Sprint4.md`, 10 de 10 flujos ✅); `flutter analyze` sin avisos; `flutter test` 14 de 14 pruebas en verde (7 de modelos, 1 de login, 2 de agenda y 4 de avisos; `test.log` y `S4_11`); el hash del código probado quedó en la evidencia (backend `ec20c37`, app `12fb551`). Repetidos el 28-10 tras el cambio de `home_screen.dart`: `flutter analyze` sin avisos y `flutter test` 14 de 14 | `app_movil/evidencias/evidencias Sprint 4/` |
 | Checklist de aceptación del Product Owner, dentro del sprint | HU 9 / HU 10 / HU 11 | Sergio | ⬜ Pendiente: plantilla sin ejecutar (17 criterios, tres cuentas); fecha objetivo antes del 31-10 | `Base de datos/Checklist_Aceptacion_PO_Sprint4.md` |
-| Retrospectiva del Sprint 4, el último día | — | Matías | 🟡 Borrador al 27-10 en `Retrospectiva_Sprint4.md`; se cierra el 31-10 con el resultado real | `Metodologia_Scrum/Sprint_4/` |
+| Retrospectiva del Sprint 4, el último día | — | Matías | 🟡 Borrador al 29-10 en `Retrospectiva_Sprint4.md`; se cierra el 31-10 con el resultado real | `Metodologia_Scrum/Sprint_4/` |
 
 ## 3. Definition of Done — estado por historia
 
@@ -75,9 +75,9 @@ Definición del equipo: *integrada al repositorio + probada + documentada.*
 
 | Historia | Integrada al repo | Probada | Documentada | ¿Terminada? |
 |---|---|---|---|---|
-| HU 9 | ⬜ (falta registrar commits) | 🟡 backend y emulador sí; push real pendiente | 🟡 | ⬜ |
-| HU 10 | ⬜ (falta registrar commits) | 🟡 backend y emulador (niveles 1 y 2); falta la cuenta ajena | 🟡 | ⬜ |
-| HU 11 | ⬜ (falta registrar commits) | 🟡 emulador sí | 🟡 | ⬜ |
+| HU 9 | ✅ (sección 7) | 🟡 backend y emulador sí; push real pendiente | 🟡 | ⬜ |
+| HU 10 | ✅ (sección 7) | 🟡 backend y emulador (niveles 1 y 2); falta la cuenta ajena | 🟡 | ⬜ |
+| HU 11 | ✅ (sección 7) | 🟡 emulador sí | 🟡 | ⬜ |
 
 ## 4. Plan de pruebas y evidencia del sprint
 
@@ -110,7 +110,7 @@ Lo siguiente ya está implementado como propuesta; si el equipo decide otra cosa
 
 Se confirma al cierre del sprint. Lo previsto del Product Backlog: indicadores de salud, % de cumplimiento (HU 13), pulsera con Traccar y Health Connect, botón de asistencia y orientación general de IA.
 
-Pendientes del Sprint 4 que hoy (27-10) pasarían al Sprint 5 si no se cierran antes del 31-10:
+Pendientes del Sprint 4 que hoy (29-10) pasarían al Sprint 5 si no se cierran antes del 31-10:
 
 1. **Push real con FCM (HU 9):** elegir proveedor, guardar las credenciales fuera del repositorio, registrar el dispositivo desde la app y reemplazar el notificador de log (`NOTIFICADOR`).
 2. **Panel:** decidir si el titular aparece en el «Panel de dependientes» (`S4_09.1`).
@@ -120,19 +120,20 @@ Pendientes del Sprint 4 que hoy (27-10) pasarían al Sprint 5 si no se cierran a
 
 ## 7. Seguimiento de commits del sprint
 
-Acuerdo del Sprint 3: subir al repositorio al menos dos veces por semana y revisar el historial a mitad de sprint (miércoles 28-10).
+Acuerdo del Sprint 3: subir al repositorio al menos dos veces por semana y revisar el historial a mitad de sprint.
 
-**Estado al 27-10:** este archivo no tiene commits registrados porque el estado del repositorio se verificó sobre una copia sin historial de git. Para completar la tabla con datos reales, ejecutar en la raíz del repositorio:
+**Estado al 29-10:** historial verificado con `git log --since=2026-10-19`. Los commits del 19 y 20-10 son del cierre del Sprint 3 y no se cuentan aquí.
 
-```bash
-git log --since=2026-10-19 --reverse --date=short --pretty="%ad %h %an %s"
-```
-
-| Fecha | Qué se subió | Quién | Commit |
+| Fecha | Qué se subió | Quién | Commits |
 |---|---|---|---|
-| *(...)* | Migraciones y modelos de `rutina_horario`, `alerta`, `dispositivo_push`; `hora` y estados de `actividad`; `modelo_datos.md` y diagrama ER | Sergio | *(...)* |
-| *(...)* | Rutas de horarios, tarea programada, avisos y `GET /alertas`; 29 pruebas nuevas; `pytest.log` | Benjamín | *(...)* |
-| *(...)* | `Contrato_API_Sprint4.md` | Benjamín | *(...)* |
-| *(...)* | Pantalla Avisos, modo simplificado, Panel con `GET /panel`, timeouts; `analyze.log`, `test.log` y capturas `S4_01` a `S4_11` | Matías | *(...)* |
-| *(...)* | Sprint Backlog, evidencia y retrospectiva del Sprint 4 | Matías | *(...)* |
-| *(...)* | Checklist de aceptación del Product Owner ejecutado | Sergio | *(...)* |
+| 22-10 | Rutas de horarios, dispositivos y alertas; esquemas; configuración de plazos; routers y ciclo programado en `main.py`; generación programada y avisos escalonados | Benjamín | `3546342`, `fd5bec6`, `9c51bcf`, `34b907b`, `09e90e6` |
+| 22-10 | 29 pruebas nuevas; Docker Compose, dependencias, `pytest.log` y `Contrato_API_Sprint4.md` | Benjamín | `e1144e6`, `f7f22d0` |
+| 22-10 | Tablas `rutina_horario`, `alerta` y `dispositivo_push` | Sergio | `4539965`, `4542b76` |
+| 22-10 | `modelo_datos.md` y diagrama ER | Sergio | `8cc29c2`, `ca2f230` |
+| 25-10 | App: Avisos, modo simplificado, Panel, perfil, modelos, `api_service`, `hora.dart`, `avisos_test`; `analyze.log` y `test.log` | Matías | `e31e387`, `3216eb2`, `0b093ba`, `be93915`, `76ce2ff`, `8c4c01b`, `c8f5e24`, `2f25077`, `e5fc6e8`, `6bd2103`, `50575cf`, `0b45bda`, `ac84891`, `8a9b38a`, `8df975e` |
+| 25-10 | Ajuste de una línea en `backend/app/main.py` | Matías | `ec20c37` |
+| 25-10 | Evidencia, Sprint Backlog y retrospectiva (primera versión) | Matías | `ebc4d2a`, `26a340b`, `31c3353`, `c112ee8`, `7f8dbb2` |
+| 27-10 | «Mi perfil de salud» del cuidador (`home_screen.dart`) y su captura; revisión del contrato; evidencia, retrospectiva y README | Matías | `12fb551`, `fd5de7b`, `ba1797c`, `88769ff`, `6f6b534`, `fb3d807`, `745a578`, `c47e142` |
+| 28-10 | Capturas del paso 5 (`S4_05.3` a `S4_05.5`) y evidencia | Matías | `7eb7c18`, `583de93` |
+| 29-10 | Cierre: evidencia de los flujos 5 y 9, backlog, retrospectiva, README y contrato (PR #1) | Matías | `570d030`, `af9530a` |
+| — | Checklist de aceptación del Product Owner ejecutado | Sergio | ⬜ sin commits |
