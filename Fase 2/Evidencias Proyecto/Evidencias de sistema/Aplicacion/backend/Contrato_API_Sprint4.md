@@ -1,6 +1,6 @@
 # Contrato de API — Sprint 4
 
-**Autor:** Benjamín Leiva (Backend) · **Estado:** rutas implementadas y probadas en el backend (21-10). Matías debe revisarlo contra la app; cualquier cambio se acuerda antes de tocar las rutas. La referencia exacta siempre es `/docs` de FastAPI.
+**Autor:** Benjamín Leiva (Backend) · **Estado:** rutas implementadas y probadas en el backend (21-10) y subidas al repositorio el 22-10. Matías debe revisarlo contra la app; cualquier cambio se acuerda antes de tocar las rutas. La referencia exacta siempre es `/docs` de FastAPI.
 
 ## Convenciones
 
@@ -61,7 +61,7 @@ Si un medicamento o rutina no tiene horarios, la actividad usa su `hora_inicio` 
 
 ## 5. Cambios a rutas existentes
 
-- Cuidadores (`POST` y `PUT /perfiles/{id}/cuidadores`): aceptan y devuelven `recibe_alertas` (bool) y `nivel_escalamiento` (1 a 3).
+- Cuidadores (`POST /perfiles/{id}/cuidadores` y `PUT /perfiles/{id}/cuidadores/{acceso_id}`): aceptan y devuelven `recibe_alertas` (bool) y `nivel_escalamiento` (1 a 3).
 - `GET /panel?fecha=`: sin cambios en la respuesta; la app ya lo usa en lugar de una llamada por perfil.
 - Al borrar un medicamento, una rutina o un perfil se borran también sus horarios y avisos.
 
@@ -80,12 +80,12 @@ Si un medicamento o rutina no tiene horarios, la actividad usa su `hora_inicio` 
 
 | Tarea | Estado | Fecha | Commit |
 |---|---|---|---|
-| Contrato revisado con Matías y Sergio | 🟡 Matías revisó contra la app el 27-10 (sección 9); falta el visto bueno de Sergio | 27-10 | |
-| Rutas de horarios | 🟡 listas, falta subir | 21-10 | |
-| Tarea programada de actividades | 🟡 lista, falta subir | 21-10 | |
-| Dispositivos y avisos | 🟡 listos, falta subir (sin push real) | 21-10 | |
-| Motor de alertas | 🟡 listo, falta subir | 21-10 | |
-| Pruebas sin fechas fijas | ✅ 148 de 148 | 21-10 | |
+| Contrato revisado con Matías y Sergio | 🟡 Matías revisó contra la app el 27-10 (sección 9); falta el visto bueno de Sergio | 27-10 | `f7f22d0`, `6f6b534` |
+| Rutas de horarios | ✅ subidas | 22-10 | `3546342`, `fd5bec6` |
+| Tarea programada de actividades | ✅ subida | 22-10 | `09e90e6`, `9c51bcf`, `34b907b` |
+| Dispositivos y avisos | ✅ subidos (sin push real) | 22-10 | `3546342`, `fd5bec6`, `09e90e6` |
+| Motor de alertas | ✅ subido | 22-10 | `09e90e6` |
+| Pruebas sin fechas fijas | ✅ 148 de 148 | 22-10 | `e1144e6`, `f7f22d0` |
 
 ## 9. Revisión de la app (Matías Pizarro, 27-10-2026)
 
@@ -118,14 +118,14 @@ Si un medicamento o rutina no tiene horarios, la actividad usa su `hora_inicio` 
 
 ### 9.4 Observaciones
 
-1. **Ruta de cuidadores:** la sección 5 menciona `PUT /perfiles/{id}/cuidadores`; en el backend lleva el id del vínculo (`PUT /perfiles/{id}/cuidadores/{acceso_id}`, usado en `S4_04.4`). Conviene corregir el texto del contrato.
+1. **Ruta de cuidadores:** la sección 5 menciona `PUT /perfiles/{id}/cuidadores`; en el backend lleva el id del vínculo (`PUT /perfiles/{id}/cuidadores/{acceso_id}`, usado en `S4_04.4`). Texto corregido en la sección 5 (29-10).
 2. **Fecha de los avisos:** `creada_en` llega sin conversión. En las capturas del 25-10 la pantalla Avisos la mostraba en UTC (una alerta de una actividad de las 16:30 aparecía como 20:00); en las del 28-10 (`S4_05.3` a `S4_05.5`) aparece en hora de Chile. Falta confirmar si hubo un cambio y si la conversión la hace la app o el backend.
 3. **A quién llega el nivel 2:** hoy solo a los vinculados con `nivel_escalamiento = 2`; el titular y los vinculados en nivel 1 no lo reciben aunque pase el tiempo. Falta que el Product Owner confirme si eso es lo esperado (decisión 9 del Sprint Backlog). Además, el esquema acepta `nivel_escalamiento = 3`, pero el motor solo crea los niveles 0, 1 y 2.
 4. **Dependencia de la configuración:** los avisos solo se generan con `TAREAS_PROGRAMADAS=true`; conviene dejar esa variable (y las demás del Sprint 4) en `.env.example`.
 
 ### 9.5 Resultado
 
-**Aprobado con observaciones** para el alcance del Sprint 4: las rutas que la app usa coinciden con el contrato. Las observaciones 1 a 3 se resuelven antes de cerrar el sprint o pasan al Sprint 5. Falta el visto bueno de Sergio (Product Owner), en especial sobre la observación 3.
+**Aprobado con observaciones** para el alcance del Sprint 4: las rutas que la app usa coinciden con el contrato. La observación 1 quedó corregida el 29-10; las observaciones 2 y 3 se resuelven antes de cerrar el sprint o pasan al Sprint 5. Falta el visto bueno de Sergio (Product Owner), en especial sobre la observación 3.
 
 | Revisó | Fecha | Visto bueno |
 |---|---|---|

@@ -1,8 +1,8 @@
 # Evidencia de Pruebas — Sprint 4 (HU 9, HU 10 y HU 11)
 
 **Rol:** Matías Pizarro (App Móvil y Scrum Master)
-**Periodo:** 19 al 31 de octubre de 2026 · **Pruebas del** 25 de octubre de 2026 (los flujos 5 y 9 se repitieron el 27 y el 28-10) · **Última actualización:** 28 de octubre de 2026
-**Entorno:** emulador Android (app Flutter en modo debug) conectado al backend local con Docker Compose (servicios `api-1` y `db-1`, PostgreSQL 16); commit del backend: *(pegar el hash con `git rev-parse --short HEAD` antes de entregar)*
+**Periodo:** 19 al 31 de octubre de 2026 · **Pruebas del** 25 de octubre de 2026 (los flujos 5 y 9 se repitieron el 27 y el 28-10) · **Última actualización:** 29 de octubre de 2026
+**Entorno:** emulador Android (app Flutter en modo debug) conectado al backend local con Docker Compose (servicios `api-1` y `db-1`, PostgreSQL 16); código probado: backend `ec20c37` (25-10) y app `12fb551` (27-10); el paso 5 se repitió el 28-10 con plazos de prueba reducidos (ver sección 4)
 **Cuentas usadas:** una cuenta titular y una cuenta cuidador. Perfiles de prueba: *Marty Gallina Mcfly* (titular) y *Dr. Emmett Brown* (dependiente, adulto mayor).
 
 > Las capturas de este sprint están en esta misma carpeta, con el nombre `S4_NN_...png`. Cada una lleva abajo una frase que dice qué criterio respalda. Las rutas del backend (horarios, dispositivos, vínculos de cuidador) se probaron desde `/docs` de FastAPI; el resto, desde la app en el emulador. Los números de criterio son los de `Checklist_Aceptacion_PO_Sprint4.md`.
