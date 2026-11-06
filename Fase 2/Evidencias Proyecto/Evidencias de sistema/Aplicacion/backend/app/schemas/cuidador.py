@@ -13,6 +13,8 @@ class CuidadorCreate(BaseModel):
     rol_vinculo: Literal["cuidador", "lectura"] = "cuidador"
     puede_confirmar: bool = True
     puede_editar_rutinas: bool = False
+    # Sprint 5: ver indicadores de salud, ubicación y consultas de IA del perfil.
+    puede_ver_indicadores: bool = False
     # Alertas escalonadas (HU 10): si recibe avisos y en qué nivel (1 = primero en enterarse).
     recibe_alertas: bool = True
     nivel_escalamiento: int = Field(default=1, ge=1, le=3)
@@ -23,6 +25,7 @@ class CuidadorUpdate(BaseModel):
     rol_vinculo: Optional[Literal["cuidador", "lectura"]] = None
     puede_confirmar: Optional[bool] = None
     puede_editar_rutinas: Optional[bool] = None
+    puede_ver_indicadores: Optional[bool] = None
     recibe_alertas: Optional[bool] = None
     nivel_escalamiento: Optional[int] = Field(default=None, ge=1, le=3)
 
@@ -38,5 +41,6 @@ class CuidadorOut(BaseModel):
     rol_vinculo: str
     puede_confirmar: bool
     puede_editar_rutinas: bool
+    puede_ver_indicadores: bool = False
     recibe_alertas: bool = True
     nivel_escalamiento: int = 1
