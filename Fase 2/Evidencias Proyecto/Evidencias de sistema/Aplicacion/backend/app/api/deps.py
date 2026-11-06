@@ -58,6 +58,8 @@ class Acceso:
     puede_confirmar: bool
     puede_editar_rutinas: bool
     acceso_id: Optional[UUID] = None
+    # Sprint 5: ver indicadores de salud y ubicación (el titular siempre puede).
+    puede_ver_indicadores: bool = False
 
 
 # Permisos que pueden pedir las rutas. Si no se pide ninguno, basta con
@@ -65,6 +67,7 @@ class Acceso:
 PERMISO_TITULAR = "titular"                 # editar/borrar perfil, alergias, contactos; administrar cuidadores
 PERMISO_CONFIRMAR = "confirmar"             # confirmar o desconfirmar actividades
 PERMISO_EDITAR_RUTINAS = "editar_rutinas"   # crear, editar o borrar medicamentos y rutinas
+PERMISO_VER_INDICADORES = "ver_indicadores" # ver indicadores de salud, ubicación y consultas de IA (Sprint 5)
 
 
 def _acceso_desde_vinculo(vinculo: PerfilAcceso) -> Acceso:
@@ -75,13 +78,14 @@ def _acceso_desde_vinculo(vinculo: PerfilAcceso) -> Acceso:
         puede_confirmar=False if es_lectura else bool(vinculo.puede_confirmar),
         puede_editar_rutinas=False if es_lectura else bool(vinculo.puede_editar_rutinas),
         acceso_id=vinculo.id,
+        puede_ver_indicadores=bool(vinculo.puede_ver_indicadores),
     )
 
 
 def calcular_acceso(perfil: Perfil, db: Session, usuario: Usuario) -> Optional[Acceso]:
     """Devuelve el acceso del usuario al perfil, o None si no tiene ninguno."""
     if perfil.cuenta_titular_id == usuario.id:
-        return Acceso(rol="titular", puede_confirmar=True, puede_editar_rutinas=True)
+        return Acceso(rol="titular", puede_confirmar=True, puede_editar_rutinas=True, puede_ver_indicadores=True)
     vinculo = (
         db.query(PerfilAcceso)
         .filter(PerfilAcceso.perfil_id == perfil.id, PerfilAcceso.usuario_id == usuario.id)
@@ -102,8 +106,8 @@ def obtener_perfil_con_permiso(
     - Sin ningún acceso (o perfil inexistente): 404, para no revelar que el id existe.
     - Con acceso pero sin el permiso pedido: 403.
 
-    `permiso` puede ser None (solo ver), PERMISO_TITULAR, PERMISO_CONFIRMAR o
-    PERMISO_EDITAR_RUTINAS.
+    `permiso` puede ser None (solo ver), PERMISO_TITULAR, PERMISO_CONFIRMAR,
+    PERMISO_EDITAR_RUTINAS o PERMISO_VER_INDICADORES.
     """
     perfil = db.get(Perfil, perfil_id)
     acceso = calcular_acceso(perfil, db, current_user) if perfil is not None else None
@@ -117,6 +121,7 @@ def obtener_perfil_con_permiso(
         or (permiso == PERMISO_TITULAR and acceso.rol == "titular")
         or (permiso == PERMISO_CONFIRMAR and acceso.puede_confirmar)
         or (permiso == PERMISO_EDITAR_RUTINAS and acceso.puede_editar_rutinas)
+        or (permiso == PERMISO_VER_INDICADORES and acceso.puede_ver_indicadores)
     )
     if not permitido:
         raise HTTPException(
@@ -143,7 +148,10 @@ def perfiles_accesibles(db: Session, usuario: Usuario) -> list[tuple[Perfil, Acc
         .order_by(Perfil.creado_en)
         .all()
     )
-    resultado = [(p, Acceso(rol="titular", puede_confirmar=True, puede_editar_rutinas=True)) for p in propios]
+    resultado = [
+        (p, Acceso(rol="titular", puede_confirmar=True, puede_editar_rutinas=True, puede_ver_indicadores=True))
+        for p in propios
+    ]
     vinculos = (
         db.query(PerfilAcceso, Perfil)
         .join(Perfil, Perfil.id == PerfilAcceso.perfil_id)
