@@ -108,6 +108,79 @@ erDiagram
         datetime creado_en
     }
 
+    INDICADOR_SALUD {
+        uuid id PK "Sprint 5"
+        uuid perfil_id FK "ON DELETE CASCADE"
+        string tipo "peso | presion | glucosa | frecuencia_cardiaca"
+        decimal valor "sistolica en presion"
+        decimal valor_secundario "diastolica - solo presion"
+        string unidad "kg | mmHg | mg/dL | lpm"
+        string fuente "manual | pulsera"
+        datetime medido_en
+        string nota "nullable"
+        string registrado_por_id FK "nullable - ON DELETE SET NULL"
+        datetime creado_en
+    }
+
+    PULSERA {
+        uuid id PK "Sprint 5"
+        uuid perfil_id FK "ON DELETE CASCADE"
+        string identificador UK "uniqueId en Traccar"
+        string nombre
+        string modelo "nullable"
+        bool activa
+        int bateria_pct "nullable"
+        datetime ultima_conexion "nullable"
+        datetime creado_en
+    }
+
+    POSICION {
+        uuid id PK "Sprint 5"
+        uuid pulsera_id FK "ON DELETE CASCADE"
+        float latitud
+        float longitud
+        float precision_m "nullable"
+        float velocidad_kmh "nullable"
+        int bateria_pct "nullable"
+        datetime registrada_en
+    }
+
+    GEOCERCA {
+        uuid id PK "Sprint 5"
+        uuid perfil_id FK "ON DELETE CASCADE"
+        string nombre "unico por perfil"
+        float latitud
+        float longitud
+        int radio_m "20 a 50000"
+        bool activa
+        datetime creado_en
+    }
+
+    EVENTO_SEGURIDAD {
+        uuid id PK "Sprint 5"
+        uuid perfil_id FK "ON DELETE CASCADE"
+        uuid pulsera_id FK "nullable - ON DELETE SET NULL"
+        string tipo "asistencia | sos | caida | bateria_baja | inactividad | geocerca_salida"
+        string origen "app | pulsera | sistema"
+        string mensaje
+        datetime creado_en
+        datetime atendido_en "nullable"
+        string atendido_por_id FK "nullable - ON DELETE SET NULL"
+        string creado_por_id FK "nullable - ON DELETE SET NULL"
+    }
+
+    CONSULTA_IA {
+        uuid id PK "Sprint 5"
+        uuid perfil_id FK "ON DELETE CASCADE"
+        string usuario_id FK "ON DELETE CASCADE"
+        string pregunta
+        string respuesta
+        string proveedor "simulado | anthropic | reglas"
+        string modelo "nullable"
+        string contexto_resumen "que datos se enviaron"
+        datetime creada_en
+    }
+
     USUARIO ||--o{ PERFIL : "administra (titular y dependientes)"
     USUARIO ||--o{ PERFIL_ACCESO : "tiene acceso a"
     PERFIL ||--o{ PERFIL_ACCESO : "tiene cuidadores autorizados"
@@ -124,3 +197,12 @@ erDiagram
     ACTIVIDAD ||--o{ ALERTA : "origina avisos"
     USUARIO ||--o{ ALERTA : "recibe"
     USUARIO ||--o{ DISPOSITIVO_PUSH : "registra"
+    PERFIL ||--o{ INDICADOR_SALUD : "registra mediciones"
+    USUARIO ||--o{ INDICADOR_SALUD : "registra (puede quedar nulo)"
+    PERFIL ||--o{ PULSERA : "usa"
+    PULSERA ||--o{ POSICION : "reporta"
+    PERFIL ||--o{ GEOCERCA : "define zonas"
+    PERFIL ||--o{ EVENTO_SEGURIDAD : "genera"
+    PULSERA ||--o{ EVENTO_SEGURIDAD : "detecta (puede quedar nulo)"
+    PERFIL ||--o{ CONSULTA_IA : "es consultado"
+    USUARIO ||--o{ CONSULTA_IA : "pregunta"
