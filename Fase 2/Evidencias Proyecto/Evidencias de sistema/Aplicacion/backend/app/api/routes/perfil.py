@@ -110,7 +110,7 @@ def crear_perfil(
             detail="Esta cuenta ya tiene un perfil titular",
         )
     db.refresh(nuevo_perfil)
-    return perfil_con_acceso(nuevo_perfil, Acceso("titular", True, True))
+    return perfil_con_acceso(nuevo_perfil, Acceso("titular", True, True, puede_ver_indicadores=True))
 
 
 @router.get("", response_model=list[PerfilOut])
