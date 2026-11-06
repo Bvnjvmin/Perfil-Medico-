@@ -1,0 +1,24 @@
+# Servidor Traccar para recibir las lecturas de la pulsera GPS (HU 17 y HU 19).
+#
+# Se usa junto al compose principal, desde la carpeta backend:
+#   docker compose -f docker-compose.yml -f traccar/docker-compose.traccar.yml up --build
+#
+# Requisitos: en el .env del backend, TRACCAR_TOKEN con el mismo valor que está en
+# traccar/traccar.xml (ver README.md). Panel de Traccar: http://localhost:8082
+services:
+  traccar:
+    image: traccar/traccar:latest   # fijar una versión concreta una vez probada
+    restart: unless-stopped
+    depends_on:
+      - api
+    ports:
+      - "8082:8082"      # panel web
+      - "5055:5055"      # protocolo OsmAnd (sirve para simular un dispositivo con el celular)
+    volumes:
+      - ./traccar/traccar.xml:/opt/traccar/conf/traccar.xml:ro
+      - traccar_data:/opt/traccar/data
+      - traccar_logs:/opt/traccar/logs
+
+volumes:
+  traccar_data:
+  traccar_logs:
