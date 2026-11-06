@@ -48,7 +48,3 @@ Como Product Owner, decide y dejar registrado aquí:
 
 **Product Owner:** Sergio Ocares
 **Fecha:** 01 de octubre de 2026
-
----
-
-*Una vez completado, sube este archivo junto con el `modelo_datos.md` actualizado y el diagrama exportado, en un commit del tipo:*
