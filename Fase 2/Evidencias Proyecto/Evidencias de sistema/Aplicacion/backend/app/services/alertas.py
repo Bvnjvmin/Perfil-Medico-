@@ -50,6 +50,8 @@ def _destinatarios(db: Session, perfil: Perfil, nivel: int) -> list[str]:
         ids = [perfil.cuenta_titular_id] + [v.usuario_id for v in vinculos if v.nivel_escalamiento == 1]
     else:
         ids = [v.usuario_id for v in vinculos if v.nivel_escalamiento == nivel]
+        if nivel == 2 and settings.ALERTA_NIVEL_2_INCLUYE_TITULAR:
+            ids = [perfil.cuenta_titular_id] + ids
     return list(dict.fromkeys(ids))  # sin repetidos, en orden
 
 
@@ -158,7 +160,17 @@ def ejecutar_ciclo(db: Session) -> dict:
     """Un ciclo de la tarea programada: generar actividades y procesar avisos."""
     from app.services.actividades import generar_actividades_programadas
 
+    from app.services.pulsera import limpiar_posiciones, procesar_inactividad
+
     perfiles = generar_actividades_programadas(db)
     resumen = procesar_avisos(db)
     resumen["perfiles"] = perfiles
+    # Sprint 5: eventos de inactividad de la pulsera y limpieza de posiciones viejas.
+    # Una falla aquí no debe impedir los avisos de la agenda, que ya se procesaron.
+    try:
+        resumen["inactividad"] = procesar_inactividad(db)
+        resumen["posiciones_borradas"] = limpiar_posiciones(db)
+    except Exception:
+        db.rollback()
+        logger.exception("Falló el procesamiento de la pulsera")
     return resumen
