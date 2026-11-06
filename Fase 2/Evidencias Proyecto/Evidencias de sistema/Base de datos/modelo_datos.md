@@ -1,10 +1,10 @@
 # Modelo de Datos — Perfil Médico+
 
-**Responsable:** Sergio Ocares · **Sprint 1** (S5-S6), actualizado en Sprint 2 (S7-S8), Sprint 3 (S9-S10) y Sprint 4 (S11-S12)
+**Responsable:** Sergio Ocares · **Sprint 1** (S5-S6), actualizado en Sprint 2 (S7-S8), Sprint 3 (S9-S10), Sprint 4 (S11-S12) y Sprint 5 (S13-S14)
 
 ## Diagrama entidad-relación
 
-El diagrama refleja lo **realmente construido** hasta el Sprint 4 (ver `Aplicacion/backend/app/models/`). El Sprint 4 agrega `RUTINA_HORARIO`, `ALERTA` y `DISPOSITIVO_PUSH`, y la columna `hora` de `ACTIVIDAD`.
+El diagrama refleja lo **realmente construido** hasta el Sprint 5 (ver `Aplicacion/backend/app/models/`). El Sprint 4 agregó `RUTINA_HORARIO`, `ALERTA` y `DISPOSITIVO_PUSH`, y la columna `hora` de `ACTIVIDAD`. El Sprint 5 agrega `INDICADOR_SALUD`, `PULSERA`, `POSICION`, `GEOCERCA`, `EVENTO_SEGURIDAD` y `CONSULTA_IA`.
 
 ```mermaid
 erDiagram
@@ -117,6 +117,79 @@ erDiagram
         datetime creado_en
     }
 
+    INDICADOR_SALUD {
+        uuid id PK "Sprint 5"
+        uuid perfil_id FK "ON DELETE CASCADE"
+        string tipo "peso | presion | glucosa | frecuencia_cardiaca"
+        decimal valor "sistolica en presion"
+        decimal valor_secundario "diastolica - solo presion"
+        string unidad "kg | mmHg | mg/dL | lpm"
+        string fuente "manual | pulsera"
+        datetime medido_en
+        string nota "nullable"
+        string registrado_por_id FK "nullable - ON DELETE SET NULL"
+        datetime creado_en
+    }
+
+    PULSERA {
+        uuid id PK "Sprint 5"
+        uuid perfil_id FK "ON DELETE CASCADE"
+        string identificador UK "uniqueId en Traccar"
+        string nombre
+        string modelo "nullable"
+        bool activa
+        int bateria_pct "nullable"
+        datetime ultima_conexion "nullable"
+        datetime creado_en
+    }
+
+    POSICION {
+        uuid id PK "Sprint 5"
+        uuid pulsera_id FK "ON DELETE CASCADE"
+        float latitud
+        float longitud
+        float precision_m "nullable"
+        float velocidad_kmh "nullable"
+        int bateria_pct "nullable"
+        datetime registrada_en
+    }
+
+    GEOCERCA {
+        uuid id PK "Sprint 5"
+        uuid perfil_id FK "ON DELETE CASCADE"
+        string nombre "unico por perfil"
+        float latitud
+        float longitud
+        int radio_m "20 a 50000"
+        bool activa
+        datetime creado_en
+    }
+
+    EVENTO_SEGURIDAD {
+        uuid id PK "Sprint 5"
+        uuid perfil_id FK "ON DELETE CASCADE"
+        uuid pulsera_id FK "nullable - ON DELETE SET NULL"
+        string tipo "asistencia | sos | caida | bateria_baja | inactividad | geocerca_salida"
+        string origen "app | pulsera | sistema"
+        string mensaje
+        datetime creado_en
+        datetime atendido_en "nullable"
+        string atendido_por_id FK "nullable - ON DELETE SET NULL"
+        string creado_por_id FK "nullable - ON DELETE SET NULL"
+    }
+
+    CONSULTA_IA {
+        uuid id PK "Sprint 5"
+        uuid perfil_id FK "ON DELETE CASCADE"
+        string usuario_id FK "ON DELETE CASCADE"
+        string pregunta
+        string respuesta
+        string proveedor "simulado | anthropic | reglas"
+        string modelo "nullable"
+        string contexto_resumen "que datos se enviaron"
+        datetime creada_en
+    }
+
     USUARIO ||--o{ PERFIL : "administra (titular y dependientes)"
     USUARIO ||--o{ PERFIL_ACCESO : "tiene acceso a"
     PERFIL ||--o{ PERFIL_ACCESO : "tiene cuidadores autorizados"
@@ -133,6 +206,15 @@ erDiagram
     ACTIVIDAD ||--o{ ALERTA : "origina avisos"
     USUARIO ||--o{ ALERTA : "recibe"
     USUARIO ||--o{ DISPOSITIVO_PUSH : "registra"
+    PERFIL ||--o{ INDICADOR_SALUD : "registra mediciones"
+    USUARIO ||--o{ INDICADOR_SALUD : "registra (puede quedar nulo)"
+    PERFIL ||--o{ PULSERA : "usa"
+    PULSERA ||--o{ POSICION : "reporta"
+    PERFIL ||--o{ GEOCERCA : "define zonas"
+    PERFIL ||--o{ EVENTO_SEGURIDAD : "genera"
+    PULSERA ||--o{ EVENTO_SEGURIDAD : "detecta (puede quedar nulo)"
+    PERFIL ||--o{ CONSULTA_IA : "es consultado"
+    USUARIO ||--o{ CONSULTA_IA : "pregunta"
 ```
 
 ## Decisiones de diseño
@@ -193,6 +275,18 @@ Migraciones del sprint (la cadena sigue con una sola cabeza): `f7a8b9c0d1e2` (ta
 - **`DISPOSITIVO_PUSH` guarda el token por usuario.** El token es único: si otra cuenta lo registra en el mismo celular, el token se reasigna. El envío real de notificaciones (FCM) no está implementado; el backend usa un notificador que escribe en el log y los avisos se consultan dentro de la app.
 - **Borrado explícito además de la cascada.** Las rutas que borran medicamento, rutina o perfil también eliminan sus `alerta` y `rutina_horario`, porque las pruebas con SQLite no validan llaves foráneas.
 
+## Decisiones del Sprint 5
+
+Migraciones del sprint (la cadena sigue con una sola cabeza): `d1e2f3a4b5c6` (`indicador_salud`), `e2f3a4b5c6d7` (`pulsera`, `posicion` y `geocerca`), `f3a4b5c6d7e8` (`evento_seguridad`) y `a5b6c7d8e9f0` (`consulta_ia`, cabeza actual). Se probaron sobre PostgreSQL 16: `upgrade` desde la cabeza anterior, `downgrade`/`upgrade` de cada una, `alembic check` sin diferencias con los modelos, restricciones `CHECK` y únicas con datos inválidos, y borrado en cascada.
+
+- **`INDICADOR_SALUD` es una sola tabla para los cuatro tipos**, con `tipo` y la unidad guardada en cada fila. Una tabla por indicador habría repetido el mismo código cuatro veces; una sola permite la serie del gráfico (HU 12) con una consulta por `(perfil_id, tipo, medido_en)`. La presión necesita dos valores: la sistólica va en `valor` y la diastólica en `valor_secundario`, y un `CHECK` exige que la presión tenga los dos y que los demás tipos no tengan el segundo. `fuente` distingue lo registrado a mano de lo que llega de la pulsera por Health Connect (HU 18). Si se borra la cuenta que registró la medición, esta se conserva (`registrado_por_id` queda en NULL): el dato clínico pertenece al perfil.
+- **El % de cumplimiento (HU 13) no tiene tabla.** Se calcula al consultar sobre `ACTIVIDAD`, que ya guarda `confirmada`, `vencida` o `pendiente`. Guardarlo habría creado un segundo dato que puede quedar desactualizado. Solo cuenta lo que la tarea programada ya generó (hoy y los 2 días siguientes), por lo que un día sin actividades generadas no suma ni resta.
+- **`PULSERA`, `POSICION` y `GEOCERCA` cuelgan del perfil.** `pulsera.identificador` es el `uniqueId` con que Traccar conoce al dispositivo (normalmente el IMEI) y es único en todo el sistema. Cada lectura de GPS se guarda en `POSICION`; las más viejas que `POSICIONES_DIAS_RETENCION` (30 días) las borra el ciclo programado, para que la tabla no crezca sin límite. La geocerca es un círculo (centro y radio de 20 m a 50 km) con nombre único por perfil; no se guarda en qué zona está la pulsera, porque se calcula comparando la lectura nueva con la anterior.
+- **`EVENTO_SEGURIDAD` va aparte de `ALERTA`.** `ALERTA` nace de una actividad no confirmada y su restricción única depende de `actividad_id`; el botón «Necesito ayuda» y las alarmas de la pulsera no tienen actividad. Forzarlos en la misma tabla habría exigido volver nulo `actividad_id` y la app actual de Avisos se habría roto. Es una fila por evento, no por destinatario: lo ven el titular y los vinculados con `recibe_alertas`, y un solo campo (`atendido_en` / `atendido_por_id`) dice si alguien ya lo atendió. Los tipos son `asistencia`, `sos`, `caida`, `bateria_baja`, `inactividad` y `geocerca_salida`; `origen` indica si vino de la app, de la pulsera o del propio sistema. Un mismo tipo de evento del mismo perfil no se repite dentro de una ventana (10 minutos; 2 horas para batería baja), calculada al crear el evento.
+- **Quién ve la ubicación y los indicadores.** Se usa `perfil_acceso.puede_ver_indicadores`, que existía desde el Sprint 3 sin uso: sin ese permiso, un cuidador no ve indicadores, ubicación ni geocercas de la pulsera (el titular siempre los ve). Este permiso también decide si los últimos indicadores viajan al asistente de IA.
+- **`CONSULTA_IA` guarda la pregunta, la respuesta y un resumen de los datos enviados** (`contexto_resumen`: por ejemplo «nombre de pila, alergias, medicamentos activos»), no los datos en sí. Así se puede auditar qué información de salud salió hacia el proveedor sin duplicarla. `proveedor` puede ser `simulado`, `anthropic` o `reglas` (respuestas fijas ante una urgencia, que no llegan al modelo). Detalle del contexto en `Contexto_IA_Sprint5.md`.
+- **Borrado.** Todo lo nuevo se borra en cascada con el perfil. Al quitar una pulsera se borran sus posiciones, pero sus eventos se conservan con `pulsera_id` en NULL: el historial de lo que pasó no debe depender de que el dispositivo siga registrado. Las rutas también borran de forma explícita porque las pruebas con SQLite no validan llaves foráneas.
+
 ## Estado por sprint
 
 | Tabla | Sprint | Estado |
@@ -207,6 +301,10 @@ Migraciones del sprint (la cadena sigue con una sola cabeza): `f7a8b9c0d1e2` (ta
 | `alerta` | Sprint 4 | **Implementada (Sprint 4)** — HU 9 y HU 10 |
 | `dispositivo_push` | Sprint 4 | **Implementada (Sprint 4)** — HU 9; el envío real por FCM queda pendiente |
 | `actividad.hora` | Sprint 4 | **Implementada (Sprint 4)** — una actividad por origen, día y hora |
+| `indicador_salud` | Sprint 5 | **Implementada (Sprint 5)** — HU 12 y HU 18 |
+| `pulsera`, `posicion`, `geocerca` | Sprint 5 | **Implementadas (Sprint 5)** — HU 17 y HU 19; Traccar reenvía las posiciones a la API |
+| `evento_seguridad` | Sprint 5 | **Implementada (Sprint 5)** — HU 14 y HU 19 |
+| `consulta_ia` | Sprint 5 | **Implementada (Sprint 5)** — HU 15; el proveedor real de IA queda por configurar |
 
 ## Cambios respecto de la versión anterior del documento
 
@@ -218,3 +316,4 @@ Migraciones del sprint (la cadena sigue con una sola cabeza): `f7a8b9c0d1e2` (ta
 6. **(Sprint 2)** Se actualiza el estado de implementación de `perfiles`/`alergias`/`contactos_emergencia` (HU 2, ya implementadas) y de `medicamento`/`rutina_cuidado` (HU 4, implementadas con alcance simplificado); se documenta la decisión de diferir `RUTINA_HORARIO` y `ACTIVIDAD` a Sprint 3.
 7. **(Sprint 3)** `actividad` y `perfil_acceso` pasan a "Implementada". `ACTIVIDAD` se construyó con dos llaves opcionales (`medicamento_id` o `rutina_id`) en vez de la `rutina_id` única del diseño original. Se agregan el índice de titular único y el borrado en cascada desde `perfil`. El diagrama se actualiza con `MEDICAMENTO` y `RUTINA_CUIDADO` tal como se construyeron en el Sprint 2, y `RUTINA_HORARIO` queda marcada como pendiente (Sprint 4).
 8. **(Sprint 4)** `RUTINA_HORARIO` pasa a "Implementada" y se agregan `ALERTA` y `DISPOSITIVO_PUSH`. `ACTIVIDAD` gana `hora` y los estados `vencida` y `omitida`, y su clave única pasa a incluir la hora. Se documenta la tarea programada de generación y las reglas de destinatarios por nivel.
+9. **(Sprint 5)** Se agregan `INDICADOR_SALUD`, `PULSERA`, `POSICION`, `GEOCERCA`, `EVENTO_SEGURIDAD` y `CONSULTA_IA`. El % de cumplimiento se calcula sobre `ACTIVIDAD` sin tabla propia, y los eventos de seguridad se separan de `ALERTA`. Se documentan los permisos de `puede_ver_indicadores` y la retención de posiciones.
