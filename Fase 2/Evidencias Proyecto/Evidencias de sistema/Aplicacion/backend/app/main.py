@@ -14,7 +14,10 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.routes import actividad, auth, aviso, cuidador, horario, medicamento, panel, perfil
+from app.api.routes import (
+    actividad, auth, aviso, cuidador, cumplimiento, evento, horario, ia, indicador, medicamento, panel,
+    perfil, pulsera, traccar,
+)
 from app.core.config import settings
 
 logger = logging.getLogger("perfil_medico.tareas")
@@ -71,6 +74,12 @@ app.include_router(actividad.router)
 app.include_router(cuidador.router)
 app.include_router(panel.router)
 app.include_router(aviso.router)
+app.include_router(indicador.router)
+app.include_router(cumplimiento.router)
+app.include_router(evento.router)
+app.include_router(pulsera.router)
+app.include_router(traccar.router)
+app.include_router(ia.router)
 
 
 @app.get("/health", tags=["Estado"])
