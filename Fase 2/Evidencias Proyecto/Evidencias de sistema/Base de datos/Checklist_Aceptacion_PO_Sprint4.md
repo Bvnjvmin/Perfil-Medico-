@@ -3,7 +3,7 @@
 **Rol:** Sergio Ocares, Product Owner
 **Qué es esto:** antes de dar por cerradas las HU 9, 10 y 11, el Product Owner valida que lo construido cumple los criterios de aceptación del Sprint Backlog 4. Alguien que no escribió el código lo prueba desde afuera, con tres cuentas (titular, cuidador autorizado y persona ajena). Completa la Definition of Done del equipo ("integrada al repositorio + probada + documentada") desde el ángulo del PO.
 
-> Ejecución parcial: los ✅ son pruebas hechas por el Product Owner; ⏳ significa que aún no se probó. Los criterios coinciden con el Sprint Backlog 4 y con el comportamiento real del backend; se ajustan si el equipo cambia algo en la reunión. **Alcance real de HU 9:** el aviso llega a la app (pantalla Avisos); el push al celular con FCM no está implementado, así que los criterios 6 y 8 se prueban con la pantalla Avisos y quedan anotados como parciales hasta que se elija el proveedor.
+> Los ✅ son pruebas hechas por el Product Owner, salvo las filas 8, 14, 15, 16 y 17, que se apoyan en la evidencia del emulador que el equipo dejó en el Sprint 4 (indicada en cada nota); ⏳ significa que aún no se probó. Los criterios coinciden con el Sprint Backlog 4 y con el comportamiento real del backend; se ajustan si el equipo cambia algo en la reunión. **Alcance real de HU 9:** el aviso llega a la app (pantalla Avisos); el push al celular con FCM no está implementado, así que los criterios 6 y 8 se prueban con la pantalla Avisos y quedan anotados como parciales hasta que se elija el proveedor.
 
 ## Cómo probar
 
@@ -29,7 +29,7 @@
 | 5 | El backend registra el dispositivo del usuario | `POST /dispositivos` con un token de prueba → 201; repetirlo → 200 sin duplicar. (La app aún no lo llama: falta FCM.) | ✅ | Probado en Swagger: `POST /dispositivos` → 201 la primera vez y 200 la segunda, sin duplicar. |
 | 6 | Se crea un recordatorio antes de la hora de una actividad pendiente | Crear un horario cercano, esperar el ciclo y consultar `GET /alertas` (tipo `recordatorio`) y la pantalla Avisos | ✅ | Probado con `GET /alertas`: apareció un recordatorio (`tipo` recordatorio, `nivel` 0) para la actividad de las 19:30. Parcial: no se probó en la pantalla Avisos de la app y el push real no está implementado. |
 | 7 | Una actividad confirmada no genera recordatorio | Confirmar antes del recordatorio y consultar `GET /alertas` | ✅ | Probado en Swagger (8-nov): la actividad de las 18:14 se confirmó a las 18:08, antes de que le tocara el recordatorio (18:12), y no apareció ningún recordatorio ni alerta para ella en `GET /alertas`. Control: la actividad de las 18:15, sin confirmar, sí tuvo su recordatorio a las 18:13. (Intentos anteriores, 2-nov y 8-nov, no fueron válidos: la confirmación llegó después del recordatorio.) |
-| 8 | Tocar un aviso abre la Agenda del perfil | Emulador, pantalla Avisos | ⏳ | Pendiente: se prueba en el emulador con la app. |
+| 8 | Tocar un aviso abre la Agenda del perfil | Emulador, pantalla Avisos | ✅ | Evidencia del equipo (Sprint 4, `Evidencia_Sprint4.md`, capturas `S4_03.1` y `S4_03.2`): al tocar un aviso en la pantalla Avisos se abre la Agenda del perfil y el aviso queda marcado como leído. Parcial: el push real al celular (FCM) no está implementado. |
 
 ## HU 10 — Alertas escalonadas
 
@@ -45,20 +45,20 @@
 
 | # | Criterio de aceptación | Cómo probarlo | ✅ / ❌ | Notas |
 |---|---|---|---|---|
-| 14 | El modo simplificado muestra solo las actividades de hoy, con botones y texto grandes | Emulador | ⏳ | Pendiente: se prueba en el emulador con la app. |
-| 15 | Confirmar una actividad toma un solo toque | Emulador | ⏳ | Pendiente: se prueba en el emulador con la app. |
-| 16 | El modo simplificado no permite editar ni borrar datos | Emulador | ⏳ | Pendiente: se prueba en el emulador con la app. |
-| 17 | Se entra y se sale del modo desde la cuenta del titular | Emulador | ⏳ | Pendiente: se prueba en el emulador con la app. |
+| 14 | El modo simplificado muestra solo las actividades de hoy, con botones y texto grandes | Emulador | ✅ | Evidencia del equipo (Sprint 4, captura `S4_06`): el modo simplificado muestra solo las actividades de hoy («Hoy», «9 de 12 hechas») con botones «Hecho» grandes. |
+| 15 | Confirmar una actividad toma un solo toque | Emulador | ✅ | Evidencia del equipo (Sprint 4, capturas `S4_07.1` y `S4_07.2`): con un toque la tarjeta pasa a «Hecha» y la agenda refleja la confirmación (de 9 a 10 de 12 actividades). |
+| 16 | El modo simplificado no permite editar ni borrar datos | Emulador | ✅ | Evidencia del equipo (Sprint 4, capturas `S4_08.1` y `S4_08.3`): el modo simplificado solo tiene el botón «Hecho», sin opciones para editar ni borrar; en un perfil de solo lectura tampoco se puede confirmar. |
+| 17 | Se entra y se sale del modo desde la cuenta del titular | Emulador | ✅ | Evidencia del equipo (Sprint 4, capturas `S4_06` y `S4_06.1`): el modo se abre desde el perfil del dependiente y la salida pide confirmación («¿Salir del modo simplificado?», con «Quedarme» y «Salir»). |
 
 ## Registro de ejecución
 
 - Fecha de la prueba: 22 y 23 de octubre y 2 y 8 de noviembre de 2026.
 - Entorno: backend del repositorio en Docker Compose (commit `ca2f230`), PostgreSQL, Swagger en `http://localhost:8000/docs`. Tres cuentas: titular, cuidador (vinculado con `recibe_alertas` y nivel 2) y ajena. Perfil de prueba: dependiente «Abuela Rosa» con el medicamento Losartán a las 19:30 y a las 23:00 (más horarios temporales creados para las pruebas del 8-nov).
-- Resultado: 12 de 17 ✅ (criterios 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12 y 13; el 2 y el 6 con parte sin probar, como indican sus notas). Quedan pendientes los criterios 8, 14, 15, 16 y 17 (emulador).
-- Qué se probó por API y qué en el emulador: todo lo marcado ✅ se probó por API en Swagger. Nada se probó aún en el emulador.
+- Resultado: 17 de 17 ✅. Los criterios 1, 2, 3, 4, 5, 6, 7, 9, 10, 11, 12 y 13 los probó el Product Owner por API; los criterios 8, 14, 15, 16 y 17 se marcan con la evidencia del equipo en el emulador (Sprint 4). El 2, el 6 y el 8 tienen parte sin probar, como indican sus notas.
+- Qué se probó por API y qué en el emulador: las filas 1 a 7 y 9 a 13 se probaron por API en Swagger. Las filas 8, 14, 15, 16 y 17 se respaldan con las capturas del emulador de `Evidencia_Sprint4.md` (carpeta `Aplicacion/app_movil/evidencias/evidencias Sprint 4/`); el Product Owner no las repitió en el emulador.
 
 ## Limitaciones conocidas
 
 - El push real al celular (FCM) no está implementado: los avisos se consultan con `GET /alertas` y en la pantalla Avisos, por eso el criterio 6 queda como parcial.
 - El 8-nov los plazos cortos sí se aplicaron (recordatorio a 2 min, nivel 1 a 3 min y nivel 2 a 6 min; 15 min para el nivel 2 en la prueba del criterio 11). Los plazos propuestos originalmente (10, 30 y 60 minutos) no se usaron en esas pruebas.
-- Los criterios pendientes se actualizarán en este mismo archivo cuando se prueben.
+- Si el equipo cambia el comportamiento de la app o el backend, los criterios afectados se vuelven a probar y este archivo se actualiza.
