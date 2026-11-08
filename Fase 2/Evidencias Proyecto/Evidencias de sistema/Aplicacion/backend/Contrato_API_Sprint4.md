@@ -130,4 +130,4 @@ Si un medicamento o rutina no tiene horarios, la actividad usa su `hora_inicio` 
 | Revisó | Fecha | Visto bueno |
 |---|---|---|
 | Matías Pizarro (App móvil) | 27-10-2026 | ✅ |
-| Sergio Ocares (Product Owner) | | ⬜ |
+| Sergio Ocares (Product Owner) | 08-11-2026 | ✅ |
