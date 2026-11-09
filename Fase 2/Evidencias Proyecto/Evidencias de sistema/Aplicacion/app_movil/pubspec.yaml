@@ -1,5 +1,5 @@
 name: app_movil
-description: "App móvil de Perfil Médico+ (Flutter) — Sprint 1: autenticación — Sprint 2: perfil, medicamentos, rutinas y agenda diaria."
+description: "App móvil de Perfil Médico+ (Flutter) — Sprint 5: Indicadores de salud e historial de cumplimiento, módulo de IA, pulsera inteligente (Traccar + Health Connect) y botón de asistencia"
 publish_to: 'none'
 version: 0.2.0
 

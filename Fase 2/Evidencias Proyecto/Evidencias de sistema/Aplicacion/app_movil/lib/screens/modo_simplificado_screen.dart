@@ -4,6 +4,7 @@ import '../models/actividad.dart';
 import '../models/perfil.dart';
 import '../services/api_service.dart';
 import '../utils/hora.dart';
+import '../widgets/boton_ayuda.dart';
 
 /// Interfaz simplificada para el perfil dependiente (HU 11): texto y botones grandes,
 /// solo las actividades de hoy y confirmación con un toque. No permite editar ni
@@ -199,15 +200,19 @@ class _ModoSimplificadoScreenState extends State<ModoSimplificadoScreen> {
     } else if (lista == null) {
       cuerpo = const Center(child: CircularProgressIndicator());
     } else if (lista.isEmpty) {
-      cuerpo = const Center(
-        child: Padding(
-          padding: EdgeInsets.all(24),
-          child: Text(
-            'Hoy no hay actividades.',
-            style: TextStyle(fontSize: 26),
-            textAlign: TextAlign.center,
+      cuerpo = ListView(
+        padding: const EdgeInsets.all(20),
+        children: [
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 24),
+            child: Text(
+              'Hoy no hay actividades.',
+              style: TextStyle(fontSize: 26),
+              textAlign: TextAlign.center,
+            ),
           ),
-        ),
+          BotonAyuda(token: widget.token, perfilId: widget.perfil.id),
+        ],
       );
     } else {
       // Primero las que faltan, después las hechas; dentro de cada grupo, por hora.
@@ -247,6 +252,9 @@ class _ModoSimplificadoScreenState extends State<ModoSimplificadoScreen> {
                 ),
               ),
             for (final a in ordenadas) _tarjeta(a),
+            const SizedBox(height: 8),
+            BotonAyuda(token: widget.token, perfilId: widget.perfil.id),
+            const SizedBox(height: 24),
           ],
         ),
       );
