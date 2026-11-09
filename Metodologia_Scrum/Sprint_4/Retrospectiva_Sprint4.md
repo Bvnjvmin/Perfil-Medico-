@@ -10,7 +10,7 @@
 
 ## Resultado del sprint
 
-Historias comprometidas: 3 (HU 9, HU 10 y HU 11) más los habilitadores `RUTINA_HORARIO` y generación programada · Terminadas según la Definition of Done del equipo (integrada + probada + documentada): *(n)* de 3 al 31-10 · Aceptadas por el Product Owner: *(n)* de 17 criterios (`Checklist_Aceptacion_PO_Sprint4.md`, sin ejecutar al 29-10). Detalle en `Sprint_Backlog_Sprint4.md`.
+Historias comprometidas: 3 (HU 9, HU 10 y HU 11) más los habilitadores `RUTINA_HORARIO` y generación programada · Terminadas según la Definition of Done del equipo (integrada + probada + documentada): *(n)* de 3 al 31-10 · Aceptadas por el Product Owner: 17 de 17 criterios al 8-11 (`Checklist_Aceptacion_PO_Sprint4.md`, ejecutado después del cierre del sprint). Detalle en `Sprint_Backlog_Sprint4.md`.
 
 Estado al 29-10: las tres historias están construidas, probadas en backend y emulador, e integradas al repositorio (commits en la sección 7 del Sprint Backlog), pero ninguna se da por terminada hasta pasar la aceptación del PO. **HU 9 queda parcial por diseño:** el aviso llega a la pantalla Avisos, pero el push al celular (FCM) no está implementado.
 
@@ -37,7 +37,7 @@ Estado al 29-10: las tres historias están construidas, probadas en backend y em
 - **Detalles de experiencia sin cerrar:** la hora de los avisos aparecía en UTC el 25-10 y en hora local el 28-10 (confirmar el cambio), y el Panel de dependientes lista al titular.
 - **La configuración nueva no está en `.env.example`:** variables como `TAREAS_PROGRAMADAS`, `ZONA_HORARIA`, los plazos de alerta y `NOTIFICADOR` solo se ven en `docker-compose.yml` y `config.py`.
 - **Los commits llegaron concentrados.** El backend y la base de datos se subieron el 22-10 (Benjamín y Sergio) y casi toda la app el 25-10 (Matías); hubo commits en cinco días distintos del sprint (22, 25, 27, 28 y 29-10). El acuerdo se cumplió a nivel de equipo, pero no por persona. *Aprendizaje:* subir avances parciales durante la semana, no al final.
-- *(Completar el 31-10: cierre del checklist del PO y lo que no alcanzó.)*
+- **El checklist del Product Owner se cerró tarde.** La plantilla seguía sin ejecutar al 31-10 y se completó en varias sesiones (22 y 23-10, 2-11 y 8-11). Los criterios 7 y 11 (una actividad confirmada no genera recordatorio y confirmar detiene el escalamiento) no se pudieron probar el 2-11: los plazos cortos no se aplicaron y las confirmaciones llegaron después de cada plazo. Se probaron el 8-11 con plazos de 2, 3 y 6 minutos y, para el criterio 11, con el plazo del nivel 2 subido a 15 minutos para dejar margen entre el nivel 1 y el nivel 2. *Aprendizaje:* dejar documentada una configuración de prueba con plazos cortos (ver la acción del `docker-compose.prueba.yml`) y probar esos flujos con margen suficiente entre cada plazo.
 
 ## Seguimiento de las acciones de la retrospectiva del Sprint 3
 
@@ -47,11 +47,11 @@ Estado al 29-10: las tres historias están construidas, probadas en backend y em
 | Que las pruebas del backend no usen fechas fijas | ✅ Las 29 pruebas nuevas usan fechas relativas; 148 de 148 pasan (`pytest.log`) |
 | Subir al repositorio al menos dos veces por semana y revisar el historial a mitad de sprint | 🟡 Verificado con `git log` el 29-10: hubo commits en cinco días distintos (22, 25, 27, 28 y 29-10), pero por persona el código se subió casi todo en un solo día (Benjamín y Sergio el 22-10; la app de Matías el 25-10) |
 | Publicar el Sprint Backlog 4 el primer día del sprint | ❌ Se subió al repositorio el 25-10 (`31c3353`); el sprint empezó el 19-10 |
-| Revisar cada integración app-backend contra `/docs` de FastAPI | 🟡 Verificado el 27-10 contra el código: todas las rutas del contrato existen en el backend y las 5 que usa la app (`GET /perfiles/{id}/actividades`, `POST /actividades/{id}/confirmar` y `/desconfirmar`, `GET /panel`, `GET /alertas`, `POST /alertas/{id}/leida`) coinciden. La app aún no consume `/dispositivos`, los horarios ni los campos `recibe_alertas` y `nivel_escalamiento`. La revisión escrita de Matías está en la sección 9 del contrato (27-10); falta el visto bueno de Sergio |
+| Revisar cada integración app-backend contra `/docs` de FastAPI | 🟡 Verificado el 27-10 contra el código: todas las rutas del contrato existen en el backend y las 5 que usa la app (`GET /perfiles/{id}/actividades`, `POST /actividades/{id}/confirmar` y `/desconfirmar`, `GET /panel`, `GET /alertas`, `POST /alertas/{id}/leida`) coinciden. La app aún no consume `/dispositivos`, los horarios ni los campos `recibe_alertas` y `nivel_escalamiento`. La revisión escrita de Matías está en la sección 9 del contrato (27-10); Sergio dio su visto bueno el 8-11 |
 | Corregir "Mi perfil de salud" para cuentas de cuidador | ✅ Corregido el 27-10 en `home_screen.dart`: la cuenta cuidador sin perfil propio ve «Aún no lo completas» (`S4_09.3`); `flutter analyze` y `flutter test` repetidos el 28-10 y en verde |
 | Pasar el Panel a `GET /panel?fecha=`; agregar timeouts y manejo de errores de red | ✅ Panel con `GET /panel` (`S4_09.2`) y mensaje de error de conexión (`S4_10`) |
 | Cambiar `value` por `initialValue` en los 4 avisos de `flutter analyze` | ✅ `analyze.log` sin avisos |
-| Cerrar el checklist del Product Owner dentro del sprint, no después | ⬜ En curso: plantilla sin ejecutar al 29-10; objetivo antes del 31-10 |
+| Cerrar el checklist del Product Owner dentro del sprint, no después | ❌ No se cumplió: el checklist se cerró el 8-11, ocho días después del cierre del sprint (17 de 17) |
 
 ## ¿Qué vamos a cambiar o probar distinto en el próximo sprint?
 
