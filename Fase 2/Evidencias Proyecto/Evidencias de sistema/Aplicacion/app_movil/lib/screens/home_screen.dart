@@ -8,12 +8,17 @@ import 'alergias_screen.dart';
 import 'alertas_screen.dart';
 import 'compartir_perfil_screen.dart';
 import 'contactos_emergencia_screen.dart';
+import 'cumplimiento_screen.dart';
+import 'eventos_screen.dart';
+import 'ia_screen.dart';
+import 'indicadores_screen.dart';
 import 'login_screen.dart';
 import 'medicamentos_screen.dart';
 import 'mis_perfiles_screen.dart';
 import 'modo_simplificado_screen.dart';
 import 'panel_screen.dart';
 import 'perfil_screen.dart';
+import 'pulsera_screen.dart';
 import 'rutinas_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -156,6 +161,14 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Future<void> _abrirEventos() async {
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => EventosScreen(token: _token!),
+      ),
+    );
+  }
+
   void _abrirModoSimplificado() {
     final perfil = _perfilActivo;
     if (perfil == null) {
@@ -198,6 +211,11 @@ class _HomeScreenState extends State<HomeScreen> {
             onPressed: _token == null ? null : _abrirAlertas,
             icon: const Icon(Icons.notifications_none),
             tooltip: 'Avisos',
+          ),
+          IconButton(
+            onPressed: _token == null ? null : _abrirEventos,
+            icon: const Icon(Icons.shield_outlined),
+            tooltip: 'Eventos de seguridad',
           ),
           IconButton(
             onPressed: _cerrarSesion,
@@ -358,6 +376,66 @@ class _HomeScreenState extends State<HomeScreen> {
                       token: token,
                       perfilId: perfil.id,
                       puedeEditar: !perfil.esSoloLectura, 
+                    ),
+                  ),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.fact_check_outlined),
+                  title: const Text('Cumplimiento'),
+                  subtitle: _perfilActivo != null
+                      ? Text('Activo: ${_perfilActivo!.nombre}')
+                      : null,
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () => _abrirConPerfil(
+                    (token, perfil) => CumplimientoScreen(
+                      token: token,
+                      perfilId: perfil.id,
+                      perfilNombre: perfil.nombre,
+                    ),
+                  ),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.monitor_heart_outlined),
+                  title: const Text('Indicadores de salud'),
+                  subtitle: _perfilActivo != null
+                      ? Text('Activo: ${_perfilActivo!.nombre}')
+                      : null,
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () => _abrirConPerfil(
+                    (token, perfil) => IndicadoresScreen(
+                      token: token,
+                      perfilId: perfil.id,
+                      perfilNombre: perfil.nombre,
+                      puedeRegistrar: perfil.puedeConfirmar,
+                    ),
+                  ),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.watch_outlined),
+                  title: const Text('Pulsera y ubicación'),
+                  subtitle: _perfilActivo != null
+                      ? Text('Activo: ${_perfilActivo!.nombre}')
+                      : null,
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () => _abrirConPerfil(
+                    (token, perfil) => PulseraScreen(
+                      token: token,
+                      perfilId: perfil.id,
+                      perfilNombre: perfil.nombre,
+                      puedeEditar: perfil.esPropio,
+                    ),
+                  ),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.support_agent),
+                  title: const Text('Asistente de IA'),
+                  subtitle: const Text('Orientación general, no reemplaza a un profesional'),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () => _abrirConPerfil(
+                    (token, perfil) => IaScreen(
+                      token: token,
+                      perfilId: perfil.id,
+                      perfilNombre: perfil.nombre,
                     ),
                   ),
                 ),
