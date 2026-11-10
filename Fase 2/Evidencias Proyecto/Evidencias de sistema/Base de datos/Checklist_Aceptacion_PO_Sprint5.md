@@ -29,7 +29,7 @@
 | 6 | Un cuidador sin `puede_ver_indicadores` recibe 403; con el permiso ve los datos; una cuenta ajena recibe 404 | Probar con las tres cuentas | ⏳ | |
 | 7 | El rol de solo lectura no puede registrar | Cuidador con `puede_confirmar` falso → 403 | ⏳ | |
 
-## HU 18 — Evolución de indicadores
+## HU 12 — Evolución de indicadores
 
 | # | Criterio | Cómo probarlo | ✅ / ❌ | Notas |
 |---|---|---|---|---|
