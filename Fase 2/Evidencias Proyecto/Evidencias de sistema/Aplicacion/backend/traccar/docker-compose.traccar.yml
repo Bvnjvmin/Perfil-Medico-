@@ -14,6 +14,7 @@ services:
     ports:
       - "8082:8082"      # panel web
       - "5055:5055"      # protocolo OsmAnd (sirve para simular un dispositivo con el celular)
+      - "5093:5093"      # protocolo "watch" (relojes y pulseras 4G para adultos mayores, p. ej. ReachFar); abrir solo si se usa ese tipo de dispositivo
     volumes:
       - ./traccar/traccar.xml:/opt/traccar/conf/traccar.xml:ro
       - traccar_data:/opt/traccar/data
