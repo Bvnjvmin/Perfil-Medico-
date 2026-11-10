@@ -9,7 +9,7 @@ Complementa el contrato del Sprint 4. Todos los endpoints exigen `Authorization:
 - Registrar o borrar indicadores exige además `puede_confirmar`. El rol `lectura` no puede registrar.
 - `PATCH /perfiles/{id}/cuidadores/{vinculo}` y la creación aceptan ahora `puede_ver_indicadores` (booleano).
 
-## Indicadores de salud (HU 12 y 18)
+## Indicadores de salud (HU 12)
 
 | Método y ruta | Descripción |
 |---|---|
@@ -51,6 +51,8 @@ Respuesta: `total`, `cumplidas`, `porcentaje` (nulo si no hubo actividades exigi
 Quién puede pulsar: el titular y los cuidadores con `puede_confirmar`. Los avisos llegan al titular y a los cuidadores vinculados, por el notificador configurado (por ahora solo log; el push con FCM sigue pendiente).
 
 ## Pulsera, ubicación y geocercas (HU 17)
+
+> Registrar, editar o borrar pulseras y crear, editar o borrar geocercas es solo del **titular**. Leer pulseras, ubicación y geocercas exige `puede_ver_indicadores`.
 
 | Método y ruta | Descripción |
 |---|---|
