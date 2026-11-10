@@ -34,6 +34,10 @@ class Settings(BaseSettings):
     ALERTA_PLAZO_2_MINUTOS: int = 60
     # Cómo se entregan los avisos al dispositivo: "log" solo los registra en el log.
     NOTIFICADOR: str = "log"
+    # Solo con NOTIFICADOR=fcm (Firebase Cloud Messaging, API HTTP v1): ruta al archivo JSON de la
+    # cuenta de servicio y el identificador del proyecto de Firebase. El archivo NO se sube al repositorio.
+    FCM_CREDENCIALES: str = ""
+    FCM_PROYECTO_ID: str = ""
     # Decisión 9 del Sprint 4: si es verdadero, la alerta de nivel 2 también llega al titular
     # (hoy solo llega a los cuidadores con nivel_escalamiento = 2).
     ALERTA_NIVEL_2_INCLUYE_TITULAR: bool = False
