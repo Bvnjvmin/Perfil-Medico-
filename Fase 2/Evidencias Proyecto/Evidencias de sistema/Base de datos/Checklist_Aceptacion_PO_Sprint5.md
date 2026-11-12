@@ -3,7 +3,7 @@
 **Rol:** Sergio Ocares, Product Owner
 **Qué es esto:** antes de cerrar las HU 12, 13, 14, 15, 17, 18 y 19, el Product Owner valida que lo construido cumple los criterios de aceptación. Quien prueba no escribió el código y usa tres cuentas (titular, cuidador autorizado y persona ajena).
 
-> Ejecución del 10 y el 12-nov-2026: las filas 2 a 10 se probaron en Swagger (✅); las filas 12 a 23, 25 y 27 a 31 se verificaron en un entorno de prueba (copia local del backend con base nueva y el simulador de la pulsera) y se marcan «✅ entorno de prueba» hasta repetirlas en el Docker del proyecto; las filas 1 y 11 están probadas en parte; las filas 24 y 26 siguen en ⏳. Marca ✅ o ❌ al probar y anota lo observado. **Alcance real:** el aviso llega a la pantalla Avisos; el push con FCM no está implementado. La pulsera real y el servidor Traccar se prueban aparte (ver `Aplicacion/backend/traccar/README.md`); mientras tanto se usa el simulador `backend/scripts/simular_pulsera.py`.
+> Ejecución del 10 y el 12-nov-2026: la fila 1 se probó en Docker y las filas 2 a 10 en Swagger (✅); las filas 12 a 23, 25 y 27 a 31 se verificaron en un entorno de prueba (copia local del backend con base nueva y el simulador de la pulsera) y se marcan «✅ entorno de prueba» hasta repetirlas en el Docker del proyecto; la fila 11 está probada en parte; las filas 24 y 26 siguen en ⏳. Marca ✅ o ❌ al probar y anota lo observado. **Alcance real:** el aviso llega a la pantalla Avisos; el push con FCM no está implementado. La pulsera real y el servidor Traccar se prueban aparte (ver `Aplicacion/backend/traccar/README.md`); mientras tanto se usa el simulador `backend/scripts/simular_pulsera.py`.
 
 ## Cómo probar
 
@@ -16,7 +16,7 @@
 
 | # | Criterio | Cómo probarlo | ✅ / ❌ | Notas |
 |---|---|---|---|---|
-| 1 | Las migraciones nuevas se aplican en una base vacía y `alembic check` no detecta diferencias | `docker compose up --build`; luego `docker compose exec api alembic current` debe mostrar `a5b6c7d8e9f0` | ✅ parcial | En una base vacía las migraciones se aplicaron hasta `a5b6c7d8e9f0` (cabeza única) y `alembic check` respondió «No new upgrade operations detected». Falta guardar la captura de `alembic current` en el Docker del proyecto. |
+| 1 | Las migraciones nuevas se aplican en una base vacía y `alembic check` no detecta diferencias | `docker compose up --build`; luego `docker compose exec api alembic current` debe mostrar `a5b6c7d8e9f0` | ✅ | Probado en Docker (12-nov): `alembic current` muestra `a5b6c7d8e9f0 (head)` y `alembic check` responde «No new upgrade operations detected»; la cadena tiene una sola cabeza. |
 | 2 | El permiso `puede_ver_indicadores` se puede dar y quitar | `PATCH /perfiles/{id}/cuidadores/{vinculo}` | ✅ | Probado en Swagger (10-nov): `puede_ver_indicadores` pasó de `false` a `true` y de `true` a `false` sin errores y se dejó en `true`; el vínculo conservó el nivel 2. Nota: la ruta real es `PUT /perfiles/{id}/cuidadores/{acceso_id}`; el contrato dice `PATCH`, pero ese método no existe en la API. |
 
 ## HU 12 — Registro de indicadores
@@ -85,4 +85,4 @@
 
 ## Cierre
 
-Resultado general: 9 criterios ✅ en Swagger (filas 2 a 10), 18 ✅ en entorno de prueba (filas 12 a 23, 25 y 27 a 31) y 2 ✅ parciales (filas 1 y 11); pendientes las filas 24 y 26. &nbsp; Fecha: 12-11-2026 &nbsp; Observaciones: la ruta real para cambiar los permisos del cuidador es `PUT`, no `PATCH` como dice el contrato; la API no tiene ruta para marcar una actividad como omitida, por lo que esa prueba se hizo en la base de datos; la IA se probó solo en modo simulado; la inactividad (fila 24) y la pulsera con Traccar reales (fila 26) no se probaron.
+Resultado general: 10 criterios ✅ (la fila 1 en Docker y las filas 2 a 10 en Swagger), 18 ✅ en entorno de prueba (filas 12 a 23, 25 y 27 a 31) y 1 ✅ parcial (fila 11); pendientes las filas 24 y 26. &nbsp; Fecha: 12-11-2026 &nbsp; Observaciones: la ruta real para cambiar los permisos del cuidador es `PUT`, no `PATCH` como dice el contrato; la API no tiene ruta para marcar una actividad como omitida, por lo que esa prueba se hizo en la base de datos; la IA se probó solo en modo simulado; la inactividad (fila 24) y la pulsera con Traccar reales (fila 26) no se probaron.
