@@ -7,7 +7,7 @@ Complementa el contrato del Sprint 4. Todos los endpoints exigen `Authorization:
 - Un perfil ajeno responde **404**; un perfil visible pero sin el permiso necesario responde **403**.
 - Nuevo permiso `puede_ver_indicadores` (columna que ya existía en `perfil_acceso`): controla indicadores, pulseras, ubicación y geocercas. El titular siempre lo tiene.
 - Registrar o borrar indicadores exige además `puede_confirmar`. El rol `lectura` no puede registrar.
-- `PATCH /perfiles/{id}/cuidadores/{vinculo}` y la creación aceptan ahora `puede_ver_indicadores` (booleano).
+- `PUT /perfiles/{id}/cuidadores/{vinculo}` y la creación aceptan ahora `puede_ver_indicadores` (booleano).
 
 ## Indicadores de salud (HU 12)
 
