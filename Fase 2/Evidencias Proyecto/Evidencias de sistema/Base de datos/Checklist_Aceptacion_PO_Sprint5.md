@@ -3,7 +3,7 @@
 **Rol:** Sergio Ocares, Product Owner
 **Qué es esto:** antes de cerrar las HU 12, 13, 14, 15, 17, 18 y 19, el Product Owner valida que lo construido cumple los criterios de aceptación. Quien prueba no escribió el código y usa tres cuentas (titular, cuidador autorizado y persona ajena).
 
-> Ejecución del 10 y el 12-nov-2026: la fila 1 se probó en Docker y las filas 2 a 10 en Swagger (✅); las filas 12 a 23, 25 y 27 a 31 se verificaron en un entorno de prueba (copia local del backend con base nueva y el simulador de la pulsera) y se marcan «✅ entorno de prueba» hasta repetirlas en el Docker del proyecto; la fila 11 está probada en parte; las filas 24 y 26 siguen en ⏳. Marca ✅ o ❌ al probar y anota lo observado. **Alcance real:** el aviso llega a la pantalla Avisos; el push con FCM no está implementado. La pulsera real y el servidor Traccar se prueban aparte (ver `Aplicacion/backend/traccar/README.md`); mientras tanto se usa el simulador `backend/scripts/simular_pulsera.py`.
+> Ejecución del 10 y el 12-nov-2026: la fila 1 se probó en Docker y las filas 2 a 10 en Swagger (✅); las filas 12 a 23, 25 y 27 a 31 se verificaron en un entorno de prueba (copia local del backend con base nueva y el simulador de la pulsera) y se marcan «✅ entorno de prueba» hasta repetirlas en el Docker del proyecto; la fila 11 está probada en parte; la fila 24 se respalda con las capturas del simulador que subió Matías el 13-nov y la fila 26 no aplica porque la demo usa el simulador. Marca ✅ o ❌ al probar y anota lo observado. **Alcance real:** el aviso llega a la pantalla Avisos; el push con FCM no está implementado. La pulsera real y el servidor Traccar se prueban aparte (ver `Aplicacion/backend/traccar/README.md`); mientras tanto se usa el simulador `backend/scripts/simular_pulsera.py`.
 
 ## Cómo probar
 
@@ -69,9 +69,9 @@
 | 21 | El botón SOS crea un evento `sos` | Simulador: `sos` | ✅ entorno de prueba | Verificado en un entorno de prueba (12-nov): el simulador con `sos` creó un evento `sos`. |
 | 22 | La caída crea un evento `caida` | Simulador: `caida` | ✅ entorno de prueba | Verificado en un entorno de prueba (12-nov): el simulador con `caida` creó un evento `caida`. |
 | 23 | La batería baja crea un evento, sin repetirlo en 2 horas | Simulador: `bateria` dos veces | ✅ entorno de prueba | Verificado en un entorno de prueba (12-nov): dos lecturas de batería baja seguidas (9 % y 8 %) crearon un solo evento. |
-| 24 | La inactividad (3 h sin moverse, entre 08:00 y 22:00) crea un evento | Se cubre con pruebas automáticas; con la pulsera real, observar una tarde | ⏳ | No probado: se cubre con pruebas automáticas; con la pulsera real, observar una tarde. |
+| 24 | La inactividad (3 h sin moverse, entre 08:00 y 22:00) crea un evento | Se cubre con pruebas automáticas; con la pulsera real, observar una tarde | ✅ evidencia del equipo (simulador) | Evidencia de Matías (13-nov), revisada por el PO: el simulador envió posiciones repetidas en el mismo punto (`S5_05.1d`, todas con respuesta 200) y `GET /eventos` devolvió un evento `inactividad` con origen `sistema` (`S5_05.1e`), que también se ve en la pantalla «Eventos de seguridad» de la app (`S5_05.1f`). Limitación: la prueba usó un plazo reducido (el mensaje dice 0,083 horas, es decir 5 minutos, y el evento se creó a las 22:14, fuera de la ventana por defecto), así que no se probó el valor por defecto de 3 horas entre 08:00 y 22:00; ese valor lo cubren las pruebas automáticas del backend. No se probó con la pulsera real. |
 | 25 | Cada evento llega a titular y cuidadores con alertas | `GET /eventos` con cada cuenta | ✅ entorno de prueba | Verificado en un entorno de prueba (12-nov): el titular y el cuidador vieron los mismos eventos; la cuenta ajena no vio ninguno. |
-| 26 | Con la pulsera y Traccar reales, las alertas llegan igual | Ver `traccar/README.md` | ⏳ | Depende de comprar y configurar la pulsera. |
+| 26 | Con la pulsera y Traccar reales, las alertas llegan igual | Ver `traccar/README.md` | No aplica | El equipo eligió la opción B: la demo usa el simulador (`scripts/simular_pulsera.py`) y el celular, sin pulsera ni servidor Traccar de producción. Debe decirse así en la presentación. Las filas 16 a 25 cubren el mismo flujo con el simulador. |
 
 ## HU 15 — Asistente de IA
 
@@ -85,4 +85,24 @@
 
 ## Cierre
 
-Resultado general: 10 criterios ✅ (la fila 1 en Docker y las filas 2 a 10 en Swagger), 18 ✅ en entorno de prueba (filas 12 a 23, 25 y 27 a 31) y 1 ✅ parcial (fila 11); pendientes las filas 24 y 26. &nbsp; Fecha: 12-11-2026 &nbsp; Observaciones: la ruta real para cambiar los permisos del cuidador es `PUT`, no `PATCH` como dice el contrato; la API no tiene ruta para marcar una actividad como omitida, por lo que esa prueba se hizo en la base de datos; la IA se probó solo en modo simulado; la inactividad (fila 24) y la pulsera con Traccar reales (fila 26) no se probaron.
+**Resultado general (31 criterios):**
+
+- ✅ **10** probados por el Product Owner: la fila 1 en Docker y las filas 2 a 10 en Swagger.
+- ✅ **18** verificados en un entorno de prueba, con una copia local del backend y el simulador de la pulsera (filas 12 a 23, 25 y 27 a 31). Siguen marcados así hasta repetirlos en el Docker del proyecto.
+- ✅ **1** respaldado con evidencia del equipo (fila 24), con la limitación indicada en su nota.
+- ✅ **1** parcial (fila 11): falta probar en Swagger que las pendientes futuras de hoy no cuentan.
+- **1** no aplica (fila 26): la demo usa el simulador.
+
+**Observaciones**
+
+- La ruta real para cambiar los permisos del cuidador es `PUT`, no `PATCH`. El contrato ya se corrigió.
+- La API no tiene una ruta para marcar una actividad como omitida, por lo que esa prueba (fila 11) se hizo en la base de datos.
+- La IA (HU 15) se probó solo en modo simulado. La demo la presenta así: la respuesta lo indica con «[Modo simulado]». Probar un proveedor real queda fuera de este sprint.
+- La inactividad (fila 24) se probó con un plazo reducido, no con las 3 horas por defecto.
+- El push real con FCM no está implementado: los avisos llegan a la pantalla Avisos.
+- La pulsera y Traccar reales no se probaron.
+
+**Veredicto del Product Owner:** *(completar al firmar: aceptadas / aceptadas con observaciones, y cuáles HU)*
+
+**Product Owner:** Sergio Ocares
+**Fecha:** *(completar al firmar)*
