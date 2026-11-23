@@ -2,13 +2,26 @@
 
 **Proyecto:** Perfil Médico+ · Capstone_005D · Grupo 7
 **Periodo:** 2 al 14 de noviembre de 2026 (semanas 13 y 14 del Cronograma)
-**Última actualización:** 13 de noviembre de 2026 (día 12 de 13) · **Estado del sprint:** en cierre; la base de datos, el backend y la app están integrados y probados en el emulador (evidencia en la sección 5); faltan la aceptación del Product Owner, la prueba con Traccar y la pulsera reales, la prueba de la IA con un proveedor real y la retrospectiva
+**Última actualización:** 23 de noviembre de 2026 (versión final) · **Estado del sprint:** cerrado; la base de datos, el backend y la app están integrados y probados en el emulador (evidencia en la sección 5). Quedan como límites conocidos el push real con FCM, la prueba con Traccar y la pulsera reales y la prueba de la IA con un proveedor real; la HU 18 queda como proyección. El veredicto del Product Owner se firma con el checklist (ver «Resultado del sprint»)
 
 **Objetivo del sprint:** que el titular y los cuidadores registren y vean los indicadores de salud y el historial de cumplimiento (HU 12 y 13), que el perfil dependiente pueda pedir ayuda con un botón (HU 14), que una pulsera GPS envíe su ubicación y sus alertas al sistema (HU 17 y 19) y que exista un asistente de IA de orientación general (HU 15).
 **Product Owner:** Sergio Ocares · **Scrum Master:** Matías Pizarro
 **Entregables del Cronograma:** Sprint Backlog 5 (semana 13); Demo interna y Retrospectiva del Sprint 5 (semana 14, cierre el sábado 14).
 
 > Leyenda: ✅ terminado y verificado · 🟡 hecho en parte (se indica qué falta) · ⬜ pendiente · ❌ no cumplido. Una historia solo pasa a terminada cuando está integrada al repositorio, probada y documentada. Los criterios y decisiones son propuesta hasta confirmarlos en la reunión del equipo.
+
+## Resultado del sprint
+
+Historias comprometidas: 7 (HU 12, 13, 14, 15, 17, 18 y 19) · Construidas y probadas en backend y emulador: 6 (HU 12, 13, 14, 15, 17 y 19; la IA en modo simulado y la pulsera con el simulador) · No iniciada: 1 (HU 18, queda como proyección) · Pruebas del backend: 210 de 210 · Migraciones: cabeza única `a5b6c7d8e9f0`, verificada en Docker.
+
+**Aceptación del Product Owner** (`Base de datos/Checklist_Aceptacion_PO_Sprint5.md`, 31 criterios, ejecutada el 10 y el 12-11): 10 probados por el Product Owner (fila 1 en Docker y filas 2 a 10 en Swagger), 18 verificados en un entorno de prueba (copia local del backend con el simulador), 1 respaldado con evidencia del equipo (fila 24), 1 parcial (fila 11) y 1 que no aplica (fila 26, la demo usa el simulador). El veredicto y la fecha se completan al firmar el checklist.
+
+**Límites conocidos al cierre**
+- El push real con FCM no está en la app (decisión 1).
+- La IA se probó solo en modo simulado, sin un proveedor real (decisión 2).
+- La demo usa el simulador de la pulsera; el servidor Traccar y la pulsera reales no se probaron (decisión 4).
+- La inactividad se probó con un plazo reducido (5 minutos); el valor por defecto de 3 horas lo cubren las pruebas automáticas.
+- La HU 18 (Health Connect) no se construyó y queda como proyección (decisión 3).
 
 ## 1. Historias comprometidas
 
@@ -49,7 +62,7 @@ Como titular o cuidador quiero ver la ubicación y recibir alertas de geocerca d
 
 ### HU 18 — Pulsera: frecuencia cardíaca y presión referencial (Health Connect)
 Como titular o cuidador quiero ver la frecuencia cardíaca y la presión referencial del perfil dependiente desde la pulsera conectada.
-- **Estado:** no iniciada. El backend ya acepta indicadores con `fuente = pulsera`; falta que la app lea Health Connect y los envíe (ver decisiones).
+- **Estado:** no iniciada; queda como proyección (decisión 3, 23-11). El backend ya acepta indicadores con `fuente = pulsera`; falta que la app lea Health Connect y los envíe.
 
 ### HU 19 — Pulsera: alertas de seguridad
 Como cuidador quiero recibir una alerta si la pulsera detecta una caída, se presiona el botón SOS, la batería está baja o hay inactividad inusual.
@@ -80,10 +93,10 @@ Como cuidador quiero recibir una alerta si la pulsera detecta una caída, se pre
 | Pantalla de indicadores con registro y gráfico | HU 12 | Matías | ✅ Integrada y probada en el emulador | `app_movil/lib/screens/` |
 | Pantalla de pulsera, ubicación y zonas | HU 17 / 19 | Matías | ✅ Integrada y probada en el emulador | `app_movil/lib/screens/` |
 | Pantalla del asistente de IA | HU 15 | Matías | ✅ Integrada y probada en el emulador (modo simulado) | `app_movil/lib/screens/` |
-| Lectura de Health Connect (frecuencia cardíaca y presión) | HU 18 | Matías | ⬜ Sin iniciar; depende de la decisión 3 | — |
+| Lectura de Health Connect (frecuencia cardíaca y presión) | HU 18 | Matías | ⬜ No iniciada; queda como proyección (decisión 3, 23-11) | — |
 | `flutter analyze` y `flutter test` con las pantallas nuevas | HU 12 a 19 | Matías | ✅ Sin avisos; pruebas en verde (`analyze.log`, `test.log`) | `app_movil/` |
 | Evidencia del sprint (capturas `S5_xx`) | HU 12 a 19 | Matías | 🟡 Completa para HU 12, 13, 14, 15, 17 y 19; faltan algunos criterios (sección 5.5) | `app_movil/evidencias/` |
-| Retrospectiva del Sprint 5, el último día | — | Matías | ⬜ Pendiente | `Metodologia_Scrum/Sprint_5/` |
+| Retrospectiva del Sprint 5, el último día | — | Matías | 🟡 Borrador armado el 23-11 a partir del repositorio; Matías lo revisa y lo cierra con el equipo | `Metodologia_Scrum/Sprint_5/Retrospectiva_Sprint5.md` |
 
 ## 3. Definition of Done — estado por historia
 
@@ -96,7 +109,7 @@ Definición del equipo: *integrada al repositorio + probada + documentada.*
 | HU 14 | 🟡 backend sí; app lista, falta confirmar sus commits | 🟡 backend y emulador sí; falta el PO | ✅ contrato y evidencia | 🟡 |
 | HU 15 | 🟡 backend sí; app lista, falta confirmar sus commits | 🟡 backend y emulador en modo simulado; falta un proveedor real y el PO | ✅ `Contexto_IA_Sprint5.md` y evidencia | 🟡 |
 | HU 17 | 🟡 backend y Traccar sí; app lista, falta confirmar sus commits | 🟡 backend y emulador con el simulador; falta Traccar y pulsera reales | ✅ `traccar/README.md` y evidencia | 🟡 |
-| HU 18 | ⬜ | ⬜ | ⬜ | ⬜ |
+| HU 18 | ⬜ | ⬜ | ⬜ | ⬜ Proyección (decisión 3) |
 | HU 19 | 🟡 backend sí; app lista, falta confirmar sus commits | 🟡 backend y emulador con el simulador; falta la pulsera real | ✅ contrato y evidencia | 🟡 |
 
 ## 4. Plan de pruebas del sprint
@@ -239,20 +252,20 @@ Leyenda: ✅ cumplido · 🟡 cumplido en parte · ❌ no cumplido.
 | HU 17 / 19 | Servidor Traccar y pulsera reales. | Pendiente; la demo usa el simulador. |
 | HU 12 a 19 | Checklist de aceptación del Product Owner con tres cuentas. | Pendiente de ejecutar. |
 
-## 6. Decisiones por tomar en la reunión del equipo
+## 6. Decisiones del sprint
 
-Lo siguiente ya está implementado como propuesta; si el equipo decide otra cosa, se ajusta.
+Estado de las decisiones al cierre del sprint. Las decisiones 1 y 3 las tomó el Product Owner el 23-11; si el equipo decide otra cosa, se ajusta.
 
-1. **Push real con FCM (arrastre del Sprint 4).** Propuesta: no hacerlo en la app este sprint y dejarlo como límite conocido, porque quedan 2 días de sprint y después viene la entrega final. Hacerlo implica crear el proyecto de Firebase, agregar `google-services.json`, instalar `firebase_messaging` y probar en un celular real, lo que puede romper la compilación justo antes de la demo. La demo queda cubierta: el backend genera los avisos y la app los muestra al abrir Avisos. El lado del backend ya está en `main` (apagado por defecto, con 6 pruebas), así que si se quiere después solo faltaría la parte de la app (se vería después del sábado 14). Cómo se documenta: el texto de límite conocido en el README y en el contrato (`backend/docs/Notas_FCM_Sprint5.md`), en el informe 2.6 (límites y proyecciones) y en este backlog, donde la HU 9 queda parcial sin push real, igual que en el Sprint 4.
-2. **Proveedor de la IA.** Hoy responde en modo simulado (sin red ni clave). Decidir si se prueba con la API real de un modelo de lenguaje para la demo; la clave va en el `.env` local y nunca en el repositorio.
-3. **Health Connect (HU 18).** Requiere que la app lea los datos en un dispositivo con Health Connect y los envíe como indicadores con `fuente = pulsera`. Decidir si se hace en este sprint o pasa al Sprint 6.
-4. **Pulsera real o simulador en la demo.** Sin pulsera, la demo usa `simular_pulsera.py` y debe decirse así (la evidencia de esta versión se hizo con el simulador).
+1. **Push real con FCM (arrastre del Sprint 4).** **Decidido (Product Owner, 23-11): límite conocido.** No se hace en la app este sprint porque quedaba poco tiempo antes de la entrega final. Hacerlo implica crear el proyecto de Firebase, agregar `google-services.json`, instalar `firebase_messaging` y probar en un celular real, lo que puede romper la compilación justo antes de la demo. La demo queda cubierta: el backend genera los avisos y la app los muestra al abrir Avisos. El lado del backend ya está en `main` (apagado por defecto, con 6 pruebas), así que si se quiere después solo faltaría la parte de la app (se vería después del sábado 14). Cómo se documenta: el texto de límite conocido en el README y en el contrato (`backend/docs/Notas_FCM_Sprint5.md`), en el informe 2.6 (límites y proyecciones) y en este backlog, donde la HU 9 queda parcial sin push real, igual que en el Sprint 4.
+2. **Proveedor de la IA.** Hoy responde en modo simulado (sin red ni clave). **Estado al cierre:** la IA se probó solo en modo simulado; probar un proveedor real quedó fuera del sprint (ver el checklist del Product Owner). Si más adelante se prueba con la API real de un modelo de lenguaje, la clave va en el `.env` local y nunca en el repositorio.
+3. **Health Connect (HU 18).** Requiere que la app lea los datos en un dispositivo con Health Connect y los envíe como indicadores con `fuente = pulsera`. **Decidido (Product Owner, 23-11): proyección.** No se hizo en este sprint y no pasa al Sprint 6, porque ese sprint dura una semana y ya trae glucosa manual, recordatorios extendidos, farmacias vía IA, pruebas e informe final. La parte de datos está lista (el backend acepta `fuente = pulsera`); falta la lectura desde la app.
+4. **Pulsera real o simulador en la demo.** **Decidido (opción B del checklist):** la demo usa `simular_pulsera.py` y debe decirse así (la evidencia se hizo con el simulador).
 5. **Quién recibe el nivel 2 de las alertas** (decisión 9 del Sprint 4). Para cambiarlo basta `ALERTA_NIVEL_2_INCLUYE_TITULAR=true`.
 6. **Solo Sergio crea migraciones de Alembic** en este sprint, para mantener una única cabeza (`a5b6c7d8e9f0`).
 
 ## 7. Trabajo que pasa al Sprint 6
 
-Se confirma al cierre del sprint. Lo previsto del Product Backlog: registro manual de glucosa, recordatorios extendidos, farmacias cercanas vía IA, pruebas integrales, documentación (manual técnico y Docker) e informe final. Si no se cierran en este sprint, pasan también la HU 18, la prueba con Traccar y pulsera reales y la prueba de la IA con un proveedor real. El push real con FCM en la app (HU 9, parcial) queda como límite conocido y proyección, salvo que el equipo decida lo contrario.
+Lo previsto del Product Backlog: registro manual de glucosa, recordatorios extendidos, farmacias cercanas vía IA, pruebas integrales, documentación (manual técnico y Docker) e informe final. La HU 18 no pasa al Sprint 6: queda como proyección (decisión del 23-11). La prueba con Traccar y pulsera reales y la de la IA con un proveedor real quedan como límites conocidos. El push real con FCM en la app (HU 9, parcial) queda como límite conocido y proyección, salvo que el equipo decida lo contrario.
 
 ## 8. Seguimiento de commits del sprint
 
