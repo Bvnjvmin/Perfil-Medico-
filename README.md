@@ -32,7 +32,12 @@ Propuesta de Proyecto APT · Capstone_005D (Grupo 7) · Ingeniería Informática
   - App: pantalla Avisos (recordatorios y alertas), modo simplificado del dependiente de un toque (HU 11), Panel con `GET /panel` y manejo de errores de conexión; `flutter analyze` sin avisos, 14 pruebas de Flutter y prueba manual de 10 flujos (34 capturas)
   - Cierre: checklist de aceptación del Product Owner con 17 de 17 criterios (8-11, ejecutado después del cierre del sprint) y retrospectiva final (11-11) — ver [`Metodologia_Scrum/Sprint_4`](<./Metodologia_Scrum/Sprint_4>)
   - Límites conocidos: el push real al celular (FCM) no está implementado (los avisos se ven en la app y se registran en el log del backend) — ver [`Metodologia_Scrum/Sprint_4`](<./Metodologia_Scrum/Sprint_4>)
-- [ ] Sprint 5 (S13-S14) — Indicadores de salud e historial de cumplimiento, módulo de IA, pulsera inteligente (Traccar + Health Connect) y botón de asistencia
+- [x] Sprint 5 (S13-S14, 2 al 14-11) — Indicadores de salud e historial de cumplimiento, botón de asistencia, asistente de IA (modo simulado), pulsera GPS con geocercas y alertas de seguridad (con simulador), servidor Traccar *(HU 12, 13, 14, 15, 17 y 19 integradas y probadas; HU 18 sin iniciar; aceptación del Product Owner con observaciones, veredicto por firmar)*
+  - Base de datos: tablas `indicador_salud`, `pulsera`, `posicion`, `geocerca`, `evento_seguridad` y `consulta_ia`, con cuatro migraciones nuevas (cabeza `a5b6c7d8e9f0`) probadas en PostgreSQL y en Docker; 17 tablas en total
+  - Backend: indicadores y gráfico de evolución, historial de cumplimiento (rango máximo de 92 días), botón de asistencia, pulsera con geocercas y eventos de seguridad (SOS, caída, batería baja, inactividad), recepción de Traccar y asistente de IA; 216 pruebas automáticas (210 más 6 del notificador FCM) y prueba de humo de 29 comprobaciones. Contrato en [`Contrato_API_Sprint5.md`](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/backend/Contrato_API_Sprint5.md>)
+  - App: pantallas de indicadores, cumplimiento, eventos de seguridad, pulsera con zonas, asistente de IA y botón «Necesito ayuda» en el modo simplificado; `flutter analyze` sin avisos y prueba manual con capturas `S5_xx`
+  - Cierre: checklist de aceptación del Product Owner (`Checklist_Aceptacion_PO_Sprint5.md`) ejecutado el 10 y 12-11 y ajustado el 20-11 — ver [`Metodologia_Scrum/Sprint_5`](<./Metodologia_Scrum/Sprint_5>)
+  - Límites conocidos: sin push real (FCM) en la app, pulsera y Traccar solo con simulador, IA solo en modo simulado, frecuencia cardíaca y presión por Health Connect (HU 18) sin iniciar, y prueba con Docker Compose completo pendiente de capturas
 - [ ] Sprint 6 (S15) — Glucosa manual, recordatorios extendidos, farmacias vía IA, pruebas, Informe Final (Semana 15)
 
 **Fase 3 — Presentación y defensa final (Semanas 16-18)**
@@ -48,12 +53,14 @@ Propuesta de Proyecto APT · Capstone_005D (Grupo 7) · Ingeniería Informática
 
 **Fase 2** — en [`Fase 2`](<./Fase 2>):
 
-- [Documentos de evaluación grupales (2.3, 2.4, 2.6)](<./Fase 2/Evidencias Grupales>) — el 2.3 es la pauta de referencia del docente y se sube tal cual, sin rellenar. Las planillas de evaluación de avance/final no se suben al repositorio (uso interno del docente, confirmado con él).
+- [Documentos de evaluación grupales (2.3, 2.4, 2.6)](<./Fase 2/Evidencias Grupales>) — [2.6 Informe final](<./Fase 2/Evidencias Grupales/2.6_APT122_InformeFinal_PerfilMedico.docx>). El 2.3 es la pauta de referencia del docente y se sube tal cual, sin rellenar. Las planillas de evaluación de avance/final no se suben al repositorio (uso interno del docente, confirmado con él).
 - [Diario de Reflexión y Autoevaluación individuales (2.1, 2.2)](<./Fase 2/Evidencias Individuales>) — un archivo por integrante, con el patrón `Apellido_Nombre_2.X_...docx` (mismo criterio que en Fase 1).
 - [Metodología Scrum — Sprint Backlog, actas y retrospectivas](<./Metodologia_Scrum>)
-- [Código del backend](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/backend>) (autenticación, perfil de salud, medicamentos y rutinas con horarios, agenda diaria, perfiles dependientes, cuidadores, panel, recordatorios y alertas escalonadas)
-- [Código de la app móvil](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/app_movil>) (registro e inicio de sesión, perfil, medicamentos, rutinas, agenda diaria, perfiles dependientes, cuidadores con permisos, panel, avisos y modo simplificado)
+- [Código del backend](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/backend>) (autenticación, perfil de salud, medicamentos y rutinas con horarios, agenda diaria, perfiles dependientes, cuidadores, panel, recordatorios y alertas escalonadas, indicadores de salud, cumplimiento, botón de asistencia, pulsera y geocercas, eventos de seguridad e IA)
+- [Código de la app móvil](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/app_movil>) (registro e inicio de sesión, perfil, medicamentos, rutinas, agenda diaria, perfiles dependientes, cuidadores con permisos, panel, avisos y modo simplificado, indicadores, cumplimiento, eventos de seguridad, pulsera y asistente de IA)
 - [Evidencia de pruebas del Sprint 4](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/app_movil/evidencias/evidencias Sprint 4/Evidencia_Sprint4.md>) y [contrato de API del Sprint 4](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/backend/Contrato_API_Sprint4.md>)
+- [Evidencia de pruebas del Sprint 5](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/app_movil/evidencias/evidencias Sprint 5/Evidencia_Sprint5.md>) y [contrato de API del Sprint 5](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/backend/Contrato_API_Sprint5.md>)
+- [Guía de Docker Compose del Sprint 5](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/backend/docs/Guia_Docker_Compose_Sprint5.md>) y [notas sobre el push real (FCM)](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/backend/docs/Notas_FCM_Sprint5.md>)
 - [Modelo de datos (diagrama ER)](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Base de datos/modelo_datos.md>) y checklist de aceptación del Product Owner
 
 ## Descripción
@@ -120,7 +127,7 @@ Cada perfil dependiente adicional que la misma cuenta agregue (manteniendo el pr
 
 ## Instrucciones para ejecutar el proyecto localmente
 
-### Backend (FastAPI) — Sprints 1 a 4 (autenticación, salud, cuidado, perfiles dependientes, cuidadores, panel, recordatorios y alertas)
+### Backend (FastAPI) — Sprints 1 a 5 (autenticación, salud, cuidado, perfiles dependientes, cuidadores, panel, recordatorios y alertas, indicadores, cumplimiento, asistencia, pulsera y Traccar, eventos de seguridad e IA)
 
 Código en [`Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/backend`](<./Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/backend>).
 
@@ -136,6 +143,8 @@ La API queda en `http://localhost:8000` y la documentación interactiva en `http
 
 Parámetros del Sprint 4 (con sus valores por defecto, en `app/core/config.py`; se pueden cambiar como variables de entorno): `RECORDATORIO_MINUTOS_ANTES=10`, `ALERTA_PLAZO_1_MINUTOS=30`, `ALERTA_PLAZO_2_MINUTOS=60`, `ZONA_HORARIA=America/Santiago`, `GENERAR_DIAS_ADELANTE=2` y `NOTIFICADOR=log`. Hoy los avisos no llegan al celular como push: el notificador solo los escribe en el log del backend y la app los muestra en la pantalla Avisos.
 
+Parámetros del Sprint 5 (todos opcionales; los valores por defecto están en `app/core/config.py` y comentados en `.env.example`): `TRACCAR_TOKEN` (clave compartida con el servidor Traccar; vacía, la integración queda desactivada y responde 503), `BATERIA_BAJA_PORCENTAJE=15`, `EVENTO_VENTANA_DEDUP_MINUTOS=10`, `INACTIVIDAD_MINUTOS=180`, `INACTIVIDAD_RADIO_METROS=30`, `INACTIVIDAD_DESDE_HORA=8`, `INACTIVIDAD_HASTA_HORA=22`, `POSICIONES_DIAS_RETENCION=30`, `ALERTA_NIVEL_2_INCLUYE_TITULAR=false` y, para el asistente de IA, `IA_PROVEEDOR=simulado` (sin red ni clave; `anthropic` llama a la API real con `IA_API_KEY`, que va solo en el `.env` local y nunca en el repositorio), `IA_MODELO`, `IA_MAX_TOKENS`, `IA_TIMEOUT_SEGUNDOS` e `IA_MAX_CONSULTAS_DIA=30`. Para probar la pulsera sin hardware se usa `scripts/simular_pulsera.py` (con `--token` y `--id`, ver su encabezado); el servidor Traccar y su guía están en `backend/traccar/`. El asistente de IA está probado en modo simulado; el proveedor real no se probó.
+
 **Sin Docker:**
 
 ```bash
@@ -147,7 +156,7 @@ alembic upgrade head
 TAREAS_PROGRAMADAS=true uvicorn app.main:app --reload   # sin esa variable no se generan actividades ni avisos solos
 ```
 
-**Pruebas** (148 pruebas; no requieren Docker ni PostgreSQL, usan SQLite en memoria):
+**Pruebas** (216 pruebas: 210 más 6 del notificador FCM; no requieren Docker ni PostgreSQL, usan SQLite en memoria):
 
 ```bash
 pytest app/tests/ -v
@@ -155,17 +164,17 @@ pytest app/tests/ -v
 
 SQLite no valida llaves foráneas, así que los cambios de base de datos se prueban además contra PostgreSQL. Solo una persona crea migraciones de Alembic por sprint, para mantener una única cabeza en la cadena.
 
-### App móvil (Flutter) — Sprints 2 a 4: registro, perfil, medicamentos, rutinas, agenda, perfiles dependientes, cuidadores, panel, avisos y modo simplificado
+### App móvil (Flutter) — Sprints 2 a 5: registro, perfil, medicamentos, rutinas, agenda, perfiles dependientes, cuidadores, panel, avisos, modo simplificado, indicadores, cumplimiento, eventos de seguridad, pulsera y asistente de IA
 
 ```bash
 cd "Fase 2/Evidencias Proyecto/Evidencias de sistema/Aplicacion/app_movil"
 flutter pub get
 flutter run
 flutter analyze
-flutter test   # 14 pruebas
+flutter test   # 20 pruebas
 ```
 
-En el emulador de Android la app apunta al backend local en `10.0.2.2:8000`. Para ver recordatorios y alertas, el backend debe estar corriendo con la tarea programada activa y la cuenta debe tener actividades con hora; los avisos se abren con la campana del Home.
+En el emulador de Android la app apunta al backend local en `10.0.2.2:8000`. Para ver recordatorios y alertas, el backend debe estar corriendo con la tarea programada activa y la cuenta debe tener actividades con hora; los avisos se abren con la campana del Home. Los eventos de seguridad (botón «Necesito ayuda» y alertas de la pulsera) llegan a la pantalla «Eventos de seguridad».
 
 ## Integrantes del equipo
 
@@ -184,18 +193,19 @@ El equipo trabaja con **Scrum**: sprints quincenales, Product Backlog priorizado
 Arquitectura de alto nivel orientada a servicios:
 
 - **App móvil (Flutter):** interfaz para el titular, el perfil dependiente (modo simplificado) y el cuidador. Consume la API vía HTTPS.
-- **API (FastAPI):** expone endpoints REST para cuentas, perfiles, rutinas, actividades, confirmaciones, alertas y el módulo de IA. Maneja autenticación/autorización con JWT.
+- **API (FastAPI):** expone endpoints REST para cuentas, perfiles, rutinas, actividades, confirmaciones, alertas, indicadores de salud, cumplimiento, pulsera y geocercas, eventos de seguridad y el módulo de IA. Maneja autenticación/autorización con JWT.
 - **Base de datos (PostgreSQL):** modelo relacional que conecta cuentas, perfiles dependientes, actividades de cuidado y su estado de cumplimiento. Versionada con Alembic.
-- **Servidor Traccar:** recibe la señal GPS de la pulsera inteligente directo, sin pasar por el fabricante; el backend consulta su API REST.
-- **Servicio de IA:** integración externa vía API de LLM para consultas de síntomas y farmacias cercanas, desacoplada del núcleo del sistema.
+- **Servidor Traccar:** recibe la señal GPS de la pulsera inteligente directo, sin pasar por el fabricante, y reenvía cada posición a la API (`POST /traccar/posiciones`), que crea los eventos de seguridad. En el Sprint 5 el flujo se probó con el simulador de la pulsera; el servidor y la pulsera reales no se probaron.
+- **Servicio de IA:** integración externa vía API de LLM, desacoplada del núcleo del sistema. En el Sprint 5 es un asistente de orientación general (con texto fijo de urgencia y sin enviar RUT, correo ni teléfonos al modelo) que funciona en modo simulado por defecto; el proveedor real (`IA_PROVEEDOR=anthropic`) está implementado y no se probó. Las farmacias cercanas quedan para una etapa posterior.
 - **Sistema de notificaciones/alertas:** genera recordatorios y escala a alertas al cuidador cuando una actividad no se confirma en el tiempo esperado. En el Sprint 4 corre como una tarea dentro del proceso de la API; el envío push real (FCM) queda pendiente.
 
 ```
-[App Flutter] ──HTTPS──> [API FastAPI] ──> [PostgreSQL]
-                              │
-                              ├──> [Servidor Traccar] ──> [Pulsera GPS]
-                              ├──> [API LLM externa]  (síntomas / farmacias)
-                              └──> [Servicio de notificaciones/alertas]
+[Pulsera GPS] ──> [Servidor Traccar] ──reenvía posiciones──┐
+                                                           ▼
+[App Flutter] ──HTTPS─────────────────────────────> [API FastAPI] ──> [PostgreSQL]
+                                                           │
+                                                           ├──> [API LLM externa]  (orientación general; farmacias a futuro)
+                                                           └──> [Servicio de notificaciones/alertas]
 ```
 
 *(Diagrama de arquitectura detallado y diagramas UML se agregan en [`Metodologia_Scrum`](<./Metodologia_Scrum>), conforme al Instructivo CAPSTONE.)*
