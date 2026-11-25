@@ -3,7 +3,7 @@
 **Rol:** Sergio Ocares, Product Owner
 **Qué es esto:** antes de cerrar las HU 12, 13, 14, 15, 17, 18 y 19, el Product Owner valida que lo construido cumple los criterios de aceptación. Quien prueba no escribió el código y usa tres cuentas (titular, cuidador autorizado y persona ajena).
 
-> Ejecución del 10 y el 12-nov-2026: la fila 1 se probó en Docker y las filas 2 a 10 en Swagger (✅); las filas 12 a 23, 25 y 27 a 31 se verificaron en un entorno de prueba (copia local del backend con base nueva y el simulador de la pulsera) y se marcan «✅ entorno de prueba» hasta repetirlas en el Docker del proyecto; la fila 11 está probada en parte; la fila 24 se respalda con las capturas del simulador que subió Matías el 13-nov y la fila 26 no aplica porque la demo usa el simulador. Marca ✅ o ❌ al probar y anota lo observado. **Alcance real:** el aviso llega a la pantalla Avisos; el push con FCM no está implementado. La pulsera real y el servidor Traccar se prueban aparte (ver `Aplicacion/backend/traccar/README.md`); mientras tanto se usa el simulador `backend/scripts/simular_pulsera.py`.
+> Ejecución del 10 y el 12-nov-2026: la fila 1 se probó en Docker y las filas 2 a 10 en Swagger (✅); las filas 12 a 23, 25 y 27 a 31 se verificaron en un entorno de prueba (copia local del backend con base nueva y el simulador de la pulsera) y se marcan «✅ entorno de prueba» hasta repetirlas en el Docker del proyecto; la fila 11 se respalda con evidencia del equipo (capturas de Matías del 13-nov); la fila 24 se respalda con las capturas del simulador que subió Matías el 13-nov y la fila 26 no aplica porque la demo usa el simulador. Marca ✅ o ❌ al probar y anota lo observado. **Alcance real:** el aviso llega a la pantalla Avisos; el push con FCM no está implementado. La pulsera real y el servidor Traccar se prueban aparte (ver `Aplicacion/backend/traccar/README.md`); mientras tanto se usa el simulador `backend/scripts/simular_pulsera.py`.
 
 ## Cómo probar
 
@@ -17,7 +17,7 @@
 | # | Criterio | Cómo probarlo | ✅ / ❌ | Notas |
 |---|---|---|---|---|
 | 1 | Las migraciones nuevas se aplican en una base vacía y `alembic check` no detecta diferencias | `docker compose up --build`; luego `docker compose exec api alembic current` debe mostrar `a5b6c7d8e9f0` | ✅ | Probado en Docker (12-nov): `alembic current` muestra `a5b6c7d8e9f0 (head)` y `alembic check` responde «No new upgrade operations detected»; la cadena tiene una sola cabeza. |
-| 2 | El permiso `puede_ver_indicadores` se puede dar y quitar | `PATCH /perfiles/{id}/cuidadores/{vinculo}` | ✅ | Probado en Swagger (10-nov): `puede_ver_indicadores` pasó de `false` a `true` y de `true` a `false` sin errores y se dejó en `true`; el vínculo conservó el nivel 2. Nota: la ruta real es `PUT /perfiles/{id}/cuidadores/{acceso_id}`; el contrato dice `PATCH`, pero ese método no existe en la API. |
+| 2 | El permiso `puede_ver_indicadores` se puede dar y quitar | `PATCH /perfiles/{id}/cuidadores/{vinculo}` | ✅ | Probado en Swagger (10-nov): `puede_ver_indicadores` pasó de `false` a `true` y de `true` a `false` sin errores y se dejó en `true`; el vínculo conservó el nivel 2. Nota: la ruta real es `PUT /perfiles/{id}/cuidadores/{acceso_id}`; el contrato decía `PATCH` y se corrigió el 15-nov. |
 
 ## HU 12 — Registro de indicadores
 
@@ -41,7 +41,7 @@
 | # | Criterio | Cómo probarlo | ✅ / ❌ | Notas |
 |---|---|---|---|---|
 | 10 | El porcentaje general, por categoría y por día coincide con la agenda | Confirmar algunas actividades y comparar con `GET .../cumplimiento` | ✅ | Probado en Swagger (10-nov): la agenda del 8-nov tenía 14 actividades con 6 confirmadas; `GET .../cumplimiento?desde=2026-11-08&hasta=2026-11-08` devolvió total 14, cumplidas 6 y 42.9 %, todo en medicamentos y con una sola entrada en `por_dia`. |
-| 11 | Las omitidas no cuentan; las pendientes futuras de hoy no cuentan | Omitir una actividad y revisar el total | ✅ parcial | Parte de las omitidas probada (10-nov): se marcó una actividad como omitida directamente en la base de datos (la API no tiene una ruta para eso) y el total del 8-nov bajó de 14 a 13 y el porcentaje subió a 46.2; después se restauró. Pendiente probar en Swagger que las pendientes futuras de hoy no cuentan. |
+| 11 | Las omitidas no cuentan; las pendientes futuras de hoy no cuentan | Omitir una actividad y revisar el total | ✅ evidencia del equipo | Omitidas: probado el 10-nov (se marcó una actividad como omitida directamente en la base de datos, porque la API no tiene una ruta para eso; el total del 8-nov bajó de 14 a 13 y el porcentaje subió a 46.2; después se restauró). Pendientes futuras de hoy: evidencia de Matías del 13-nov (`S5_02_2a`, `S5_02_2b`, `S5_02_2b2`): la agenda de las 15:56 mostraba 3 actividades que aún no llegaban a su hora (Paracetamol 20:15, Cena 20:30 y Caminata sin hora) y el cumplimiento de hoy a las 15:57 contó total 10 y 3 cumplidas, sin esas 3. Revisado por el PO. Limitación: la prueba de pendientes la hizo el equipo de la app, no el PO con una cuenta propia. |
 | 12 | Un rango mayor a 92 días se rechaza | `desde` hace 100 días → 400 | ✅ entorno de prueba | Verificado en un entorno de prueba (12-nov): un rango de 101 días respondió 400 («El rango máximo es de 92 días»). |
 
 ## HU 14 — Botón de asistencia
@@ -89,20 +89,19 @@
 
 - ✅ **10** probados por el Product Owner: la fila 1 en Docker y las filas 2 a 10 en Swagger.
 - ✅ **18** verificados en un entorno de prueba, con una copia local del backend y el simulador de la pulsera (filas 12 a 23, 25 y 27 a 31). Siguen marcados así hasta repetirlos en el Docker del proyecto.
-- ✅ **1** respaldado con evidencia del equipo (fila 24), con la limitación indicada en su nota.
-- ✅ **1** parcial (fila 11): falta probar en Swagger que las pendientes futuras de hoy no cuentan.
+- ✅ **2** respaldados con evidencia del equipo (filas 11 y 24), con la limitación indicada en su nota.
 - **1** no aplica (fila 26): la demo usa el simulador.
 
 **Observaciones**
 
-- La ruta real para cambiar los permisos del cuidador es `PUT`, no `PATCH`. El contrato ya se corrigió.
+- La ruta real para cambiar los permisos del cuidador es `PUT`, no `PATCH`. El contrato se corrigió el 15-nov.
 - La API no tiene una ruta para marcar una actividad como omitida, por lo que esa prueba (fila 11) se hizo en la base de datos.
 - La IA (HU 15) se probó solo en modo simulado. La demo la presenta así: la respuesta lo indica con «[Modo simulado]». Probar un proveedor real queda fuera de este sprint.
 - La inactividad (fila 24) se probó con un plazo reducido, no con las 3 horas por defecto.
 - El push real con FCM no está implementado: los avisos llegan a la pantalla Avisos.
 - La pulsera y Traccar reales no se probaron.
 
-**Veredicto del Product Owner:** *(completar al firmar: aceptadas / aceptadas con observaciones, y cuáles HU)*
+**Veredicto del Product Owner:** **Aceptadas con observaciones:** HU 12, 13, 14, 15, 17 y 19. **No aceptada por no iniciada:** HU 18 (queda como proyección). Observaciones: (1) la HU 15 se aceptó en modo simulado: los casos de calidad de respuesta 1 a 5, 10 y 11 no se evaluaron; (2) las HU 17 y 19 se aceptaron con el simulador de la pulsera, sin Traccar ni pulsera reales, y la inactividad se probó con un plazo reducido; (3) 18 criterios se verificaron en un entorno de prueba y se repetirán en el Docker del proyecto cuando esté la prueba completa; (4) no hay push real (FCM).
 
 **Product Owner:** Sergio Ocares
-**Fecha:** *(completar al firmar)*
+**Fecha:** 23 de noviembre de 2026
