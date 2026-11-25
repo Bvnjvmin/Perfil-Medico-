@@ -67,7 +67,7 @@ Como cuidador quiero recibir una alerta si la pulsera detecta una caída, se pre
 | Servidor Traccar (compose, `traccar.xml`, guía) | HU 17 / 19 | Sergio | 🟡 Archivos subidos el 06-11 (`9c93e43`, `4fd14bb`); sin levantar ni capturar un envío real | `backend/traccar/` |
 | Pulsera de muestra comprada y configurada | HU 17 / 19 | Sergio | ⬜ Pendiente (la demo usa el simulador) | — |
 | Contexto de la IA y casos de prueba | HU 15 | Sergio | 🟡 Documentos subidos el 06-11 (`65d9ec5`); casos 6 a 9 y 12 a 14 ejecutados el 20-11; casos 1 a 5, 10 y 11 no evaluados (requieren proveedor real) | `Base de datos/` |
-| Checklist de aceptación del Product Owner del Sprint 5 | HU 12 a 19 | Sergio | 🟡 Ejecutado el 10 y 12-11 con las tres cuentas y ajustado el 20-11 (31 criterios: 10 probados por el PO, 18 en entorno de prueba, 1 con evidencia del equipo, 1 parcial, 1 no aplica); veredicto sin firmar | `Base de datos/Checklist_Aceptacion_PO_Sprint5.md` |
+| Checklist de aceptación del Product Owner del Sprint 5 | HU 12 a 19 | Sergio | 🟡 Ejecutado el 10 y 12-11 con las tres cuentas y ajustado el 20-11 (31 criterios: 10 probados por el PO, 18 en entorno de prueba, 2 con evidencia del equipo, 1 no aplica); veredicto sin firmar | `Base de datos/Checklist_Aceptacion_PO_Sprint5.md` |
 | Permiso `puede_ver_indicadores` y configuración nueva | HU 12 / 17 | Benjamín | ✅ Subido el 05-11 (`d77e9c1`, `6bb5659`, `b0f9742`) | `backend/app/` |
 | Indicadores, cumplimiento, asistencia, pulsera, geocercas, Traccar e IA (servicios y rutas) | HU 12 a 19 | Benjamín | ✅ Subidos el 05-11 (`2228cb2`, `cd64277`) y conectados en `main.py` el 07-11 (`11bcf7c`) | `backend/app/` |
 | Pruebas del backend | HU 12 a 19 | Benjamín | ✅ 62 pruebas nuevas; suite completa 210 de 210 (`21d86b8`) | `backend/app/tests/` |
@@ -108,7 +108,7 @@ Definición del equipo: *integrada al repositorio + probada + documentada.*
 | `alembic upgrade head` desde base vacía, `alembic check` y `downgrade` / `upgrade` de cada migración nueva | Manual (PostgreSQL) | ✅ probado en PostgreSQL 16 (cabeza `a5b6c7d8e9f0`) y repetido en Docker (`S5_00.1`, `S5_00.4`) |
 | Alertas de la pulsera con el simulador (`simular_pulsera.py`) | Manual (API) | ✅ SOS, caída, batería baja y salida de zona crearon sus eventos |
 | Servidor Traccar con un envío real a la API | Manual (Sergio) | ⬜ |
-| Checklist de aceptación del Product Owner con tres cuentas | Manual (Product Owner) | 🟡 Ejecutado el 10 y 12-11 (10 filas por el PO, 18 en entorno de prueba, 1 con evidencia del equipo, 1 parcial, 1 no aplica); veredicto por firmar |
+| Checklist de aceptación del Product Owner con tres cuentas | Manual (Product Owner) | 🟡 Ejecutado el 10 y 12-11 (10 filas por el PO, 18 en entorno de prueba, 2 con evidencia del equipo, 1 no aplica); veredicto por firmar |
 | Flujos de las pantallas nuevas en el emulador | Manual (emulador, Matías) | ✅ HU 12, 13, 14, 15, 17 y 19 (sección 5.2) |
 | `flutter test` y `flutter analyze` | Automática (app) | ✅ |
 
