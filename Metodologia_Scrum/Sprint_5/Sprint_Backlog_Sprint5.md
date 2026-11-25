@@ -2,26 +2,13 @@
 
 **Proyecto:** Perfil Médico+ · Capstone_005D · Grupo 7
 **Periodo:** 2 al 14 de noviembre de 2026 (semanas 13 y 14 del Cronograma)
-**Última actualización:** 23 de noviembre de 2026 (versión final) · **Estado del sprint:** cerrado; la base de datos, el backend y la app están integrados y probados en el emulador (evidencia en la sección 5). Quedan como límites conocidos el push real con FCM, la prueba con Traccar y la pulsera reales y la prueba de la IA con un proveedor real; la HU 18 queda como proyección. El veredicto del Product Owner se firma con el checklist (ver «Resultado del sprint»)
+**Última actualización:** 23 de noviembre de 2026 · **Estado del sprint:** cerrado con límites; la base de datos, el backend y la app están integrados y probados en el emulador (evidencia en la sección 5); aceptación del Product Owner ejecutada el 10 y 12-11 (veredicto por firmar); pendientes: prueba con Traccar y pulsera reales, prueba de la IA con un proveedor real, prueba completa con Docker y retrospectiva final
 
 **Objetivo del sprint:** que el titular y los cuidadores registren y vean los indicadores de salud y el historial de cumplimiento (HU 12 y 13), que el perfil dependiente pueda pedir ayuda con un botón (HU 14), que una pulsera GPS envíe su ubicación y sus alertas al sistema (HU 17 y 19) y que exista un asistente de IA de orientación general (HU 15).
 **Product Owner:** Sergio Ocares · **Scrum Master:** Matías Pizarro
 **Entregables del Cronograma:** Sprint Backlog 5 (semana 13); Demo interna y Retrospectiva del Sprint 5 (semana 14, cierre el sábado 14).
 
 > Leyenda: ✅ terminado y verificado · 🟡 hecho en parte (se indica qué falta) · ⬜ pendiente · ❌ no cumplido. Una historia solo pasa a terminada cuando está integrada al repositorio, probada y documentada. Los criterios y decisiones son propuesta hasta confirmarlos en la reunión del equipo.
-
-## Resultado del sprint
-
-Historias comprometidas: 7 (HU 12, 13, 14, 15, 17, 18 y 19) · Construidas y probadas en backend y emulador: 6 (HU 12, 13, 14, 15, 17 y 19; la IA en modo simulado y la pulsera con el simulador) · No iniciada: 1 (HU 18, queda como proyección) · Pruebas del backend: 210 de 210 · Migraciones: cabeza única `a5b6c7d8e9f0`, verificada en Docker.
-
-**Aceptación del Product Owner** (`Base de datos/Checklist_Aceptacion_PO_Sprint5.md`, 31 criterios, ejecutada el 10 y el 12-11): 10 probados por el Product Owner (fila 1 en Docker y filas 2 a 10 en Swagger), 18 verificados en un entorno de prueba (copia local del backend con el simulador), 1 respaldado con evidencia del equipo (fila 24), 1 parcial (fila 11) y 1 que no aplica (fila 26, la demo usa el simulador). El veredicto y la fecha se completan al firmar el checklist.
-
-**Límites conocidos al cierre**
-- El push real con FCM no está en la app (decisión 1).
-- La IA se probó solo en modo simulado, sin un proveedor real (decisión 2).
-- La demo usa el simulador de la pulsera; el servidor Traccar y la pulsera reales no se probaron (decisión 4).
-- La inactividad se probó con un plazo reducido (5 minutos); el valor por defecto de 3 horas lo cubren las pruebas automáticas.
-- La HU 18 (Health Connect) no se construyó y queda como proyección (decisión 3).
 
 ## 1. Historias comprometidas
 
@@ -62,7 +49,7 @@ Como titular o cuidador quiero ver la ubicación y recibir alertas de geocerca d
 
 ### HU 18 — Pulsera: frecuencia cardíaca y presión referencial (Health Connect)
 Como titular o cuidador quiero ver la frecuencia cardíaca y la presión referencial del perfil dependiente desde la pulsera conectada.
-- **Estado:** no iniciada; queda como proyección (decisión 3, 23-11). El backend ya acepta indicadores con `fuente = pulsera`; falta que la app lea Health Connect y los envíe.
+- **Estado:** no iniciada; queda como proyección (decisión 3, Product Owner, 23-11). El backend ya acepta indicadores con `fuente = pulsera`; falta que la app lea Health Connect y los envíe.
 
 ### HU 19 — Pulsera: alertas de seguridad
 Como cuidador quiero recibir una alerta si la pulsera detecta una caída, se presiona el botón SOS, la batería está baja o hay inactividad inusual.
@@ -79,24 +66,24 @@ Como cuidador quiero recibir una alerta si la pulsera detecta una caída, se pre
 | `modelo_datos.md` y diagrama ER al día | Habilitador | Sergio | ✅ Subidos el 06-11 (`3131080`, `0412152`) | `Base de datos/` |
 | Servidor Traccar (compose, `traccar.xml`, guía) | HU 17 / 19 | Sergio | 🟡 Archivos subidos el 06-11 (`9c93e43`, `4fd14bb`); sin levantar ni capturar un envío real | `backend/traccar/` |
 | Pulsera de muestra comprada y configurada | HU 17 / 19 | Sergio | ⬜ Pendiente (la demo usa el simulador) | — |
-| Contexto de la IA y casos de prueba | HU 15 | Sergio | 🟡 Documentos subidos el 06-11 (`65d9ec5`); casos sin ejecutar | `Base de datos/` |
-| Checklist de aceptación del Product Owner del Sprint 5 | HU 12 a 19 | Sergio | 🟡 Plantilla subida el 06-11 (`3131080`); sin ejecutar con las tres cuentas | `Base de datos/Checklist_Aceptacion_PO_Sprint5.md` |
+| Contexto de la IA y casos de prueba | HU 15 | Sergio | 🟡 Documentos subidos el 06-11 (`65d9ec5`); casos 6 a 9 y 12 a 14 ejecutados el 20-11; casos 1 a 5, 10 y 11 no evaluados (requieren proveedor real) | `Base de datos/` |
+| Checklist de aceptación del Product Owner del Sprint 5 | HU 12 a 19 | Sergio | 🟡 Ejecutado el 10 y 12-11 con las tres cuentas y ajustado el 20-11 (31 criterios: 10 probados por el PO, 18 en entorno de prueba, 1 con evidencia del equipo, 1 parcial, 1 no aplica); veredicto sin firmar | `Base de datos/Checklist_Aceptacion_PO_Sprint5.md` |
 | Permiso `puede_ver_indicadores` y configuración nueva | HU 12 / 17 | Benjamín | ✅ Subido el 05-11 (`d77e9c1`, `6bb5659`, `b0f9742`) | `backend/app/` |
 | Indicadores, cumplimiento, asistencia, pulsera, geocercas, Traccar e IA (servicios y rutas) | HU 12 a 19 | Benjamín | ✅ Subidos el 05-11 (`2228cb2`, `cd64277`) y conectados en `main.py` el 07-11 (`11bcf7c`) | `backend/app/` |
 | Pruebas del backend | HU 12 a 19 | Benjamín | ✅ 62 pruebas nuevas; suite completa 210 de 210 (`21d86b8`) | `backend/app/tests/` |
 | Contrato de API y simulador de pulsera | HU 12 a 19 | Benjamín | ✅ Subidos el 05-11 (`de429a1`, `88db528`) | `backend/` |
-| Prueba con Docker (`docker compose up --build`, `alembic current`, `alembic check`) | Habilitador | Benjamín | ✅ Verificado en Docker Compose (`api` y `db`) | — |
-| Push real con FCM (arrastre del Sprint 4) | HU 9 | Benjamín / Matías | 🟡 Backend en `main` (apagado por defecto, 6 pruebas); la app queda sin push real, propuesta de dejarlo como límite conocido (decisión 1) | `backend/app/services/notificador.py`, `backend/docs/Notas_FCM_Sprint5.md` |
+| Prueba con Docker (`docker compose up --build`, `alembic current`, `alembic check`) | Habilitador | Benjamín | 🟡 `alembic current` y `alembic check` verificados en Docker; la prueba completa (`ps`, health, pytest en el contenedor, humo) sigue pendiente de capturas D1 a D5 | — |
+| Push real con FCM (arrastre del Sprint 4) | HU 9 | Benjamín / Matías | 🟡 Backend en `main` (apagado por defecto, 6 pruebas); la app queda sin push real, límite conocido por decisión del Product Owner del 23-11 (decisión 1) | `backend/app/services/notificador.py`, `backend/docs/Notas_FCM_Sprint5.md` |
 | Pantalla de eventos de seguridad | HU 14 / 19 | Matías | ✅ Integrada y probada en el emulador (alerta recibida y atendida) | `app_movil/lib/screens/` |
 | Botón «Necesito ayuda» en el modo simplificado | HU 14 | Matías | ✅ Integrado y probado en el emulador (con confirmación) | `app_movil/lib/widgets/` |
 | Pantalla de cumplimiento con gráfico | HU 13 | Matías | ✅ Integrada y probada en el emulador (7, 14 y 30 días) | `app_movil/lib/screens/` |
 | Pantalla de indicadores con registro y gráfico | HU 12 | Matías | ✅ Integrada y probada en el emulador | `app_movil/lib/screens/` |
 | Pantalla de pulsera, ubicación y zonas | HU 17 / 19 | Matías | ✅ Integrada y probada en el emulador | `app_movil/lib/screens/` |
 | Pantalla del asistente de IA | HU 15 | Matías | ✅ Integrada y probada en el emulador (modo simulado) | `app_movil/lib/screens/` |
-| Lectura de Health Connect (frecuencia cardíaca y presión) | HU 18 | Matías | ⬜ No iniciada; queda como proyección (decisión 3, 23-11) | — |
+| Lectura de Health Connect (frecuencia cardíaca y presión) | HU 18 | Matías | ⬜ Sin iniciar; pasa a «límite conocido / proyección» (decisión 3, 23-11) | — |
 | `flutter analyze` y `flutter test` con las pantallas nuevas | HU 12 a 19 | Matías | ✅ Sin avisos; pruebas en verde (`analyze.log`, `test.log`) | `app_movil/` |
-| Evidencia del sprint (capturas `S5_xx`) | HU 12 a 19 | Matías | 🟡 Completa para HU 12, 13, 14, 15, 17 y 19; faltan algunos criterios (sección 5.5) | `app_movil/evidencias/` |
-| Retrospectiva del Sprint 5, el último día | — | Matías | 🟡 Borrador armado el 23-11 a partir del repositorio; Matías lo revisa y lo cierra con el equipo | `Metodologia_Scrum/Sprint_5/Retrospectiva_Sprint5.md` |
+| Evidencia del sprint (capturas `S5_xx`) | HU 12 a 19 | Matías | 🟡 Capturas completas para HU 12, 13, 14, 15, 17 y 19; ver `Evidencia_Sprint5_completar.md` para las 32 capturas por citar (sección 5.5) | `app_movil/evidencias/` |
+| Retrospectiva del Sprint 5, el último día | — | Matías | 🟡 Borrador del 22-11 (`Retrospectiva_Sprint5.md`, cuando se suba); cerrar tras la reunión del equipo | `Metodologia_Scrum/Sprint_5/` |
 
 ## 3. Definition of Done — estado por historia
 
@@ -104,13 +91,13 @@ Definición del equipo: *integrada al repositorio + probada + documentada.*
 
 | Historia | Integrada al repo | Probada | Documentada | ¿Terminada? |
 |---|---|---|---|---|
-| HU 12 | 🟡 BD y backend sí; app lista, falta confirmar sus commits | 🟡 backend y emulador sí; falta el PO | ✅ contrato y evidencia | 🟡 |
-| HU 13 | 🟡 BD y backend sí; app lista, falta confirmar sus commits | 🟡 backend y emulador sí (rangos, omitidas, pendientes y límite de 92 días); falta el PO | ✅ contrato y evidencia | 🟡 |
-| HU 14 | 🟡 backend sí; app lista, falta confirmar sus commits | 🟡 backend y emulador sí; falta el PO | ✅ contrato y evidencia | 🟡 |
-| HU 15 | 🟡 backend sí; app lista, falta confirmar sus commits | 🟡 backend y emulador en modo simulado; falta un proveedor real y el PO | ✅ `Contexto_IA_Sprint5.md` y evidencia | 🟡 |
-| HU 17 | 🟡 backend y Traccar sí; app lista, falta confirmar sus commits | 🟡 backend y emulador con el simulador; falta Traccar y pulsera reales | ✅ `traccar/README.md` y evidencia | 🟡 |
-| HU 18 | ⬜ | ⬜ | ⬜ | ⬜ Proyección (decisión 3) |
-| HU 19 | 🟡 backend sí; app lista, falta confirmar sus commits | 🟡 backend y emulador con el simulador; falta la pulsera real | ✅ contrato y evidencia | 🟡 |
+| HU 12 | 🟡 BD y backend sí; app lista, falta confirmar sus commits | 🟡 backend y emulador sí; checklist del PO ejecutado el 10 y 12-11, veredicto por firmar | ✅ contrato y evidencia | 🟡 |
+| HU 13 | 🟡 BD y backend sí; app lista, falta confirmar sus commits | 🟡 backend y emulador sí (rangos, omitidas, pendientes y límite de 92 días); checklist del PO ejecutado el 10 y 12-11, veredicto por firmar | ✅ contrato y evidencia | 🟡 |
+| HU 14 | 🟡 backend sí; app lista, falta confirmar sus commits | 🟡 backend y emulador sí; checklist del PO ejecutado el 10 y 12-11, veredicto por firmar | ✅ contrato y evidencia | 🟡 |
+| HU 15 | 🟡 backend sí; app lista, falta confirmar sus commits | 🟡 backend y emulador en modo simulado; falta un proveedor real; checklist del PO ejecutado el 10 y 12-11, veredicto por firmar | ✅ `Contexto_IA_Sprint5.md` y evidencia | 🟡 |
+| HU 17 | 🟡 backend y Traccar sí; app lista, falta confirmar sus commits | 🟡 backend y emulador con el simulador; falta Traccar y pulsera reales; checklist del PO ejecutado el 10 y 12-11, veredicto por firmar | ✅ `traccar/README.md` y evidencia | 🟡 |
+| HU 18 | ⬜ | ⬜ | ⬜ | ⬜ |
+| HU 19 | 🟡 backend sí; app lista, falta confirmar sus commits | 🟡 backend y emulador con el simulador; falta la pulsera real; checklist del PO ejecutado el 10 y 12-11, veredicto por firmar | ✅ contrato y evidencia | 🟡 |
 
 ## 4. Plan de pruebas del sprint
 
@@ -121,7 +108,7 @@ Definición del equipo: *integrada al repositorio + probada + documentada.*
 | `alembic upgrade head` desde base vacía, `alembic check` y `downgrade` / `upgrade` de cada migración nueva | Manual (PostgreSQL) | ✅ probado en PostgreSQL 16 (cabeza `a5b6c7d8e9f0`) y repetido en Docker (`S5_00.1`, `S5_00.4`) |
 | Alertas de la pulsera con el simulador (`simular_pulsera.py`) | Manual (API) | ✅ SOS, caída, batería baja y salida de zona crearon sus eventos |
 | Servidor Traccar con un envío real a la API | Manual (Sergio) | ⬜ |
-| Checklist de aceptación del Product Owner con tres cuentas | Manual (Product Owner) | ⬜ |
+| Checklist de aceptación del Product Owner con tres cuentas | Manual (Product Owner) | 🟡 Ejecutado el 10 y 12-11 (10 filas por el PO, 18 en entorno de prueba, 1 con evidencia del equipo, 1 parcial, 1 no aplica); veredicto por firmar |
 | Flujos de las pantallas nuevas en el emulador | Manual (emulador, Matías) | ✅ HU 12, 13, 14, 15, 17 y 19 (sección 5.2) |
 | `flutter test` y `flutter analyze` | Automática (app) | ✅ |
 
@@ -166,10 +153,7 @@ Leyenda: ✅ cumplido · 🟡 cumplido en parte · ❌ no cumplido.
 | 13 | HU 17 | Se abrió el estado de la pulsera y las zonas en la app. | Se ven la batería, la última conexión, las coordenadas y las geocercas activas. | `S5_04.1c_app_pulsera_y_geocercas.png` | ✅ |
 | 14 | HU 19 | Se ejecutó `scripts/simular_pulsera.py` con posición, SOS, caída, batería baja (9 %) y recorrido fuera de la geocerca. | El backend acepta las tramas con el token (`TRACCAR_TOKEN`) y crea las alertas automáticas. | `S5_05.1a_consola_simulador_alarmas.png` | ✅ |
 | 15 | HU 19 | Se abrió la bandeja de eventos y se consultó el endpoint de eventos en Swagger. | Las 4 alertas de la pulsera (SOS, caída, batería baja y salida de zona) aparecen centralizadas. | `S5_05.1b_app_eventos_pulsera.png`, `S5_05.1c_swagger_get_eventos_pulsera.png` | ✅ |
-| 16 | HU 15 | Se abrió el **Asistente de IA** del Dr. Emmett Brown y se hizo una pregunta normal («¿Qué medicamentos toma hoy?»). | La respuesta se basa en los datos del perfil y siempre muestra el aviso de orientación general: no reemplaza a un profesional de la salud. | `S5_05.1d_consola_posiciones_sin_movimiento.png` | Consola con 6 lecturas de posición en el mismo punto, todas `-> 200`. | HU 19: lecturas sin movimiento que originan el evento de inactividad. |
-| `S5_05.1e_swagger_evento_inactividad.png` | `GET /eventos?solo_pendientes=true` con un evento `tipo: inactividad`, `origen: sistema`, sin atender, junto a los eventos de la pulsera. | HU 19: la inactividad crea un evento. |
-| `S5_05.1f_app_evento_inactividad.png` | Bandeja «Eventos de seguridad» con «Sin movimiento · Dr. Emmett Brown» y el botón «Atender» (22:14). | HU 19: el evento se ve en la app. |
-| `S5_06.1a_app_ia_orientacion_general.png` | ✅ |
+| 16 | HU 15 | Se abrió el **Asistente de IA** del Dr. Emmett Brown y se hizo una pregunta normal («¿Qué medicamentos toma hoy?»). | La respuesta se basa en los datos del perfil y siempre muestra el aviso de orientación general: no reemplaza a un profesional de la salud. En modo simulado, además lleva la marca «[Modo simulado]». | `S5_06.1a_app_ia_orientacion_general.png` | ✅ |
 | 17 | HU 15 | Se preguntó «Le duele el pecho y le cuesta respirar» desde la app y desde Swagger (`POST /perfiles/{id}/ia/consultas`). | Se devuelve el texto fijo de urgencia con el 131 (SAMU) y el *4141, sin consultar al modelo (`"proveedor": "reglas"`). | `S5_06.1b_app_ia_urgencia_131.png`, `S5_06.1c_swagger_ia_urgencia_proveedor_reglas.png` | ✅ |
 | 18 | HU 15 | Se consultó la tabla `consulta_ia` en PostgreSQL. | La pregunta de urgencia queda con `contexto_resumen` «ninguno (respuesta fija de urgencia)» y la normal, con solo nombre de pila, edad, alergias, medicamentos activos, cumplimiento de 7 días e indicadores; no hay RUT, correo ni teléfonos. | `S5_06.1d_bd_contexto_resumen_sin_datos_personales.png` | ✅ |
 | 19 | HU 19 | Para probar la inactividad, la ventana se redujo de 180 a 5 minutos en el `.env` (`INACTIVIDAD_MINUTOS=5`; `INACTIVIDAD_HASTA_HORA=24` porque la prueba fue después de las 22:00) y se enviaron 6 lecturas de posición en el mismo lugar, una por minuto. | A los pocos minutos la tarea programada crea un evento `inactividad` (`origen: sistema`) que llega a la bandeja del cuidador. | `S5_05.1d_consola_posiciones_sin_movimiento.png`, `S5_05.1e_swagger_evento_inactividad.png`, `S5_05.1f_app_evento_inactividad.png` | ✅ |
@@ -227,6 +211,9 @@ Leyenda: ✅ cumplido · 🟡 cumplido en parte · ❌ no cumplido.
 | `S5_05.1a_consola_simulador_alarmas.png` | `simular_pulsera.py`: SOS, caída, batería al 9 % y un recorrido de 1000 m en 5 pasos; todos responden `200`. La salida de zona se dispara en el paso 2/5 (400 m, fuera de los 200 m de la zona). | HU 19: envío de tramas y alertas. |
 | `S5_05.1b_app_eventos_pulsera.png` | Bandeja con 4 alertas: salida de zona, batería baja, caída y SOS. | HU 19: los eventos se ven en la app. |
 | `S5_05.1c_swagger_get_eventos_pulsera.png` | `GET /eventos?solo_pendientes=true` con eventos `"origen": "pulsera"` (batería baja, caída y SOS en pantalla). | HU 19: los eventos quedan guardados en el backend. |
+| `S5_05.1d_consola_posiciones_sin_movimiento.png` | Consola del simulador con 6 lecturas de posición en el mismo punto, todas con respuesta `200`. | HU 19: lecturas sin movimiento que originan el evento de inactividad. |
+| `S5_05.1e_swagger_evento_inactividad.png` | `GET /eventos?solo_pendientes=true` con un evento `tipo: inactividad`, `origen: sistema`, sin atender. | HU 19: la inactividad crea un evento. |
+| `S5_05.1f_app_evento_inactividad.png` | Bandeja «Eventos de seguridad» con «Sin movimiento · Dr. Emmett Brown» y el botón «Atender» (22:14). | HU 19: el evento se ve en la app. |
 | `S5_06.1a_app_ia_orientacion_general.png` | Asistente: pregunta «¿Qué medicamentos toma hoy?» y respuesta con los datos del perfil, marcada «[Modo simulado]», más el aviso de orientación general. | HU 15: la respuesta siempre muestra que es orientación general. |
 | `S5_06.1b_app_ia_urgencia_131.png` | Asistente: pregunta de urgencia y texto fijo con el 131 (SAMU) y el *4141, con el aviso. | HU 15: urgencia con texto fijo. |
 | `S5_06.1c_swagger_ia_urgencia_proveedor_reglas.png` | `POST /perfiles/{id}/ia/consultas`: `201`, `"proveedor": "reglas"`, texto fijo de urgencia. | HU 15: la urgencia no consulta al modelo. |
@@ -250,16 +237,16 @@ Leyenda: ✅ cumplido · 🟡 cumplido en parte · ❌ no cumplido.
 | HU 15 | Límite de 30 consultas por usuario al día. | Sin captura; cubierto por pruebas del backend. Tampoco se probó con un proveedor de IA real (la demo es en modo simulado). |
 | HU 17 | Solo el titular registra pulseras y zonas. | Sin captura con una cuenta que no sea titular. |
 | HU 17 / 19 | Servidor Traccar y pulsera reales. | Pendiente; la demo usa el simulador. |
-| HU 12 a 19 | Checklist de aceptación del Product Owner con tres cuentas. | Pendiente de ejecutar. |
+| HU 12 a 19 | Checklist de aceptación del Product Owner con tres cuentas. | Ejecutado el 10 y 12-11 y ajustado el 20-11; falta el veredicto y la fecha de firma. 18 criterios se verificaron en un entorno de prueba y no en el Docker del proyecto. |
 
 ## 6. Decisiones del sprint
 
-Estado de las decisiones al cierre del sprint. Las decisiones 1 y 3 las tomó el Product Owner el 23-11; si el equipo decide otra cosa, se ajusta.
+Estado de las decisiones al cierre. Las decisiones 1 y 3 las tomó el Product Owner el 23-11; si el equipo decide otra cosa, se ajusta.
 
 1. **Push real con FCM (arrastre del Sprint 4).** **Decidido (Product Owner, 23-11): límite conocido.** No se hace en la app este sprint porque quedaba poco tiempo antes de la entrega final. Hacerlo implica crear el proyecto de Firebase, agregar `google-services.json`, instalar `firebase_messaging` y probar en un celular real, lo que puede romper la compilación justo antes de la demo. La demo queda cubierta: el backend genera los avisos y la app los muestra al abrir Avisos. El lado del backend ya está en `main` (apagado por defecto, con 6 pruebas), así que si se quiere después solo faltaría la parte de la app (se vería después del sábado 14). Cómo se documenta: el texto de límite conocido en el README y en el contrato (`backend/docs/Notas_FCM_Sprint5.md`), en el informe 2.6 (límites y proyecciones) y en este backlog, donde la HU 9 queda parcial sin push real, igual que en el Sprint 4.
-2. **Proveedor de la IA.** Hoy responde en modo simulado (sin red ni clave). **Estado al cierre:** la IA se probó solo en modo simulado; probar un proveedor real quedó fuera del sprint (ver el checklist del Product Owner). Si más adelante se prueba con la API real de un modelo de lenguaje, la clave va en el `.env` local y nunca en el repositorio.
+2. **Proveedor de la IA.** Hoy responde en modo simulado (sin red ni clave). **Estado al cierre:** la IA se probó solo en modo simulado; probar un proveedor real quedó fuera del sprint. Si más adelante se prueba con la API real de un modelo de lenguaje, la clave va en el `.env` local y nunca en el repositorio.
 3. **Health Connect (HU 18).** Requiere que la app lea los datos en un dispositivo con Health Connect y los envíe como indicadores con `fuente = pulsera`. **Decidido (Product Owner, 23-11): proyección.** No se hizo en este sprint y no pasa al Sprint 6, porque ese sprint dura una semana y ya trae glucosa manual, recordatorios extendidos, farmacias vía IA, pruebas e informe final. La parte de datos está lista (el backend acepta `fuente = pulsera`); falta la lectura desde la app.
-4. **Pulsera real o simulador en la demo.** **Decidido (opción B del checklist):** la demo usa `simular_pulsera.py` y debe decirse así (la evidencia se hizo con el simulador).
+4. **Pulsera real o simulador en la demo.** **Estado al cierre:** sin pulsera real, la demo usa `simular_pulsera.py` y debe decirse así (la evidencia se hizo con el simulador).
 5. **Quién recibe el nivel 2 de las alertas** (decisión 9 del Sprint 4). Para cambiarlo basta `ALERTA_NIVEL_2_INCLUYE_TITULAR=true`.
 6. **Solo Sergio crea migraciones de Alembic** en este sprint, para mantener una única cabeza (`a5b6c7d8e9f0`).
 
@@ -271,7 +258,7 @@ Lo previsto del Product Backlog: registro manual de glucosa, recordatorios exten
 
 Acuerdo del Sprint 3: subir al repositorio al menos dos veces por semana y revisar el historial a mitad de sprint.
 
-**Estado al 07-11:** historial verificado con `git log --since=2026-11-02`. Los commits de la app y de la evidencia se anotan al subirlos.
+**Estado al 22-11:** historial verificado con `git log --since=2026-11-02`.
 
 | Fecha | Qué se subió | Quién | Commits |
 |---|---|---|---|
@@ -281,5 +268,10 @@ Acuerdo del Sprint 3: subir al repositorio al menos dos veces por semana y revis
 | 06-11 | `modelo_datos.md`, diagrama ER y checklist del Product Owner | Sergio | `3131080`, `0412152`, `6a71ed7` |
 | 06-11 | Servidor Traccar, contexto de IA y casos de prueba | Sergio | `9c93e43`, `4fd14bb`, `65d9ec5` |
 | 07-11 | Conexión de los routers del Sprint 5 en `main.py` | Benjamín | `11bcf7c` |
-| — | Pantallas de la app del Sprint 5 y su evidencia (`S5_xx`) | Matías | ⬜ completar con los hashes al subirlos |
-| — | Checklist de aceptación del Product Owner ejecutado | Sergio | ⬜ sin commits |
+| 08-11 | Pantallas de la app del Sprint 5 (indicadores, cumplimiento, pulsera, IA, eventos y botón de ayuda) | Matías (pull request #3, autor del commit `demoster18`) | `5595315`, merge `13977b0` |
+| 08-11 | Evidencia de la HU 12 y de S5_00 | Matías | `f7baab5` |
+| 13-11 | Evidencia de HU 13, 14 y 15 (`0b7fdae`), HU 17 y 19 (`aebd709`), HU 13 (`8a55c07`), HU 15 (`e5ceddb`), HU 19 inactividad (`3f9dfbf`) y el texto `Evidencia_Sprint5.md` (`5496a9c`) | Matías | `0b7fdae`, `aebd709`, `5496a9c`, `8a55c07`, `e5ceddb`, `3f9dfbf` |
+| 13-11 | Sprint Backlog 5 | Matías | `c885197` |
+| 10 y 12-11 | Checklist de aceptación del Product Owner ejecutado | Sergio | `eb9a889`, `606f047`, `577344c` |
+| 20-11 | Ajustes del checklist y de los casos de prueba de la IA | Sergio | `0d5d49a`, `da5635d` |
+| 15-11 | Informe final 2.6 con la sección 6 | Benjamín | `5ca76c1`, `5a8ee9d`, `cf9c25a` |
