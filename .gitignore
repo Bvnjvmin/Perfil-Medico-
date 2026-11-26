@@ -22,3 +22,10 @@ gradle-wrapper.jar
 .vscode/
 .DS_Store
 Thumbs.db
+
+# Secretos: claves de Firebase (push). NUNCA se suben.
+google-services.json
+GoogleService-Info.plist
+**/backend/secrets/
+*.pem
+*.key
