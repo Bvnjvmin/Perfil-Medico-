@@ -96,7 +96,10 @@ def test_limite_de_geocercas(client):
 
 # --- Entrada desde Traccar --------------------------------------------------------
 
-def test_traccar_apagado_sin_token_configurado(client):
+def test_traccar_apagado_sin_token_configurado(client, monkeypatch):
+    # En Docker el .env puede traer TRACCAR_TOKEN; aquí se fuerza vacío para probar el caso "apagado".
+    from app.core.config import settings
+    monkeypatch.setattr(settings, "TRACCAR_TOKEN", "")
     assert client.get("/traccar/posiciones", params={"token": "x", "id": "1", "lat": 1, "lon": 1}).status_code == 503
 
 
