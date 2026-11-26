@@ -68,6 +68,19 @@ class Settings(BaseSettings):
     # Tope de consultas por usuario y por día (control de costo).
     IA_MAX_CONSULTAS_DIA: int = 30
 
+    # --- Seguridad (Sprint 6) ---
+    # Orígenes web que pueden llamar a la API desde un navegador, separados por coma
+    # (por ejemplo "https://app.ejemplo.cl"). Vacío = ninguno. La app móvil no lo necesita.
+    CORS_ORIGENES: str = ""
+    # Inicio de sesión: intentos fallidos permitidos dentro de la ventana. El primero cuenta
+    # por cuenta y por IP; el segundo, por IP sola (frena a quien prueba muchas cuentas).
+    LOGIN_MAX_INTENTOS: int = 5
+    LOGIN_MAX_INTENTOS_IP: int = 20
+    LOGIN_VENTANA_MINUTOS: int = 15
+    # Con NOTIFICADOR=log, escribir en el registro el texto de los avisos (puede incluir
+    # nombres de medicamentos: solo para desarrollo). Falso = solo se registra el tipo y el nivel.
+    NOTIFICADOR_LOG_CONTENIDO: bool = False
+
     # --- Metadatos de la app ---
     PROJECT_NAME: str = "Perfil Médico+ API"
 
@@ -75,3 +88,20 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+
+# Valores de ejemplo que nunca deben usarse como clave real.
+_CLAVES_DE_EJEMPLO = ("cambia-esta-clave", "pega-aqui")
+
+
+def validar_secretos(config: Settings) -> None:
+    """Detiene el arranque si la SECRET_KEY es de ejemplo o demasiado corta.
+
+    Quien conozca la clave de ejemplo (está en el repositorio) podría fabricar tokens de
+    sesión válidos para cualquier usuario.
+    """
+    clave = config.SECRET_KEY
+    if len(clave) < 32 or clave.lower().startswith(_CLAVES_DE_EJEMPLO):
+        raise RuntimeError(
+            "SECRET_KEY insegura: define en el .env una clave aleatoria de al menos 32 caracteres. "
+            "Genera una con: python -c \"import secrets; print(secrets.token_hex(32))\""
+        )
