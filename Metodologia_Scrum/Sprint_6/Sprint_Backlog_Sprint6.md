@@ -2,7 +2,7 @@
 
 **Proyecto:** Perfil Médico+ · Capstone_005D · Grupo 7
 **Periodo planificado:** 16 al 21 de noviembre de 2026 (semana 15 del Cronograma) · ⬜ confirmar si el equipo extiende el cierre hasta el jueves 26-11 por el push con FCM
-**Última actualización:** 25 de noviembre de 2026 · **Estado del sprint:** BORRADOR. Armado desde el repositorio (`main`), el informe 2.6, `Verificacion_cifras_informe26.md` y el paquete FCM del 23-11. Lo marcado con ⬜ lo confirma quien hizo ese trabajo.
+**Última actualización:** 26 de noviembre de 2026 · **Estado del sprint:** BORRADOR. Armado desde el repositorio (`main`), el informe 2.6, `Verificacion_cifras_informe26.md` y el paquete FCM del 23-11, con las decisiones del Product Owner del 26-11 sobre las HU 20, 21 y 22. Lo marcado con ⬜ lo confirma quien hizo ese trabajo.
 
 **Objetivo del sprint:** cerrar el proyecto para la entrega final: pruebas integrales con el backend en Docker, documentación (manual técnico, README, Docker), informe final y demo; y, si el tiempo lo permite, el push real con FCM (HU 9) y las historias del incremento (HU 20, 21 y 22).
 **Product Owner:** Sergio Ocares · **Scrum Master:** Matías Pizarro
@@ -32,13 +32,13 @@ Como cuidador quiero recibir el aviso como notificación en el celular, aunque l
 ### HU 20 — Registro manual de glucosa
 Como cuidador quiero ingresar manualmente la lectura de un glucómetro certificado y verla en el historial del perfil.
 - **Lo que ya existe:** desde el Sprint 5 el backend y la app registran `glucosa` como tipo de indicador (mg/dL, rango 10 a 1000) con gráfico de evolución (HU 12).
-- **Estado al 25-11:** ⬜ **decisión pendiente del Product Owner:** (a) declarar la HU 20 cubierta por la HU 12 y agregar solo la evidencia con una lectura de glucosa; o (b) dejarla como proyección. No se construyó nada nuevo para esta historia.
+- **Estado al 26-11:** ⬜ **Proyección (decisión del Product Owner, 26-11).** No se construyó nada nuevo para esta historia y no se declara cubierta por la HU 12: aunque el indicador `glucosa` se puede registrar y graficar, la historia queda fuera del total de historias con evidencia (17 de 22), y el informe 2.6 la declara parcial.
 
 ### HU 21 — Recordatorios extendidos (indicaciones post-consulta y citas)
-- **Estado al 25-11:** ⬜ **no iniciada.** No hay tablas, rutas ni pantallas en el repositorio. Queda como proyección salvo decisión contraria del equipo (el informe 2.6 dice que los objetivos 9 a 11 solo se abordan si el tiempo lo permite).
+- **Estado al 26-11:** ⬜ **No iniciada; queda como proyección (decisión del Product Owner, 26-11).** No hay tablas, rutas ni pantallas en el repositorio (el informe 2.6 dice que los objetivos 9 a 11 solo se abordan si el tiempo lo permite).
 
 ### HU 22 — Farmacias cercanas vía IA
-- **Estado al 25-11:** ⬜ **no iniciada.** El asistente de IA hoy responde que no puede ayudar con farmacias o precios (`app/services/ia.py`). Queda como proyección salvo decisión contraria del equipo.
+- **Estado al 26-11:** ⬜ **No iniciada.** El asistente de IA hoy responde que no puede ayudar con farmacias o precios (`app/services/ia.py`). **Queda como proyección (decisión del Product Owner, 26-11).**
 
 ### Trabajo de cierre (no son historias)
 - Manual técnico (borrador en `Documentos/Manual_Tecnico_BORRADOR.md`), README y guía de Docker.
@@ -55,7 +55,7 @@ Como cuidador quiero ingresar manualmente la lectura de un glucómetro certifica
 | Aplicar `fcm_backend.patch`, activar `NOTIFICADOR=fcm`, levantar con `docker-compose.fcm.yml` | HU 9 | Benjamín | ⬜ | `backend/` |
 | Prueba de extremo a extremo con celular real y capturas | HU 9 | Matías / Benjamín (+ una persona que no escribió el código) | ⬜ | `app_movil/evidencias/evidencias Sprint 6/` |
 | Prueba completa con Docker (D1 a D5) | HU 16 | Benjamín | ⬜ | `backend/docs/` |
-| Decidir HU 20, 21 y 22 (hacer / cubrir / proyección) | HU 20–22 | Sergio (Product Owner) | ⬜ | Sección 6 |
+| Decidir HU 20, 21 y 22 (hacer / cubrir / proyección) | HU 20–22 | Sergio (Product Owner) | ✅ Decidido el 26-11: proyección | Sección 6 |
 | Firmar el checklist del Sprint 5 y repetir en Docker las filas verificadas en entorno de prueba | Habilitador | Sergio / Benjamín | ⬜ | `Base de datos/` |
 | Manual técnico final | HU 16 | Sergio / Benjamín | 🟡 borrador del 22-11 | `Documentos/` |
 | Corregir el informe 2.6 y la presentación según `Verificacion_cifras_informe26.md` | Habilitador | Benjamín / Matías | ⬜ | `Fase 2/Evidencias Grupales/` |
@@ -72,9 +72,9 @@ Definición del equipo: *integrada al repositorio + probada + documentada.*
 |---|---|---|---|---|
 | HU 9 (push real) | ⬜ rama `fcm` sin unir a `main` | ⬜ sin compilar ni probar con celular real | 🟡 guía y notas FCM | ⬜ |
 | HU 16 | 🟡 | 🟡 migraciones en Docker; falta la prueba completa | 🟡 manual técnico en borrador | 🟡 |
-| HU 20 | 🟡 cubierta por HU 12 (decisión pendiente) | ⬜ falta evidencia con glucosa | ⬜ | ⬜ |
-| HU 21 | ⬜ | ⬜ | ⬜ | ⬜ |
-| HU 22 | ⬜ | ⬜ | ⬜ | ⬜ |
+| HU 20 | ⬜ proyección (decisión 26-11) | ⬜ | ⬜ | ⬜ proyección |
+| HU 21 | ⬜ proyección (decisión 26-11) | ⬜ | ⬜ | ⬜ proyección |
+| HU 22 | ⬜ proyección (decisión 26-11) | ⬜ | ⬜ | ⬜ proyección |
 
 ## 4. Plan de pruebas del sprint
 
@@ -86,7 +86,7 @@ Definición del equipo: *integrada al repositorio + probada + documentada.*
 | P4 | `flutter analyze` y `flutter test` con el código de FCM | Emulador | ⬜ |
 | P5 | App compila sin `google-services.json` y el push queda desactivado | `flutter run` | ⬜ |
 | P6 | Push con la app cerrada, con la app abierta y tras cerrar sesión | Celular real | ⬜ |
-| P7 | Lectura de glucosa registrada y vista en el gráfico (si se cubre la HU 20) | Emulador | ⬜ |
+| P7 | Lectura de glucosa registrada y vista en el gráfico (solo si se cubriera la HU 20) | Emulador | No aplica: la HU 20 queda como proyección |
 
 ## 5. Evidencia de pruebas del sprint
 
@@ -101,18 +101,18 @@ Pendiente. Se completa en `app_movil/evidencias/evidencias Sprint 6/Evidencia_Sp
 
 ## 6. Decisiones del sprint
 
-Propuesta para confirmar en la reunión del equipo.
+Propuesta para confirmar en la reunión del equipo. Las decisiones 2 y 3 las tomó el Product Owner el 26-11.
 
 1. **Push real con FCM.** El 23-11 el Product Owner lo había dejado como límite conocido; el paquete FCM abre una última oportunidad con plazo duro el 26-11. ⬜ confirmar que el equipo intenta hacerlo en una rama aparte y que **no se une a `main` sin haber probado que la app compila**. Si falla, se usa el texto de límite conocido de `Notas_FCM_Sprint5.md`.
-2. **HU 20 (glucosa).** ⬜ Product Owner: cubierta por la HU 12 o proyección.
-3. **HU 21 y 22.** ⬜ Product Owner: proyección (propuesta), con el mismo tratamiento que la HU 18.
+2. **HU 20 (glucosa).** **Decidido (Product Owner, 26-11): proyección.** Se puede registrar glucosa como indicador (HU 12), pero la HU 20 no se cuenta como cubierta.
+3. **HU 21 y 22.** **Decidido (Product Owner, 26-11): proyección**, con el mismo tratamiento que la HU 18.
 4. **HU 18 (Health Connect).** Sigue como proyección (decisión del 23-11).
 5. **Congelamiento.** Desde el 2-12 solo se corrigen textos (acuerdo del paquete FCM).
 6. **Claves de Firebase.** `google-services.json` y la clave de la cuenta de servicio **nunca** se suben; el `.gitignore` se actualiza antes del primer `git add`.
 
 ## 7. Trabajo que pasa a la proyección
 
-Según lo que se decida en la sección 6: HU 18, HU 21 y HU 22 (y la HU 20 si no se cubre con la HU 12); push real con FCM si no se verifica; prueba con Traccar y pulsera reales; prueba de la IA con un proveedor real.
+HU 18, HU 20, HU 21 y HU 22 (decisiones del Product Owner del 23 y 26-11); push real con FCM si no se verifica; prueba con Traccar y pulsera reales; prueba de la IA con un proveedor real.
 
 ## 8. Seguimiento de commits del sprint
 
