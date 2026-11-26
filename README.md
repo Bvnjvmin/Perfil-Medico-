@@ -38,7 +38,8 @@ Propuesta de Proyecto APT · Capstone_005D (Grupo 7) · Ingeniería Informática
   - App: pantallas de indicadores, cumplimiento, eventos de seguridad, pulsera con zonas, asistente de IA y botón «Necesito ayuda» en el modo simplificado; `flutter analyze` sin avisos y prueba manual con capturas `S5_xx`
   - Cierre: checklist de aceptación del Product Owner (`Checklist_Aceptacion_PO_Sprint5.md`) ejecutado el 10 y 12-11 y ajustado el 20-11 — ver [`Metodologia_Scrum/Sprint_5`](<./Metodologia_Scrum/Sprint_5>)
   - Límites conocidos: sin push real (FCM) en la app, pulsera y Traccar solo con simulador, IA solo en modo simulado, frecuencia cardíaca y presión por Health Connect (HU 18) sin iniciar, y prueba con Docker Compose completo pendiente de capturas
-- [ ] Sprint 6 (S15) — Glucosa manual, recordatorios extendidos, farmacias vía IA, pruebas, Informe Final (Semana 15)
+- [ ] Sprint 6 (S15, 16 al 21-11) — Cierre: pruebas integrales con Docker, documentación (manual técnico), Informe Final y demo; push real con FCM en la app (plazo 26-11); glucosa manual, recordatorios extendidos y farmacias vía IA según lo que decida el Product Owner *(en curso; Sprint Backlog 6 en borrador)*
+  - Estado al 25-11: la glucosa ya se registra como indicador (HU 12); las HU 21 y 22 no están iniciadas; el push con FCM tiene el código escrito pero no se ha probado con Firebase real — ver [`Metodologia_Scrum/Sprint_6`](<./Metodologia_Scrum/Sprint_6>)
 
 **Fase 3 — Presentación y defensa final (Semanas 16-18)**
 
