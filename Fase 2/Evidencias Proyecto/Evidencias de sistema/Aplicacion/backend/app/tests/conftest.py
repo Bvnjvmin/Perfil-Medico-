@@ -5,6 +5,12 @@ Las pruebas NO se conectan a la PostgreSQL real: usan una base SQLite en
 memoria, que se crea limpia para cada prueba y desaparece al terminar. Esto
 hace las pruebas rápidas y evita que dependan de tener Docker corriendo.
 """
+import os
+
+# La API no arranca con una SECRET_KEY de ejemplo o corta: las pruebas usan una propia.
+# Debe fijarse ANTES de importar la app.
+os.environ["SECRET_KEY"] = "clave-solo-para-pruebas-automaticas-0123456789abcdef"
+
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
@@ -13,6 +19,7 @@ from sqlalchemy.pool import StaticPool
 
 from app.api.deps import get_current_user  # noqa: F401 (referenciado por claridad)
 from app.db.session import Base, get_db
+from app.api.routes.auth import limitador_login
 from app.main import app
 
 TEST_DATABASE_URL = "sqlite:///:memory:"
@@ -32,6 +39,7 @@ TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engin
 @pytest.fixture()
 def client():
     Base.metadata.create_all(bind=engine)
+    limitador_login.reiniciar()  # el contador de intentos fallidos no pasa de una prueba a otra
 
     def override_get_db():
         db = TestingSessionLocal()

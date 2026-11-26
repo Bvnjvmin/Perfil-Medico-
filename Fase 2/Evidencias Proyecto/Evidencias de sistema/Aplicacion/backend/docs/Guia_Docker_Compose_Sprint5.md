@@ -9,7 +9,7 @@
    - `docker compose ps` → `db` (healthy) y `api` en ejecución. **Captura S5_D1.**
    - `docker compose exec api alembic current` → `a5b6c7d8e9f0 (head)`. **S5_D2.**
    - `curl http://localhost:8000/health` y abrir `http://localhost:8000/docs` (deben verse las rutas de indicadores, cumplimiento, asistencia, pulsera, Traccar e IA). **S5_D3.**
-   - `docker compose exec api python -m pytest -q` (pytest viene en `requirements.txt`, así que debería funcionar dentro del contenedor; no se probó). Resultado esperado: 216 pruebas (210 + 6 de FCM) con el código nuevo, o 210 sin él. Si falla dentro del contenedor, correrlo en el entorno virtual local. **S5_D4.**
+   - `docker compose exec api python -m pytest -q` (pytest viene en `requirements.txt`, así que debería funcionar dentro del contenedor; no se probó). Resultado esperado: 226 pruebas con el parche de seguridad (216 + 10 de seguridad); 216 sin él (210 + 6 de FCM). Si falla dentro del contenedor, correrlo en el entorno virtual local. **S5_D4.**
    - Prueba de humo: `python scripts/prueba_humo_sprint5.py` con la API en `http://localhost:8000` (el script espera el puerto 8010 y el token `tok-humo`; ajustar las constantes `B` y `TOK` de su cabecera, y poner el mismo token en el `.env`). **S5_D5.**
 4. Con Traccar: `docker compose -f docker-compose.yml -f traccar/docker-compose.traccar.yml up --build -d`, abrir `http://localhost:8082` y comprobar `docker compose ps` con el servicio `traccar` y los puertos 5055 y 5093. **S5_D6.**
 5. Apagar: `docker compose down` (agregar `-v` solo si se quiere borrar los datos).

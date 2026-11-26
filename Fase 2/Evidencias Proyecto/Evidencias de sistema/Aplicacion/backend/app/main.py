@@ -18,7 +18,7 @@ from app.api.routes import (
     actividad, auth, aviso, cuidador, cumplimiento, evento, horario, ia, indicador, medicamento, panel,
     perfil, pulsera, traccar,
 )
-from app.core.config import settings
+from app.core.config import settings, validar_secretos
 
 logger = logging.getLogger("perfil_medico.tareas")
 logging.basicConfig(level=logging.INFO)
@@ -48,6 +48,7 @@ async def _bucle_tareas() -> None:
 @asynccontextmanager
 async def lifespan(_: FastAPI):
     """Con TAREAS_PROGRAMADAS=true, corre la generación de actividades y los avisos cada minuto."""
+    validar_secretos(settings)  # no arranca con una SECRET_KEY de ejemplo o demasiado corta
     tarea = asyncio.create_task(_bucle_tareas()) if settings.TAREAS_PROGRAMADAS else None
     yield
     if tarea is not None:
@@ -56,15 +57,17 @@ async def lifespan(_: FastAPI):
 
 app = FastAPI(title=settings.PROJECT_NAME, lifespan=lifespan)
 
-# Permite que la app Flutter (u otra herramienta) llame a la API desde
-# cualquier origen. Se puede restringir más adelante a dominios específicos.
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# CORS solo se abre a los orígenes web listados en CORS_ORIGENES (vacío = ninguno). La app móvil
+# no es un navegador y no lo necesita; antes estaba abierto a cualquier origen ("*").
+_origenes_cors = [o.strip() for o in settings.CORS_ORIGENES.split(",") if o.strip()]
+if _origenes_cors:
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=_origenes_cors,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
 app.include_router(auth.router)
 app.include_router(perfil.router)

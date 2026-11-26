@@ -31,7 +31,11 @@ class Notificador(Protocol):
 
 class NotificadorLog:
     def enviar(self, tokens: list[str], titulo: str, cuerpo: str, datos: dict) -> None:
-        logger.info("Aviso para %d dispositivo(s): %s — %s %s", len(tokens), titulo, cuerpo, datos)
+        if settings.NOTIFICADOR_LOG_CONTENIDO:
+            logger.info("Aviso para %d dispositivo(s): %s — %s %s", len(tokens), titulo, cuerpo, datos)
+        else:
+            # Por defecto no se escribe el texto del aviso en el registro: puede nombrar medicamentos.
+            logger.info("Aviso para %d dispositivo(s): tipo=%s nivel=%s", len(tokens), datos.get("tipo"), datos.get("nivel"))
 
 
 FCM_URL = "https://fcm.googleapis.com/v1/projects/{proyecto}/messages:send"
