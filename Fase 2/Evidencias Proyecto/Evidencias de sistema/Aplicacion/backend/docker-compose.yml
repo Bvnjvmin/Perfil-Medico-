@@ -4,10 +4,13 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      # Con una clave propia en POSTGRES_PASSWORD (en el .env). Ojo: Postgres solo la aplica al crear el
+      # volumen; si ya existe uno con "postgres", ver la nota en .env.example.
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
       POSTGRES_DB: perfil_medico
     ports:
-      - "5432:5432"
+      # Solo este computador puede conectarse a la base (antes quedaba abierta a toda la red).
+      - "127.0.0.1:5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
     healthcheck:
@@ -23,7 +26,7 @@ services:
       - .env
     environment:
       # Dentro de la red de Docker, la base de datos se llama "db" (no localhost)
-      DATABASE_URL: postgresql://postgres:postgres@db:5432/perfil_medico
+      DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD:-postgres}@db:5432/perfil_medico
       # Genera las actividades y envía recordatorios y alertas cada minuto (Sprint 4).
       TAREAS_PROGRAMADAS: "true"
     ports:
