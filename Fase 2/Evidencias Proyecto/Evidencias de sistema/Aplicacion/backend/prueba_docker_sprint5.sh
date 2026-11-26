@@ -62,6 +62,15 @@ else
 fi
 TOKEN_EN_ENV="$(grep '^TRACCAR_TOKEN=' .env | tail -1 | cut -d= -f2-)"
 
+# La API no arranca con una SECRET_KEY de ejemplo o corta: si hace falta, se genera una aleatoria.
+CLAVE_ACTUAL="$(grep '^SECRET_KEY=' .env | tail -1 | cut -d= -f2-)"
+if [ "${#CLAVE_ACTUAL}" -lt 32 ] || echo "$CLAVE_ACTUAL" | grep -q -i -E '^(cambia-esta-clave|pega-aqui)'; then
+  CLAVE_NUEVA="$(python3 -c 'import secrets; print(secrets.token_hex(32))' 2>/dev/null || python -c 'import secrets; print(secrets.token_hex(32))')"
+  grep -v '^SECRET_KEY=' .env > .env.tmp && mv .env.tmp .env
+  echo "SECRET_KEY=$CLAVE_NUEVA" >> .env
+  echo "Se generó una SECRET_KEY aleatoria en el .env (no se muestra)."
+fi
+
 echo "== Perfil Médico+ - prueba Docker Sprint 5 - $FECHA" | tee -a "$RESUMEN"
 echo "Docker: $(docker --version)" | tee -a "$RESUMEN"
 echo "Commit del repositorio: $(git rev-parse --short HEAD 2>/dev/null || echo 'sin git')" | tee -a "$RESUMEN"
@@ -82,7 +91,7 @@ paso D2b "alembic check (sin operaciones pendientes)" docker compose exec -T api
 paso D3 "Health y documentación" bash -c 'curl -s -i http://localhost:8000/health | head -20; echo; curl -s http://localhost:8000/openapi.json | python3 -c "import sys,json; o=json.load(sys.stdin); print(\"rutas (paths):\",len(o[\"paths\"])); print(\"operaciones HTTP:\",sum(1 for p in o[\"paths\"].values() for m in p if m in (\"get\",\"post\",\"put\",\"patch\",\"delete\")))"'
 echo ">>> Para D3 abre también http://localhost:8000/docs en el navegador y captura la lista de rutas."
 
-paso D4 "Pruebas automáticas dentro del contenedor (esperado: 216)" docker compose exec -T api python -m pytest -q -p no:cacheprovider
+paso D4 "Pruebas automáticas dentro del contenedor (esperado: 226 con el parche de seguridad; 216 sin él)" docker compose exec -T api python -m pytest -q -p no:cacheprovider
 
 # Prueba de humo: copia temporal con el puerto 8000 y el token del .env (no modifica el archivo del repositorio)
 HUMO_TMP="$(mktemp -d)/prueba_humo_docker.py"
