@@ -5,7 +5,7 @@ psycopg2-binary==2.9.13
 pydantic==2.13.5
 pydantic-settings==2.15.0
 email-validator==2.3.0
-PyJWT==2.7.0
+PyJWT==2.15.1  # antes 2.7.0, con 17 vulnerabilidades conocidas (pip-audit, 23-nov-2026)
 bcrypt==5.0.0
 python-multipart==0.0.32
 alembic==1.20.0
