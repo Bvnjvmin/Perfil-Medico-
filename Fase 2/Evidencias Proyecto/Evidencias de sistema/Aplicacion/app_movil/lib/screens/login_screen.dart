@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/api_service.dart';
+import '../services/notificaciones_service.dart';
 import '../services/token_storage.dart';
 import 'home_screen.dart';
 import 'register_screen.dart';
@@ -35,6 +36,9 @@ class _LoginScreenState extends State<LoginScreen> {
         password: _passwordCtrl.text,
       );
       await _tokenStorage.guardar(token);
+      // Registra este celular para recibir notificaciones. No espera ni falla el inicio
+      // de sesión si Firebase no está disponible.
+      NotificacionesService.instance.registrar(token);
 
       if (!mounted) return;
       Navigator.of(context).pushReplacement(

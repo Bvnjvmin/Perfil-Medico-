@@ -5,6 +5,12 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+// Firebase (push): el plugin solo se aplica si ya está el archivo google-services.json
+// (descargado de la consola de Firebase; NO se sube al repositorio). Sin él la app compila igual, sin push.
+if (file("google-services.json").exists()) {
+    apply(plugin = "com.google.gms.google-services")
+}
+
 android {
     namespace = "com.example.app_movil"
     compileSdk = flutter.compileSdkVersion
