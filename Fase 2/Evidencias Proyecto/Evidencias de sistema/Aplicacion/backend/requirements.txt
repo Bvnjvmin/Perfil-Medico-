@@ -11,6 +11,8 @@ python-multipart==0.0.32
 alembic==1.20.0
 httpx==0.28.1  # llamadas a la API de IA (y cliente de las pruebas)
 tzdata==2026.5  # zonas horarias (America/Santiago) en la imagen slim de Docker
+google-auth==2.63.1  # token OAuth2 de la cuenta de servicio para enviar push con FCM (NOTIFICADOR=fcm)
+requests==2.34.2  # lo usa google-auth para renovar el token
 
 # Solo para desarrollo y pruebas (no se necesitan en producción)
 pytest==9.1.1

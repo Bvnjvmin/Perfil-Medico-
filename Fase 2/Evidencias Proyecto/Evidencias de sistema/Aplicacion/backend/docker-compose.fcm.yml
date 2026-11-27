@@ -1,0 +1,17 @@
+# Activa las notificaciones push reales (FCM). Se usa JUNTO al compose normal:
+#
+#   docker compose -f docker-compose.yml -f docker-compose.fcm.yml up -d --build
+#
+# Requisitos (ver Guia_FCM_paso_a_paso.md):
+#   1. Crear la carpeta backend/secrets/ y guardar ahí la clave de la cuenta de servicio de
+#      Firebase como firebase.json. Esa carpeta NO se sube al repositorio (.gitignore).
+#   2. En el .env local: NOTIFICADOR=fcm y FCM_PROYECTO_ID=<id del proyecto de Firebase>.
+#
+# Está separado del compose normal a propósito: si el archivo no existe, Docker crearía una
+# carpeta en su lugar y el compose normal dejaría de levantar.
+services:
+  api:
+    environment:
+      FCM_CREDENCIALES: /run/secrets/firebase.json
+    volumes:
+      - ./secrets/firebase.json:/run/secrets/firebase.json:ro

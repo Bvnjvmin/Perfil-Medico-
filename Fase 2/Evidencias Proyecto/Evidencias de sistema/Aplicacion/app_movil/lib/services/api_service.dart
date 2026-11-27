@@ -435,6 +435,30 @@ class ApiService {
     throw ApiException(_extraerDetalle(r));
   }
 
+  // --- Notificaciones push (HU 9): dispositivos del usuario ------------------
+
+  /// POST /dispositivos: registra el token de Firebase de este celular.
+  /// Responde 201 (nuevo) o 200 (ya estaba registrado).
+  Future<void> registrarDispositivo(String token, String tokenFcm) async {
+    final r = await _Http.post(
+      Uri.parse('$baseUrl/dispositivos'),
+      headers: {..._headersJson, ..._auth(token)},
+      body: jsonEncode({'token': tokenFcm, 'plataforma': 'android'}),
+    );
+    if (r.statusCode == 200 || r.statusCode == 201) return;
+    throw ApiException(_extraerDetalle(r));
+  }
+
+  /// DELETE /dispositivos/{token}: quita el celular (al cerrar sesión).
+  Future<void> quitarDispositivo(String token, String tokenFcm) async {
+    final r = await _Http.delete(
+      Uri.parse('$baseUrl/dispositivos/${Uri.encodeComponent(tokenFcm)}'),
+      headers: _auth(token),
+    );
+    if (r.statusCode == 204 || r.statusCode == 404) return;
+    throw ApiException(_extraerDetalle(r));
+  }
+
   // --- Alergias, Contactos y Cuidadores (M7 - HU 2 y HU 7) -----------------
 
   Future<List<Alergia>> listarAlergias(String token, String perfilId) async {

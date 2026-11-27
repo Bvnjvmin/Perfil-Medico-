@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/perfil.dart';
 import '../models/usuario.dart';
 import '../services/api_service.dart';
+import '../services/notificaciones_service.dart';
 import '../services/token_storage.dart';
 import 'agenda_screen.dart';
 import 'alergias_screen.dart';
@@ -59,6 +60,8 @@ class _HomeScreenState extends State<HomeScreen> {
       _volverALogin();
       return;
     }
+    // Sesión ya iniciada: asegura que este celular siga registrado para las notificaciones.
+    NotificacionesService.instance.registrar(token);
 
     try {
       final usuario = await _api.obtenerUsuarioActual(token);
@@ -119,6 +122,11 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _cerrarSesion() async {
+    // Quita este celular del usuario, para que no reciba avisos de otra cuenta.
+    final token = _token ?? await _tokenStorage.obtener();
+    if (token != null) {
+      await NotificacionesService.instance.quitar(token);
+    }
     await _tokenStorage.borrar();
     _volverALogin();
   }
